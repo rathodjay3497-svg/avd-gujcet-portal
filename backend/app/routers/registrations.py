@@ -185,8 +185,9 @@ def my_registrations(user=Depends(get_current_user)):
     return [_format_registration(r) for r in regs]
 
 
-@router.get("/{event_id}/check", response_model=RegistrationCheckResponse, summary="Check if phone is already registered")
-def check_registration(event_id: str, phone: str):
+@router.get("/{event_id}/check", response_model=RegistrationCheckResponse, summary="Check if logged-in user is registered")
+def check_registration(event_id: str, user=Depends(get_current_user)):
+    phone = user["sub"]
     reg = dynamo.get_registration(event_id, phone)
     if reg:
         return {"registered": True, "registration_id": reg.get("registration_id")}

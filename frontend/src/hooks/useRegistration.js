@@ -15,7 +15,16 @@ export function useRegister() {
       queryClient.invalidateQueries({ queryKey: ['check-registration'] });
     },
     onError: (err) => {
-      toast.error(err.response?.data?.detail || 'Registration failed');
+      const detail = err.response?.data?.detail;
+      if (Array.isArray(detail)) {
+        const messages = detail.map(e => {
+          const field = e.loc?.[e.loc.length - 1] || 'field';
+          return `${field}: ${e.msg}`;
+        });
+        toast.error(messages.join('\n'), { duration: 5000 });
+      } else {
+        toast.error(detail || 'Registration failed');
+      }
     },
   });
 }
@@ -32,7 +41,16 @@ export function useClickRegister() {
       queryClient.invalidateQueries({ queryKey: ['check-registration'] });
     },
     onError: (err) => {
-      toast.error(err.response?.data?.detail || 'Registration failed');
+      const detail = err.response?.data?.detail;
+      if (Array.isArray(detail)) {
+        const messages = detail.map(e => {
+          const field = e.loc?.[e.loc.length - 1] || 'field';
+          return `${field}: ${e.msg}`;
+        });
+        toast.error(messages.join('\n'), { duration: 5000 });
+      } else {
+        toast.error(detail || 'Registration failed');
+      }
     },
   });
 }
@@ -49,14 +67,16 @@ export function useMyRegistrations() {
   });
 }
 
-export function useCheckRegistration(eventId, phone) {
+export function useCheckRegistration(eventId) {
+  const { isAuthenticated } = useAuthStore();
   return useQuery({
-    queryKey: ['check-registration', eventId, phone],
+    queryKey: ['check-registration', eventId],
     queryFn: async () => {
-      const { data } = await registrationsAPI.check(eventId, phone);
+      if (!isAuthenticated) return { registered: false };
+      const { data } = await registrationsAPI.check(eventId);
       return data;
     },
-    enabled: !!eventId && !!phone,
+    enabled: !!eventId && isAuthenticated,
   });
 }
 
@@ -72,7 +92,19 @@ export function useUpdateProfile() {
       toast.success('Profile updated successfully!');
     },
     onError: (err) => {
-      toast.error(err.response?.data?.detail || 'Failed to update profile');
+      const detail = err.response?.data?.detail;
+      if (Array.isArray(detail)) {
+        // Pydantic validation errors: [{loc: ["body","field"], msg: "..."}]
+        const messages = detail.map(e => {
+          const field = e.loc?.[e.loc.length - 1] || 'field';
+          return `${field}: ${e.msg}`;
+        });
+        toast.error(messages.join('\n'), { duration: 5000 });
+      } else if (typeof detail === 'string') {
+        toast.error(detail);
+      } else {
+        toast.error('Failed to update profile. Please check your details and try again.');
+      }
     },
   });
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useUpdateProfile } from '@/hooks/useRegistration';
 import Button from '@/components/ui/Button/Button';
 import styles from './ProfileForm.module.css';
@@ -11,10 +11,17 @@ export default function ProfileForm({ onCancel }) {
     const [formData, setFormData] = useState({
         name: user?.name || '',
         email: user?.email || '',
+        dob: user?.dob || '',
+        gender: user?.gender || '',
+        guardian_name: user?.guardian_name || '',
+        guardian_phone: user?.guardian_phone || '',
         stream: user?.stream || '',
         medium: user?.medium || '',
-        address: user?.address || '',
         school_college: user?.school_college || '',
+        address: user?.address || '',
+        district: user?.district || '',
+        state: user?.state || 'Gujarat',
+        pin_code: user?.pin_code || '',
     });
 
     const handleChange = (e) => {
@@ -31,6 +38,7 @@ export default function ProfileForm({ onCancel }) {
         <form className={styles.formContainer} onSubmit={handleSubmit}>
             <h3 className={styles.title}>Update Profile</h3>
             <div className={styles.grid}>
+                {/* ─── Personal Details ─── */}
                 <div className={styles.formGroup}>
                     <label>Full Name <span className={styles.required}>*</span></label>
                     <input
@@ -56,6 +64,60 @@ export default function ProfileForm({ onCancel }) {
                     />
                 </div>
 
+                <div className={styles.formGroup}>
+                    <label>Date of Birth <span className={styles.required}>*</span></label>
+                    <input
+                        type="date"
+                        name="dob"
+                        value={formData.dob}
+                        onChange={handleChange}
+                        required
+                        className={styles.input}
+                    />
+                </div>
+
+                <div className={styles.formGroup}>
+                    <label>Gender <span className={styles.required}>*</span></label>
+                    <select
+                        name="gender"
+                        value={formData.gender}
+                        onChange={handleChange}
+                        required
+                        className={styles.input}
+                    >
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+
+                {/* ─── Guardian Details ─── */}
+                <div className={styles.formGroup}>
+                    <label>Guardian Name</label>
+                    <input
+                        type="text"
+                        name="guardian_name"
+                        value={formData.guardian_name}
+                        onChange={handleChange}
+                        className={styles.input}
+                        placeholder="Parent / Guardian name"
+                    />
+                </div>
+
+                <div className={styles.formGroup}>
+                    <label>Guardian Phone</label>
+                    <input
+                        type="tel"
+                        name="guardian_phone"
+                        value={formData.guardian_phone}
+                        onChange={handleChange}
+                        className={styles.input}
+                        placeholder="10-digit number"
+                        maxLength={10}
+                    />
+                </div>
+
+                {/* ─── Academic Details ─── */}
                 <div className={styles.formGroup}>
                     <label>Academic Stream <span className={styles.required}>*</span></label>
                     <select
@@ -87,6 +149,20 @@ export default function ProfileForm({ onCancel }) {
                 </div>
 
                 <div className={styles.formGroup} style={{ gridColumn: '1 / -1' }}>
+                    <label>School / College Name <span className={styles.required}>*</span></label>
+                    <input
+                        type="text"
+                        name="school_college"
+                        value={formData.school_college}
+                        onChange={handleChange}
+                        required
+                        className={styles.input}
+                        placeholder="Example High School"
+                    />
+                </div>
+
+                {/* ─── Address Details ─── */}
+                <div className={styles.formGroup} style={{ gridColumn: '1 / -1' }}>
                     <label>Address <span className={styles.required}>*</span></label>
                     <textarea
                         name="address"
@@ -99,22 +175,46 @@ export default function ProfileForm({ onCancel }) {
                     />
                 </div>
 
-                <div className={styles.formGroup} style={{ gridColumn: '1 / -1' }}>
-                    <label>School / College Name <span className={styles.required}>*</span></label>
+                <div className={styles.formGroup}>
+                    <label>District</label>
                     <input
                         type="text"
-                        name="school_college"
-                        value={formData.school_college}
+                        name="district"
+                        value={formData.district}
                         onChange={handleChange}
-                        required
                         className={styles.input}
-                        placeholder="Example High School"
+                        placeholder="e.g. Ahmedabad"
+                    />
+                </div>
+
+                <div className={styles.formGroup}>
+                    <label>State</label>
+                    <input
+                        type="text"
+                        name="state"
+                        value={formData.state}
+                        onChange={handleChange}
+                        className={styles.input}
+                        placeholder="Gujarat"
+                    />
+                </div>
+
+                <div className={styles.formGroup}>
+                    <label>PIN Code</label>
+                    <input
+                        type="text"
+                        name="pin_code"
+                        value={formData.pin_code}
+                        onChange={handleChange}
+                        className={styles.input}
+                        placeholder="6-digit PIN"
+                        maxLength={6}
                     />
                 </div>
             </div>
 
             <div className={styles.actions}>
-                {user?.name && user?.stream && user?.address && user?.school_college && onCancel && (
+                {user?.name && user?.stream && user?.address && user?.school_college && user?.dob && user?.gender && onCancel && (
                     <Button type="button" variant="secondary" onClick={onCancel} disabled={updateMutation.isPending}>
                         Cancel
                     </Button>

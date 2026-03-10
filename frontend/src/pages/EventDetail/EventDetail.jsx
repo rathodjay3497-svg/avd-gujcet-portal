@@ -13,7 +13,7 @@ export default function EventDetail() {
   const { eventId } = useParams();
   const { data: event, isLoading, error } = useEvent(eventId);
   const { isAuthenticated, user } = useAuthStore();
-  const { data: checkData } = useCheckRegistration(eventId, user?.phone);
+  const { data: checkData } = useCheckRegistration(eventId);
 
   const isAlreadyRegistered = checkData?.registered;
 

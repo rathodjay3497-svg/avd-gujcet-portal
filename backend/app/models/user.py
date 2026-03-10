@@ -38,4 +38,4 @@ class AdminLogin(BaseModel):
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
-    user: Optional[UserProfile] = None
+    user: Optional[dict] = None

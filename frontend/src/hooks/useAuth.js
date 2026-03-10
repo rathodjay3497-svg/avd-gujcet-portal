@@ -5,7 +5,7 @@ import useAuthStore from '@/store/authStore';
 import toast from 'react-hot-toast';
 
 function isProfileComplete(user) {
-  return !!(user?.name && user?.stream && user?.medium && user?.address && user?.school_college);
+  return !!(user?.name && user?.dob && user?.gender && user?.stream && user?.medium && user?.address && user?.school_college);
 }
 
 export function useAuth() {

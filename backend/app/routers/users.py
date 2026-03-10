@@ -30,14 +30,15 @@ def get_my_profile(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
-@router.put("/me", response_model=UserProfile)
+@router.put("/me")
 def update_my_profile(payload: UpdateProfileRequest, current_user: dict = Depends(get_current_user)):
     phone = current_user["sub"]
     user = dynamo.get_user(phone)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    # Update only the allowed fields. Phone (primary key) remains untouched.
-    updates = payload.dict(exclude_unset=True)
-    updated_user = dynamo.upsert_user(phone, updates)
+    # Merge new data with existing, preserving user_id, phone, created_at etc.
+    updates = payload.model_dump(exclude_none=True)
+    merged = {**user, **updates}
+    updated_user = dynamo.upsert_user(phone, merged)
     return updated_user

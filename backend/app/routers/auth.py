@@ -36,9 +36,9 @@ def _set_auth_cookie(response: Response, token: str):
 
 @router.post("/otp/send", summary="Send OTP to phone number")
 def send_otp(body: OTPRequest):
-    # otp = generate_otp()
-    otp = "121212"
+    otp = generate_otp()
     from app.utils.otp import hash_otp
+
     otp_hashed = hash_otp(otp)
     expires_at = int(time.time()) + OTP_EXPIRY_SECONDS
 
@@ -54,23 +54,35 @@ def send_otp(body: OTPRequest):
     return {"message": "OTP sent successfully", "expires_in": OTP_EXPIRY_SECONDS}
 
 
-@router.post("/otp/verify", response_model=TokenResponse, summary="Verify OTP and get JWT")
+@router.post(
+    "/otp/verify", response_model=TokenResponse, summary="Verify OTP and get JWT"
+)
 def verify_otp_endpoint(body: OTPVerify, response: Response):
     from app.utils.otp import verify_otp
+
     otp_record = dynamo.get_otp(body.phone)
 
     if not otp_record:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="No OTP found. Request a new one.")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="No OTP found. Request a new one.",
+        )
 
     # Check expiry
     if int(time.time()) > otp_record.get("expires_at", 0):
         dynamo.delete_otp(body.phone)
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="OTP has expired. Request a new one.")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="OTP has expired. Request a new one.",
+        )
 
     # Check attempts
     if otp_record.get("attempts", 0) >= MAX_OTP_ATTEMPTS:
         dynamo.delete_otp(body.phone)
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Too many attempts. Request a new OTP.")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Too many attempts. Request a new OTP.",
+        )
 
     # Verify
     if not verify_otp(body.otp, otp_record["otp_hash"]):
@@ -87,14 +99,19 @@ def verify_otp_endpoint(body: OTPVerify, response: Response):
     # Get or create user
     user = dynamo.get_user(body.phone)
     if not user:
-        user = dynamo.upsert_user(body.phone, {
-            "user_id": f"usr_{uuid.uuid4().hex[:12]}",
-            "name": "",
-            "phone": body.phone,
-        })
+        user = dynamo.upsert_user(
+            body.phone,
+            {
+                "user_id": f"usr_{uuid.uuid4().hex[:12]}",
+                "name": "",
+                "phone": body.phone,
+            },
+        )
 
     # Issue JWT
-    token = create_token({"sub": body.phone, "user_id": user.get("user_id"), "role": "student"})
+    token = create_token(
+        {"sub": body.phone, "user_id": user.get("user_id"), "role": "student"}
+    )
 
     # Set HttpOnly cookie
     _set_auth_cookie(response, token)
@@ -119,11 +136,15 @@ def verify_otp_endpoint(body: OTPVerify, response: Response):
 def get_me(request: Request):
     token = request.cookies.get(COOKIE_NAME)
     if not token:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Not authenticated"
+        )
 
     payload = decode_token(token)
     if not payload:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired token")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid or expired token"
+        )
 
     phone = payload.get("sub")
     if not phone or phone == "admin":
@@ -132,7 +153,9 @@ def get_me(request: Request):
 
     user = dynamo.get_user(phone)
     if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+        )
 
     return {
         "token": token,
@@ -157,13 +180,23 @@ def logout(response: Response):
     return {"message": "Logged out successfully"}
 
 
-@router.post("/admin/login", response_model=TokenResponse, summary="Admin login with username and password")
+@router.post(
+    "/admin/login",
+    response_model=TokenResponse,
+    summary="Admin login with username and password",
+)
 def admin_login(body: AdminLogin, response: Response):
     if body.username != settings.ADMIN_USERNAME:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials"
+        )
 
-    if not settings.ADMIN_PASSWORD_HASH or not bcrypt.verify(body.password, settings.ADMIN_PASSWORD_HASH):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
+    if not settings.ADMIN_PASSWORD_HASH or not bcrypt.verify(
+        body.password, settings.ADMIN_PASSWORD_HASH
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials"
+        )
 
     token = create_token(
         {"sub": "admin", "role": "admin"},

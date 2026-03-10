@@ -6,7 +6,12 @@ export function useEvents(status = 'active') {
     queryKey: ['events', status],
     queryFn: async () => {
       const res = await eventsAPI.list(status);
-      return res.data || [];
+      const events = res.data || [];
+      // Sort: current events first, future_scope events last, each group by start_date ascending
+      return events.sort((a, b) => {
+        if (a.future_scope !== b.future_scope) return a.future_scope ? 1 : -1;
+        return new Date(a.start_date || 0) - new Date(b.start_date || 0);
+      });
     },
   });
 }

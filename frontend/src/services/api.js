@@ -45,7 +45,7 @@ export const registrationsAPI = {
     api.post(`/registrations/${eventId}`, { phone, form_data: formData }),
   clickRegister: (eventId) => api.post(`/registrations/${eventId}/click`),
   myRegistrations: () => api.get('/registrations/me'),
-  check: (eventId, phone) => api.get(`/registrations/${eventId}/check`, { params: { phone } }),
+  check: (eventId) => api.get(`/registrations/${eventId}/check`),
   downloadPdf: (regId, eventId) => api.get(`/registrations/${regId}/pdf`, { params: { event_id: eventId } }),
 };
 
