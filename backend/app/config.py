@@ -36,6 +36,10 @@ class Settings(BaseSettings):
     FRONTEND_CUSTOM_URL: str = ""
     ENVIRONMENT: str = "development"
 
+    # Logging
+    LOG_LEVEL: str = "INFO"
+    LOG_FILE_PATH: str = "app.log"
+
     class Config:
         env_file = ".env"
         extra = "allow"
@@ -43,4 +47,9 @@ class Settings(BaseSettings):
 
 @lru_cache()
 def get_settings() -> Settings:
-    return Settings()
+    import os
+    settings = Settings()
+    # Override log level from environment if set
+    if os.getenv("LOG_LEVEL"):
+        settings.LOG_LEVEL = os.getenv("LOG_LEVEL")
+    return settings

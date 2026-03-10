@@ -1,5 +1,6 @@
 import boto3
 from app.config import get_settings
+from app.logger import email_logger, get_request_id
 
 settings = get_settings()
 
@@ -17,6 +18,13 @@ def send_registration_email(
     venue: str,
 ):
     """Send registration confirmation email with event details."""
+    request_id = get_request_id()
+    email_logger.info(
+        f"Sending registration email to: {to_email}, event: {event_title}, reg_id: {reg_id}",
+        request_id=request_id,
+        extra={"to_email": to_email, "event_title": event_title, "reg_id": reg_id}
+    )
+    
     ses = _get_ses_client()
 
     html_body = f"""
@@ -52,25 +60,43 @@ def send_registration_email(
     </html>
     """
 
-    ses.send_email(
-        Source=settings.SES_SENDER_EMAIL,
-        Destination={"ToAddresses": [to_email]},
-        Message={
-            "Subject": {"Data": f"Registration Confirmed - {event_title} [{reg_id}]"},
-            "Body": {"Html": {"Data": html_body}},
-        },
-    )
+    try:
+        ses.send_email(
+            Source=settings.SES_SENDER_EMAIL,
+            Destination={"ToAddresses": [to_email]},
+            Message={
+                "Subject": {"Data": f"Registration Confirmed - {event_title} [{reg_id}]"},
+                "Body": {"Html": {"Data": html_body}},
+            },
+        )
+        email_logger.info(f"Registration email sent successfully to: {to_email}", request_id=request_id)
+    except Exception as e:
+        email_logger.error(f"Error sending registration email to {to_email}: {str(e)}", request_id=request_id, exc_info=True)
+        raise
 
 
 def send_bulk_email(recipients: list[dict], subject: str, message: str):
     """Send bulk emails. Each recipient is a dict with 'email' key."""
+    request_id = get_request_id()
+    email_logger.info(f"Sending bulk emails to {len(recipients)} recipients, subject: {subject}", request_id=request_id)
+    
     ses = _get_ses_client()
+    success_count = 0
+    failed_count = 0
+    
     for r in recipients:
-        ses.send_email(
-            Source=settings.SES_SENDER_EMAIL,
-            Destination={"ToAddresses": [r["email"]]},
-            Message={
-                "Subject": {"Data": subject},
-                "Body": {"Text": {"Data": message}},
-            },
-        )
+        try:
+            ses.send_email(
+                Source=settings.SES_SENDER_EMAIL,
+                Destination={"ToAddresses": [r["email"]]},
+                Message={
+                    "Subject": {"Data": subject},
+                    "Body": {"Text": {"Data": message}},
+                },
+            )
+            success_count += 1
+        except Exception as e:
+            failed_count += 1
+            email_logger.error(f"Error sending bulk email to {r.get('email')}: {str(e)}", request_id=request_id, exc_info=True)
+    
+    email_logger.info(f"Bulk email completed. Success: {success_count}, Failed: {failed_count}", request_id=request_id, extra={"success": success_count, "failed": failed_count})
