@@ -8,6 +8,8 @@ FastAPI backend deployed as an AWS Lambda function via Mangum.
 - Python 3.11+
 - AWS account (for DynamoDB, S3, SES)
 - Twilio account (for OTP SMS)
+- Node.js 20+ (for Serverless Framework)
+- Docker Desktop (recommended on Windows to package Linux wheels)
 
 ### Setup
 
@@ -46,8 +48,18 @@ pytest -v                     # verbose output
 ### Deploy to AWS
 
 ```bash
-serverless deploy --stage dev
+cd backend
+
+# Install Serverless + packaging plugin (once)
+npm install
+
+# Deploy
+npx serverless deploy --stage dev
 ```
+
+Notes:
+- Lambda should use IAM roles. Do not set `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY` as Lambda env vars.
+- `serverless.yml` reads config from your deploy-time environment (or CI). Locally, you can keep values in `.env`, but you must export them into your shell before `deploy` if you want them applied to Lambda.
 
 ## Project Structure
 

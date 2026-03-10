@@ -19,7 +19,7 @@ export default function RegisterForm() {
   const hasRedirected = useRef(false);
 
   const phone = user?.phone;
-  const { data: checkData, isLoading: isCheckLoading } = useCheckRegistration(eventId, phone);
+  const { data: checkData, isLoading: isCheckLoading } = useCheckRegistration(eventId);
 
   const isProfileIncomplete = !user?.name || !user?.stream || !user?.address || !user?.school_college;
 
@@ -75,7 +75,6 @@ export default function RegisterForm() {
     navigate('/register/success', {
       state: {
         registrationId: result.registration_id,
-        pdfUrl: result.pdf_url,
         eventTitle: event.title,
         eventVenue: event.venue,
         eventDate: event.start_date,

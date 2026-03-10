@@ -46,7 +46,6 @@ export const registrationsAPI = {
   clickRegister: (eventId) => api.post(`/registrations/${eventId}/click`),
   myRegistrations: () => api.get('/registrations/me'),
   check: (eventId) => api.get(`/registrations/${eventId}/check`),
-  downloadPdf: (regId, eventId) => api.get(`/registrations/${regId}/pdf`, { params: { event_id: eventId } }),
 };
 
 // ─── Admin ───────────────────────────────────────────────────

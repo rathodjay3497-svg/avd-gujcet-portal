@@ -45,4 +45,4 @@ def health_check():
 
 
 # AWS Lambda handler via Mangum
-# handler = Mangum(app)
+handler = Mangum(app)

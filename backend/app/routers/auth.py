@@ -23,12 +23,17 @@ COOKIE_MAX_AGE = settings.JWT_EXPIRY_HOURS * 3600  # seconds
 
 def _set_auth_cookie(response: Response, token: str):
     """Set the JWT as an HttpOnly cookie on the response."""
+    cookie_samesite = (settings.COOKIE_SAMESITE or "lax").lower()
+    secure = settings.ENVIRONMENT != "development"
+    if cookie_samesite == "none":
+        # Browsers require Secure=true for SameSite=None cookies.
+        secure = True
     response.set_cookie(
         key=COOKIE_NAME,
         value=token,
         httponly=True,
-        secure=settings.ENVIRONMENT != "development",
-        samesite="lax",
+        secure=secure,
+        samesite=cookie_samesite,
         max_age=COOKIE_MAX_AGE,
         path="/",
     )

@@ -5,8 +5,6 @@ from app.dependencies import get_current_user
 from app.models.registration import RegistrationCreate, RegistrationResponse, RegistrationCheckResponse
 from app.services import dynamo
 from app.services.id_generator import generate_registration_id
-from app.services.pdf_service import generate_admit_card
-from app.services.s3_service import upload_pdf, get_presigned_url
 from app.services.twilio_service import send_registration_sms
 from app.services.email_service import send_registration_email
 from app.config import get_settings
@@ -26,17 +24,15 @@ def register_form(event_id: str, body: RegistrationCreate, background_tasks: Bac
     if event.get("registration_type") != "full_form":
         raise HTTPException(status_code=400, detail="This event requires login-based registration")
 
-    # 3. Check duplicate
+    # 2. Check duplicate
     existing = dynamo.get_registration(event_id, body.phone)
     if existing:
         raise HTTPException(status_code=409, detail="Already registered for this event")
 
-
-
-    # 5. Generate registration ID
+    # 3. Generate registration ID
     reg_id = generate_registration_id(event_id)
 
-    # 6. Upsert user profile from form data
+    # 4. Upsert user profile from form data
     user_data = {
         "user_id": f"usr_{body.phone}",
         "name": body.form_data.get("name", ""),
@@ -48,33 +44,15 @@ def register_form(event_id: str, body: RegistrationCreate, background_tasks: Bac
     }
     dynamo.upsert_user(body.phone, user_data)
 
-    # 7. Generate PDF admit card (DISABLED — S3 skipped for now)
-    # pdf_bytes = generate_admit_card(
-    #     name=body.form_data.get("name", "Student"),
-    #     registration_id=reg_id,
-    #     event_title=event.get("title", ""),
-    #     event_date=event.get("event_date", ""),
-    #     venue=event.get("venue", ""),
-    #     phone=body.phone,
-    #     stream=body.form_data.get("stream", ""),
-    # )
-
-    # 8. Upload PDF to S3 (DISABLED — S3 skipped for now)
-    # pdf_key = f"admit-cards/{event_id}/{reg_id}.pdf"
-    # upload_pdf(pdf_bytes, pdf_key)
-    # pdf_url = get_presigned_url(pdf_key)
-    pdf_url = None
-
-    # 9. Save registration
+    # 5. Save registration
     reg_data = {
         "registration_id": reg_id,
         "user_id": user_data["user_id"],
         "form_data": body.form_data,
-        "pdf_url": pdf_url,
     }
     registration = dynamo.create_registration(event_id, body.phone, reg_data)
 
-    # 10. Send notifications asynchronously
+    # 6. Send notifications asynchronously
     if settings.TWILIO_ACCOUNT_SID:
         background_tasks.add_task(
             send_registration_sms,
@@ -124,12 +102,10 @@ def register_click(event_id: str, background_tasks: BackgroundTasks, user=Depend
     if existing:
         raise HTTPException(status_code=409, detail="Already registered for this event")
 
-
-
-    # 5. Generate registration ID
+    # 4. Generate registration ID
     reg_id = generate_registration_id(event_id)
 
-    # 6. Build form_data from profile
+    # 5. Build form_data from profile
     form_data = {
         "name": profile.get("name", ""),
         "phone": phone,
@@ -139,31 +115,15 @@ def register_click(event_id: str, background_tasks: BackgroundTasks, user=Depend
         "school": profile.get("school_college", ""),
     }
 
-    # 7. Generate PDF + upload (DISABLED — S3 skipped for now)
-    # pdf_bytes = generate_admit_card(
-    #     name=form_data["name"],
-    #     registration_id=reg_id,
-    #     event_title=event.get("title", ""),
-    #     event_date=event.get("event_date", ""),
-    #     venue=event.get("venue", ""),
-    #     phone=phone,
-    #     stream=form_data["stream"],
-    # )
-    # pdf_key = f"admit-cards/{event_id}/{reg_id}.pdf"
-    # upload_pdf(pdf_bytes, pdf_key)
-    # pdf_url = get_presigned_url(pdf_key)
-    pdf_url = None
-
-    # 8. Save registration
+    # 6. Save registration
     reg_data = {
         "registration_id": reg_id,
         "user_id": profile.get("user_id", ""),
         "form_data": form_data,
-        "pdf_url": pdf_url,
     }
     registration = dynamo.create_registration(event_id, phone, reg_data)
 
-    # 9. Send notifications
+    # 7. Send notifications
     if settings.TWILIO_ACCOUNT_SID:
         background_tasks.add_task(
             send_registration_sms, phone, form_data["name"],
@@ -194,20 +154,12 @@ def check_registration(event_id: str, user=Depends(get_current_user)):
     return {"registered": False}
 
 
-@router.get("/{reg_id}/pdf", summary="Download admit card PDF")
-def download_pdf(reg_id: str, event_id: str):
-    pdf_key = f"admit-cards/{event_id}/{reg_id}.pdf"
-    url = get_presigned_url(pdf_key)
-    return {"pdf_url": url}
-
-
 def _format_registration(reg: dict) -> dict:
     return {
         "registration_id": reg.get("registration_id", ""),
         "event_id": reg.get("event_id", ""),
         "phone": reg.get("phone", ""),
         "form_data": reg.get("form_data", {}),
-        "pdf_url": reg.get("pdf_url"),
         "status": reg.get("status", "confirmed"),
         "registered_at": reg.get("registered_at", ""),
     }

@@ -2,16 +2,33 @@ service: gujcet-platform-api
 
 frameworkVersion: "3"
 
+plugins:
+  - serverless-python-requirements
+
 provider:
   name: aws
   runtime: python3.11
   region: ap-south-1
-  memorySize: 512
-  timeout: 30
+  memorySize: 256
+  timeout: 15
+  architecture: x86_64
   environment:
+    AWS_REGION: ${self:provider.region}
     DYNAMODB_TABLE_NAME: ${self:custom.tableName}
-    S3_BUCKET_NAME: ${self:custom.bucketName}
     ENVIRONMENT: ${sls:stage}
+    FRONTEND_URL: ${env:FRONTEND_URL, 'http://localhost:5173'}
+    FRONTEND_CUSTOM_URL: ${env:FRONTEND_CUSTOM_URL, ''}
+    COOKIE_SAMESITE: ${env:COOKIE_SAMESITE, 'lax'}
+    JWT_SECRET_KEY: ${env:JWT_SECRET_KEY, 'change-me-in-production'}
+    JWT_ALGORITHM: ${env:JWT_ALGORITHM, 'HS256'}
+    JWT_EXPIRY_HOURS: ${env:JWT_EXPIRY_HOURS, '24'}
+    ADMIN_JWT_EXPIRY_HOURS: ${env:ADMIN_JWT_EXPIRY_HOURS, '8'}
+    ADMIN_USERNAME: ${env:ADMIN_USERNAME, 'admin'}
+    ADMIN_PASSWORD_HASH: ${env:ADMIN_PASSWORD_HASH, ''}
+    TWILIO_ACCOUNT_SID: ${env:TWILIO_ACCOUNT_SID, ''}
+    TWILIO_AUTH_TOKEN: ${env:TWILIO_AUTH_TOKEN, ''}
+    TWILIO_PHONE_NUMBER: ${env:TWILIO_PHONE_NUMBER, ''}
+    SES_SENDER_EMAIL: ${env:SES_SENDER_EMAIL, 'noreply@yourdomain.com'}
   iam:
     role:
       statements:
@@ -28,11 +45,6 @@ provider:
             - !Join ["", [!GetAtt GujcetTable.Arn, "/index/*"]]
         - Effect: Allow
           Action:
-            - s3:PutObject
-            - s3:GetObject
-          Resource: !Join ["", [!GetAtt PdfBucket.Arn, "/*"]]
-        - Effect: Allow
-          Action:
             - ses:SendEmail
           Resource: "*"
   httpApi:
@@ -43,6 +55,7 @@ provider:
       allowedHeaders:
         - Content-Type
         - Authorization
+        - Cookie
       allowedMethods:
         - GET
         - POST
@@ -51,10 +64,17 @@ provider:
         - DELETE
         - OPTIONS
       allowCredentials: true
+      exposedResponseHeaders:
+        - Set-Cookie
 
 custom:
   tableName: gujcet-platform-${sls:stage}
-  bucketName: gujcet-platform-pdfs-${sls:stage}
+  pythonRequirements:
+    dockerizePip: true
+    slim: true
+    noDeploy:
+      - boto3
+      - botocore
 
 functions:
   api:
@@ -66,6 +86,7 @@ resources:
   Resources:
     GujcetTable:
       Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
       Properties:
         TableName: ${self:custom.tableName}
         BillingMode: PAY_PER_REQUEST
@@ -107,15 +128,4 @@ resources:
         TimeToLiveSpecification:
           AttributeName: expires_at
           Enabled: true
-        PointInTimeRecoverySpecification:
-          PointInTimeRecoveryEnabled: true
 
-    PdfBucket:
-      Type: AWS::S3::Bucket
-      Properties:
-        BucketName: ${self:custom.bucketName}
-        PublicAccessBlockConfiguration:
-          BlockPublicAcls: true
-          BlockPublicPolicy: true
-          IgnorePublicAcls: true
-          RestrictPublicBuckets: true

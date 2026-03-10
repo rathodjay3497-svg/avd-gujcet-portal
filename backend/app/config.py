@@ -8,7 +8,6 @@ class Settings(BaseSettings):
     AWS_ACCESS_KEY_ID: str = ""
     AWS_SECRET_ACCESS_KEY: str = ""
     DYNAMODB_TABLE_NAME: str = "gujcet-platform"
-    S3_BUCKET_NAME: str = "gujcet-platform-pdfs"
 
     # Twilio
     TWILIO_ACCOUNT_SID: str = ""
@@ -23,6 +22,10 @@ class Settings(BaseSettings):
     JWT_ALGORITHM: str = "HS256"
     JWT_EXPIRY_HOURS: int = 24
     ADMIN_JWT_EXPIRY_HOURS: int = 8
+
+    # Cookies
+    # Use "none" if frontend and backend are on different sites (e.g. Netlify + API Gateway).
+    COOKIE_SAMESITE: str = "none"
 
     # Admin
     ADMIN_USERNAME: str = "admin"

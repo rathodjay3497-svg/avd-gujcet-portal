@@ -33,7 +33,6 @@ def get_registrations(event_id: str, _admin=Depends(require_admin)):
                 "form_data": r.get("form_data", {}),
                 "status": r.get("status", "confirmed"),
                 "registered_at": r.get("registered_at", ""),
-                "pdf_url": r.get("pdf_url", ""),
             }
             for r in regs
         ],

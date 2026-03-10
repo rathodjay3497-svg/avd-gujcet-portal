@@ -84,11 +84,6 @@ export default function Profile() {
                     </div>
                     <div className={styles.regActions}>
                       <EventBadge status={reg.status} />
-                      {reg.pdf_url && (
-                        <a href={reg.pdf_url} target="_blank" rel="noopener noreferrer" className={styles.pdfLink}>
-                          Download PDF
-                        </a>
-                      )}
                     </div>
                   </div>
                 ))}

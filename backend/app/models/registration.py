@@ -12,7 +12,6 @@ class RegistrationResponse(BaseModel):
     event_id: str
     phone: str
     form_data: Dict[str, Any]
-    pdf_url: Optional[str] = None
     status: str = "confirmed"
     registered_at: str
 
