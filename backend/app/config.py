@@ -4,9 +4,9 @@ from functools import lru_cache
 
 class Settings(BaseSettings):
     # AWS
+    # Credentials are provided automatically by the Lambda IAM execution role.
+    # boto3 picks them up from the environment — never set them explicitly.
     AWS_REGION: str = "ap-south-1"
-    AWS_ACCESS_KEY_ID: str = ""
-    AWS_SECRET_ACCESS_KEY: str = ""
     DYNAMODB_TABLE_NAME: str = "gujcet-platform"
 
     # Twilio

@@ -229,17 +229,21 @@ def setup_logging():
     console_handler.setFormatter(console_formatter)
     logger.addHandler(console_handler)
     
-    # Create file handler with rotation
-    file_handler = RotatingFileHandler(
-        LOG_FILE_PATH,
-        maxBytes=MAX_LOG_SIZE,
-        backupCount=BACKUP_COUNT,
-        encoding='utf-8'
-    )
-    file_handler.setLevel(getattr(logging, LOG_LEVEL))
-    file_formatter = StandardizedFormatter()
-    file_handler.setFormatter(file_formatter)
-    logger.addHandler(file_handler)
+    # Create file handler with rotation - only if not in Lambda
+    if not os.getenv("AWS_LAMBDA_FUNCTION_NAME"):
+        file_handler = RotatingFileHandler(
+            LOG_FILE_PATH,
+            maxBytes=MAX_LOG_SIZE,
+            backupCount=BACKUP_COUNT,
+            encoding='utf-8'
+        )
+        file_handler.setLevel(getattr(logging, LOG_LEVEL))
+        file_formatter = StandardizedFormatter()
+        file_handler.setFormatter(file_formatter)
+        logger.addHandler(file_handler)
+        logger.info(f"File logging enabled: {LOG_FILE_PATH}")
+    else:
+        logger.info("Running in AWS Lambda - File logging disabled")
     
     # Log startup message
     logger.info(f"Logging initialized. Log level: {LOG_LEVEL}. Log file: {LOG_FILE_PATH}")

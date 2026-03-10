@@ -2,3 +2,12 @@
 __pycache__
 .env
 app.log
+node_modules
+.serverless
+
+*.log
+
+vendor
+tests
+package
+deployment_package.zip

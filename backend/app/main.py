@@ -23,11 +23,14 @@ app = FastAPI(
 
 # CORS — configured at both FastAPI and API Gateway levels
 allowed_origins = [
-    settings.FRONTEND_URL,
+    "https://gujcet-session.netlify.app",  # production frontend
     "http://localhost:5173",
+    "http://localhost:3000",
 ]
-if settings.FRONTEND_CUSTOM_URL:
-    allowed_origins.append(settings.FRONTEND_CUSTOM_URL)
+# Add any extra URLs from env vars (avoids duplicates)
+for url in [settings.FRONTEND_URL, settings.FRONTEND_CUSTOM_URL]:
+    if url and url not in allowed_origins:
+        allowed_origins.append(url)
 
 app.add_middleware(
     CORSMiddleware,
@@ -122,4 +125,6 @@ def health_check():
 
 
 # AWS Lambda handler via Mangum
-handler = Mangum(app)
+# lifespan="off" is required for Lambda Function URLs to correctly
+# handle CORS preflight (OPTIONS) requests without dropping headers.
+handler = Mangum(app, lifespan="off")
