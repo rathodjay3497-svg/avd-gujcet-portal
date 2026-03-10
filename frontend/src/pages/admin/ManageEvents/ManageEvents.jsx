@@ -15,16 +15,33 @@ export default function ManageEvents() {
   const queryClient = useQueryClient();
   const { data: events = [], isLoading } = useAdminEvents();
 
+  const sorted = useMemo(() => {
+    const now = new Date();
+    const order = (e) => {
+      if (e.status === 'active') return 0;
+      const d = e.start_date ? new Date(e.start_date) : null;
+      if (e.status !== 'closed' && d && d > now) return 1;
+      return 2;
+    };
+    return [...events].sort((a, b) => {
+      const diff = order(a) - order(b);
+      if (diff !== 0) return diff;
+      const da = a.start_date ? new Date(a.start_date) : new Date(0);
+      const db = b.start_date ? new Date(b.start_date) : new Date(0);
+      return da - db;
+    });
+  }, [events]);
+
   const filtered = useMemo(() => {
-    if (!search.trim()) return events;
+    if (!search.trim()) return sorted;
     const s = search.toLowerCase();
-    return events.filter(e =>
+    return sorted.filter(e =>
       e.title?.toLowerCase().includes(s) ||
       e.status?.toLowerCase().includes(s) ||
       e.venue?.toLowerCase().includes(s) ||
       e.registration_type?.toLowerCase().includes(s)
     );
-  }, [events, search]);
+  }, [sorted, search]);
 
   const toggleStatus = async (eventId, currentStatus) => {
     const newStatus = currentStatus === 'active' ? 'closed' : 'active';

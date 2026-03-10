@@ -161,6 +161,22 @@ def send_notifications(event_id: str, body: BulkNotifyRequest, _admin=Depends(re
     }
 
 
+@router.get("/overview", summary="Get overall registration stats across all events")
+def get_overview(_admin=Depends(require_admin)):
+    events = dynamo.list_events(status=None)
+    total_registrations = 0
+    events_with_counts = []
+    for event in events:
+        event_id = event.get("event_id", "")
+        count = len(dynamo.get_event_registrations(event_id))
+        total_registrations += count
+        events_with_counts.append({"event_id": event_id, "registration_count": count})
+    return {
+        "total_registrations": total_registrations,
+        "events_with_counts": events_with_counts,
+    }
+
+
 @router.get("/users", summary="List all users")
 def list_users(_admin=Depends(require_admin)):
     table = dynamo._get_table()

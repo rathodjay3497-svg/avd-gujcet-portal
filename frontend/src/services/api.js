@@ -52,6 +52,7 @@ export const adminAPI = {
   getRegistrations: (eventId) => api.get(`/admin/registrations/${eventId}`),
   exportCSV: (eventId) => api.get(`/admin/registrations/${eventId}/export`, { responseType: 'blob' }),
   getStats: (eventId) => api.get(`/admin/stats/${eventId}`),
+  getOverview: () => api.get('/admin/overview'),
   sendNotifications: (eventId, data) => api.post(`/admin/notify/${eventId}`, data),
   listUsers: () => api.get('/admin/users'),
 };

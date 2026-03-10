@@ -394,3 +394,332 @@ NoneType: None
 [2026-03-10 15:57:37,000198] [INFO] [dynamo] [_log] [N/A] [cffb3f2d] - Found 0 registrations for event: spoken-eng-2026
 [2026-03-10 15:57:37,000201] [INFO] [api] [_log] [N/A] [cffb3f2d] - Request completed: GET /admin/stats/spoken-eng-2026 - Status: 200 - Duration: 0.301s
 NoneType: None
+[2026-03-10 16:00:56,000751] [INFO] [api] [_log] [N/A] [f08aedf0] - Incoming request: GET /events/gujcet-2026
+NoneType: None
+[2026-03-10 16:00:57,000024] [INFO] [api] [_log] [N/A] [f08aedf0] - Request completed: GET /events/gujcet-2026 - Status: 200 - Duration: 0.273s
+NoneType: None
+[2026-03-10 16:00:57,000026] [INFO] [api] [_log] [N/A] [afc38997] - Incoming request: GET /events/gujcet-2026
+NoneType: None
+[2026-03-10 16:00:57,000206] [INFO] [api] [_log] [N/A] [afc38997] - Request completed: GET /events/gujcet-2026 - Status: 200 - Duration: 0.181s
+NoneType: None
+[2026-03-10 16:01:04,000962] [INFO] [api] [_log] [N/A] [25f4b0da] - Incoming request: GET /events
+NoneType: None
+[2026-03-10 16:01:05,000138] [INFO] [dynamo] [_log] [N/A] [25f4b0da] - Found 3 events
+[2026-03-10 16:01:05,000141] [INFO] [api] [_log] [N/A] [25f4b0da] - Request completed: GET /events - Status: 200 - Duration: 0.180s
+NoneType: None
+[2026-03-10 16:04:07,000628] [INFO] [api] [_log] [N/A] [ba320528] - Incoming request: GET /events
+NoneType: None
+[2026-03-10 16:04:07,000921] [INFO] [dynamo] [_log] [N/A] [ba320528] - Found 3 events
+[2026-03-10 16:04:07,000923] [INFO] [api] [_log] [N/A] [ba320528] - Request completed: GET /events - Status: 200 - Duration: 0.296s
+NoneType: None
+[2026-03-10 16:05:56,000762] [INFO] [api] [_log] [N/A] [d51da2e0] - Incoming request: GET /events
+NoneType: None
+[2026-03-10 16:05:56,000983] [INFO] [dynamo] [_log] [N/A] [d51da2e0] - Found 3 events
+[2026-03-10 16:05:56,000985] [INFO] [api] [_log] [N/A] [d51da2e0] - Request completed: GET /events - Status: 200 - Duration: 0.223s
+NoneType: None
+[2026-03-10 16:06:00,000336] [INFO] [api] [_log] [N/A] [de59b916] - Incoming request: GET /events
+NoneType: None
+[2026-03-10 16:06:00,000610] [INFO] [dynamo] [_log] [N/A] [de59b916] - Found 3 events
+[2026-03-10 16:06:00,000613] [INFO] [api] [_log] [N/A] [de59b916] - Request completed: GET /events - Status: 200 - Duration: 0.277s
+NoneType: None
+[2026-03-10 16:06:00,000615] [INFO] [api] [_log] [N/A] [7a2d7d5a] - Incoming request: GET /events
+NoneType: None
+[2026-03-10 16:06:00,000619] [INFO] [api] [_log] [N/A] [f8d299f3] - Incoming request: GET /admin/stats/spoken-eng-2026
+NoneType: None
+[2026-03-10 16:06:00,000627] [INFO] [jwt] [_log] [N/A] [f8d299f3] - JWT token decoded successfully
+NoneType: None
+[2026-03-10 16:06:00,000854] [INFO] [dynamo] [_log] [N/A] [7a2d7d5a] - Found 3 events
+[2026-03-10 16:06:00,000856] [INFO] [api] [_log] [N/A] [7a2d7d5a] - Request completed: GET /events - Status: 200 - Duration: 0.241s
+NoneType: None
+[2026-03-10 16:06:01,000118] [INFO] [dynamo] [_log] [N/A] [2da52dd2] - Found 0 registrations for event: spoken-eng-2026
+[2026-03-10 16:06:01,000122] [INFO] [api] [_log] [N/A] [f8d299f3] - Request completed: GET /admin/stats/spoken-eng-2026 - Status: 200 - Duration: 0.503s
+NoneType: None
+[2026-03-10 16:06:01,000124] [INFO] [api] [_log] [N/A] [d5d30f7c] - Incoming request: GET /admin/stats/spoken-eng-2026
+NoneType: None
+[2026-03-10 16:06:01,000126] [INFO] [jwt] [_log] [N/A] [d5d30f7c] - JWT token decoded successfully
+NoneType: None
+[2026-03-10 16:06:01,000424] [INFO] [dynamo] [_log] [N/A] [d5d30f7c] - Found 0 registrations for event: spoken-eng-2026
+[2026-03-10 16:06:01,000426] [INFO] [api] [_log] [N/A] [d5d30f7c] - Request completed: GET /admin/stats/spoken-eng-2026 - Status: 200 - Duration: 0.302s
+NoneType: None
+[2026-03-10 16:10:00,000366] [INFO] [api] [_log] [N/A] [19ecb59c] - Incoming request: GET /auth/me
+NoneType: None
+[2026-03-10 16:10:00,000372] [INFO] [jwt] [_log] [N/A] [19ecb59c] - JWT token decoded successfully
+NoneType: None
+[2026-03-10 16:10:00,000373] [INFO] [api] [_log] [N/A] [19ecb59c] - Request completed: GET /auth/me - Status: 200 - Duration: 0.007s
+NoneType: None
+[2026-03-10 16:10:00,000379] [INFO] [api] [_log] [N/A] [7b5b0209] - Incoming request: GET /auth/me
+NoneType: None
+[2026-03-10 16:10:00,000380] [INFO] [jwt] [_log] [N/A] [7b5b0209] - JWT token decoded successfully
+NoneType: None
+[2026-03-10 16:10:00,000381] [INFO] [api] [_log] [N/A] [7b5b0209] - Request completed: GET /auth/me - Status: 200 - Duration: 0.002s
+NoneType: None
+[2026-03-10 16:10:00,000387] [INFO] [api] [_log] [N/A] [152f789e] - Incoming request: GET /events
+NoneType: None
+[2026-03-10 16:10:00,000642] [INFO] [dynamo] [_log] [N/A] [152f789e] - Found 3 events
+[2026-03-10 16:10:00,000645] [INFO] [api] [_log] [N/A] [152f789e] - Request completed: GET /events - Status: 200 - Duration: 0.258s
+NoneType: None
+[2026-03-10 16:10:02,000129] [INFO] [app] [setup_logging] [N/A] [N/A] - Logging initialized. Log level: INFO. Log file: D:\Jay Rathod\Projects\website\backend\app.log
+[2026-03-10 16:10:02,000276] [INFO] [api] [_log] [N/A] [e4328a71] - Incoming request: GET /events
+NoneType: None
+[2026-03-10 16:10:02,000277] [INFO] [api] [_log] [N/A] [301fcf55] - Incoming request: GET /admin/stats/spoken-eng-2026
+NoneType: None
+[2026-03-10 16:10:02,000289] [INFO] [jwt] [_log] [N/A] [301fcf55] - JWT token decoded successfully
+NoneType: None
+[2026-03-10 16:10:02,000755] [INFO] [dynamo] [_log] [N/A] [301fcf55] - Found 3 events
+[2026-03-10 16:10:02,000763] [INFO] [api] [_log] [N/A] [e4328a71] - Request completed: GET /events - Status: 200 - Duration: 0.487s
+NoneType: None
+[2026-03-10 16:10:02,000889] [INFO] [dynamo] [_log] [N/A] [301fcf55] - Found 0 registrations for event: spoken-eng-2026
+[2026-03-10 16:10:02,000892] [INFO] [api] [_log] [N/A] [301fcf55] - Request completed: GET /admin/stats/spoken-eng-2026 - Status: 200 - Duration: 0.614s
+NoneType: None
+[2026-03-10 16:10:02,000894] [INFO] [api] [_log] [N/A] [03898499] - Incoming request: GET /admin/stats/spoken-eng-2026
+NoneType: None
+[2026-03-10 16:10:02,000895] [INFO] [jwt] [_log] [N/A] [03898499] - JWT token decoded successfully
+NoneType: None
+[2026-03-10 16:10:03,000236] [INFO] [dynamo] [_log] [N/A] [03898499] - Found 0 registrations for event: spoken-eng-2026
+[2026-03-10 16:10:03,000239] [INFO] [api] [_log] [N/A] [03898499] - Request completed: GET /admin/stats/spoken-eng-2026 - Status: 200 - Duration: 0.345s
+NoneType: None
+[2026-03-10 16:10:25,000358] [INFO] [api] [_log] [N/A] [0fb34ac2] - Incoming request: GET /admin/overview
+NoneType: None
+[2026-03-10 16:10:25,000359] [INFO] [api] [_log] [N/A] [4990bb3d] - Incoming request: GET /events
+NoneType: None
+[2026-03-10 16:10:25,000360] [INFO] [jwt] [_log] [N/A] [4990bb3d] - JWT token decoded successfully
+NoneType: None
+[2026-03-10 16:10:25,000509] [INFO] [dynamo] [_log] [N/A] [4990bb3d] - Found 3 events
+[2026-03-10 16:10:25,000531] [INFO] [dynamo] [_log] [N/A] [4990bb3d] - Found 3 events
+[2026-03-10 16:10:25,000533] [INFO] [api] [_log] [N/A] [4990bb3d] - Request completed: GET /events - Status: 200 - Duration: 0.174s
+NoneType: None
+[2026-03-10 16:10:25,000536] [INFO] [api] [_log] [N/A] [114e831d] - Incoming request: GET /events
+NoneType: None
+[2026-03-10 16:10:25,000647] [INFO] [dynamo] [_log] [N/A] [4990bb3d] - Found 0 registrations for event: spoken-eng-2026
+[2026-03-10 16:10:25,000686] [INFO] [dynamo] [_log] [N/A] [114e831d] - Found 3 events
+[2026-03-10 16:10:25,000688] [INFO] [api] [_log] [N/A] [114e831d] - Request completed: GET /events - Status: 200 - Duration: 0.153s
+NoneType: None
+[2026-03-10 16:10:25,000810] [INFO] [dynamo] [_log] [N/A] [114e831d] - Found 0 registrations for event: c-lang-2026
+[2026-03-10 16:10:25,000949] [INFO] [dynamo] [_log] [N/A] [0dbad7c8] - Found 2 registrations for event: gujcet-2026
+[2026-03-10 16:10:25,000951] [INFO] [api] [_log] [N/A] [0fb34ac2] - Request completed: GET /admin/overview - Status: 200 - Duration: 0.594s
+NoneType: None
+[2026-03-10 16:10:25,000954] [INFO] [api] [_log] [N/A] [f0b563b9] - Incoming request: GET /admin/overview
+NoneType: None
+[2026-03-10 16:10:25,000954] [INFO] [jwt] [_log] [N/A] [f0b563b9] - JWT token decoded successfully
+NoneType: None
+[2026-03-10 16:10:26,000095] [INFO] [dynamo] [_log] [N/A] [f0b563b9] - Found 3 events
+[2026-03-10 16:10:26,000255] [INFO] [dynamo] [_log] [N/A] [f0b563b9] - Found 0 registrations for event: spoken-eng-2026
+[2026-03-10 16:10:26,000412] [INFO] [dynamo] [_log] [N/A] [f0b563b9] - Found 0 registrations for event: c-lang-2026
+[2026-03-10 16:10:26,000564] [INFO] [dynamo] [_log] [N/A] [f0b563b9] - Found 2 registrations for event: gujcet-2026
+[2026-03-10 16:10:26,000564] [INFO] [api] [_log] [N/A] [f0b563b9] - Request completed: GET /admin/overview - Status: 200 - Duration: 0.610s
+NoneType: None
+[2026-03-10 16:10:31,000047] [INFO] [api] [_log] [N/A] [3c20486a] - Incoming request: GET /events
+NoneType: None
+[2026-03-10 16:10:31,000048] [INFO] [api] [_log] [N/A] [a417d168] - Incoming request: GET /admin/overview
+NoneType: None
+[2026-03-10 16:10:31,000049] [INFO] [jwt] [_log] [N/A] [a417d168] - JWT token decoded successfully
+NoneType: None
+[2026-03-10 16:10:31,000218] [INFO] [dynamo] [_log] [N/A] [a417d168] - Found 3 events
+[2026-03-10 16:10:31,000220] [INFO] [api] [_log] [N/A] [3c20486a] - Request completed: GET /events - Status: 200 - Duration: 0.173s
+NoneType: None
+[2026-03-10 16:10:31,000224] [INFO] [dynamo] [_log] [N/A] [a417d168] - Found 3 events
+[2026-03-10 16:10:31,000364] [INFO] [dynamo] [_log] [N/A] [131d2c44] - Found 0 registrations for event: spoken-eng-2026
+[2026-03-10 16:10:31,000517] [INFO] [dynamo] [_log] [N/A] [d74811a9] - Found 0 registrations for event: c-lang-2026
+[2026-03-10 16:10:31,000662] [INFO] [dynamo] [_log] [N/A] [6fed5360] - Found 2 registrations for event: gujcet-2026
+[2026-03-10 16:10:31,000663] [INFO] [api] [_log] [N/A] [a417d168] - Request completed: GET /admin/overview - Status: 200 - Duration: 0.616s
+NoneType: None
+[2026-03-10 16:10:38,000346] [INFO] [api] [_log] [N/A] [1486760e] - Incoming request: GET /events
+NoneType: None
+[2026-03-10 16:10:38,000347] [INFO] [api] [_log] [N/A] [353bf849] - Incoming request: GET /admin/overview
+NoneType: None
+[2026-03-10 16:10:38,000349] [INFO] [jwt] [_log] [N/A] [353bf849] - JWT token decoded successfully
+NoneType: None
+[2026-03-10 16:10:38,000519] [INFO] [dynamo] [_log] [N/A] [353bf849] - Found 3 events
+[2026-03-10 16:10:38,000521] [INFO] [api] [_log] [N/A] [1486760e] - Request completed: GET /events - Status: 200 - Duration: 0.174s
+NoneType: None
+[2026-03-10 16:10:38,000551] [INFO] [dynamo] [_log] [N/A] [353bf849] - Found 3 events
+[2026-03-10 16:10:38,000691] [INFO] [dynamo] [_log] [N/A] [e31486b2] - Found 0 registrations for event: spoken-eng-2026
+[2026-03-10 16:10:38,000857] [INFO] [dynamo] [_log] [N/A] [ded10f84] - Found 0 registrations for event: c-lang-2026
+[2026-03-10 16:10:39,000011] [INFO] [dynamo] [_log] [N/A] [9e9b3f64] - Found 2 registrations for event: gujcet-2026
+[2026-03-10 16:10:39,000014] [INFO] [api] [_log] [N/A] [353bf849] - Request completed: GET /admin/overview - Status: 200 - Duration: 0.667s
+NoneType: None
+[2026-03-10 16:11:26,000100] [INFO] [api] [_log] [N/A] [e615cfb1] - Incoming request: GET /auth/me
+NoneType: None
+[2026-03-10 16:11:26,000101] [INFO] [jwt] [_log] [N/A] [e615cfb1] - JWT token decoded successfully
+NoneType: None
+[2026-03-10 16:11:26,000103] [INFO] [api] [_log] [N/A] [e615cfb1] - Request completed: GET /auth/me - Status: 200 - Duration: 0.003s
+NoneType: None
+[2026-03-10 16:11:26,000106] [INFO] [api] [_log] [N/A] [420b1a13] - Incoming request: GET /auth/me
+NoneType: None
+[2026-03-10 16:11:26,000108] [INFO] [jwt] [_log] [N/A] [420b1a13] - JWT token decoded successfully
+NoneType: None
+[2026-03-10 16:11:26,000108] [INFO] [api] [_log] [N/A] [420b1a13] - Request completed: GET /auth/me - Status: 200 - Duration: 0.002s
+NoneType: None
+[2026-03-10 16:11:26,000123] [INFO] [api] [_log] [N/A] [54790d46] - Incoming request: GET /events
+NoneType: None
+[2026-03-10 16:11:26,000371] [INFO] [dynamo] [_log] [N/A] [54790d46] - Found 3 events
+[2026-03-10 16:11:26,000374] [INFO] [api] [_log] [N/A] [54790d46] - Request completed: GET /events - Status: 200 - Duration: 0.251s
+NoneType: None
+[2026-03-10 16:11:26,000377] [INFO] [api] [_log] [N/A] [c7134827] - Incoming request: GET /admin/overview
+NoneType: None
+[2026-03-10 16:11:26,000378] [INFO] [jwt] [_log] [N/A] [c7134827] - JWT token decoded successfully
+NoneType: None
+[2026-03-10 16:11:26,000430] [INFO] [api] [_log] [N/A] [617a168d] - Incoming request: GET /events
+NoneType: None
+[2026-03-10 16:11:26,000601] [INFO] [dynamo] [_log] [N/A] [617a168d] - Found 3 events
+[2026-03-10 16:11:26,000606] [INFO] [dynamo] [_log] [N/A] [c7134827] - Found 3 events
+[2026-03-10 16:11:26,000613] [INFO] [api] [_log] [N/A] [617a168d] - Request completed: GET /events - Status: 200 - Duration: 0.183s
+NoneType: None
+[2026-03-10 16:11:26,000847] [INFO] [dynamo] [_log] [N/A] [617a168d] - Found 0 registrations for event: spoken-eng-2026
+[2026-03-10 16:11:27,000084] [INFO] [dynamo] [_log] [N/A] [818044f5] - Found 0 registrations for event: c-lang-2026
+[2026-03-10 16:11:27,000348] [INFO] [dynamo] [_log] [N/A] [f4de5e6b] - Found 2 registrations for event: gujcet-2026
+[2026-03-10 16:11:27,000350] [INFO] [api] [_log] [N/A] [c7134827] - Request completed: GET /admin/overview - Status: 200 - Duration: 0.975s
+NoneType: None
+[2026-03-10 16:11:27,000352] [INFO] [api] [_log] [N/A] [c064e047] - Incoming request: GET /admin/overview
+NoneType: None
+[2026-03-10 16:11:27,000354] [INFO] [jwt] [_log] [N/A] [c064e047] - JWT token decoded successfully
+NoneType: None
+[2026-03-10 16:11:27,000581] [INFO] [dynamo] [_log] [N/A] [c064e047] - Found 3 events
+[2026-03-10 16:11:27,000726] [INFO] [dynamo] [_log] [N/A] [c064e047] - Found 0 registrations for event: spoken-eng-2026
+[2026-03-10 16:11:27,000865] [INFO] [dynamo] [_log] [N/A] [c064e047] - Found 0 registrations for event: c-lang-2026
+[2026-03-10 16:11:27,000996] [INFO] [dynamo] [_log] [N/A] [c064e047] - Found 2 registrations for event: gujcet-2026
+[2026-03-10 16:11:27,000999] [INFO] [api] [_log] [N/A] [c064e047] - Request completed: GET /admin/overview - Status: 200 - Duration: 0.646s
+NoneType: None
+[2026-03-10 16:11:34,000928] [INFO] [api] [_log] [N/A] [27da22e6] - Incoming request: GET /events/c-lang-2026
+NoneType: None
+[2026-03-10 16:11:35,000089] [INFO] [api] [_log] [N/A] [27da22e6] - Request completed: GET /events/c-lang-2026 - Status: 200 - Duration: 0.160s
+NoneType: None
+[2026-03-10 16:11:35,000092] [INFO] [api] [_log] [N/A] [1b8a14bd] - Incoming request: GET /events/c-lang-2026
+NoneType: None
+[2026-03-10 16:11:35,000244] [INFO] [api] [_log] [N/A] [1b8a14bd] - Request completed: GET /events/c-lang-2026 - Status: 200 - Duration: 0.152s
+NoneType: None
+[2026-03-10 16:11:39,000971] [INFO] [api] [_log] [N/A] [20857cc9] - Incoming request: OPTIONS /events/c-lang-2026
+NoneType: None
+[2026-03-10 16:11:39,000972] [INFO] [api] [_log] [N/A] [20857cc9] - Request completed: OPTIONS /events/c-lang-2026 - Status: 200 - Duration: 0.001s
+NoneType: None
+[2026-03-10 16:11:39,000974] [INFO] [api] [_log] [N/A] [d72346e8] - Incoming request: PUT /events/c-lang-2026
+NoneType: None
+[2026-03-10 16:11:39,000975] [INFO] [jwt] [_log] [N/A] [d72346e8] - JWT token decoded successfully
+NoneType: None
+[2026-03-10 16:11:40,000128] [INFO] [dynamo] [_log] [N/A] [d72346e8] - Updating event: c-lang-2026
+NoneType: None
+[2026-03-10 16:11:40,000302] [INFO] [dynamo] [_log] [N/A] [d72346e8] - Event updated successfully: c-lang-2026
+[2026-03-10 16:11:40,000303] [INFO] [api] [_log] [N/A] [d72346e8] - Request completed: PUT /events/c-lang-2026 - Status: 200 - Duration: 0.329s
+NoneType: None
+[2026-03-10 16:11:40,000323] [INFO] [api] [_log] [N/A] [8d30580a] - Incoming request: GET /events
+NoneType: None
+[2026-03-10 16:11:40,000481] [INFO] [dynamo] [_log] [N/A] [8d30580a] - Found 3 events
+[2026-03-10 16:11:40,000484] [INFO] [api] [_log] [N/A] [8d30580a] - Request completed: GET /events - Status: 200 - Duration: 0.161s
+NoneType: None
+[2026-03-10 16:11:45,000220] [INFO] [api] [_log] [N/A] [132369c7] - Incoming request: GET /events/spoken-eng-2026
+NoneType: None
+[2026-03-10 16:11:45,000379] [INFO] [api] [_log] [N/A] [132369c7] - Request completed: GET /events/spoken-eng-2026 - Status: 200 - Duration: 0.160s
+NoneType: None
+[2026-03-10 16:11:45,000381] [INFO] [api] [_log] [N/A] [c64aabb7] - Incoming request: GET /events/spoken-eng-2026
+NoneType: None
+[2026-03-10 16:11:45,000535] [INFO] [api] [_log] [N/A] [c64aabb7] - Request completed: GET /events/spoken-eng-2026 - Status: 200 - Duration: 0.154s
+NoneType: None
+[2026-03-10 16:11:47,000945] [INFO] [api] [_log] [N/A] [209189e1] - Incoming request: OPTIONS /events/spoken-eng-2026
+NoneType: None
+[2026-03-10 16:11:47,000945] [INFO] [api] [_log] [N/A] [209189e1] - Request completed: OPTIONS /events/spoken-eng-2026 - Status: 200 - Duration: 0.001s
+NoneType: None
+[2026-03-10 16:11:47,000949] [INFO] [api] [_log] [N/A] [6343e19d] - Incoming request: PUT /events/spoken-eng-2026
+NoneType: None
+[2026-03-10 16:11:47,000951] [INFO] [jwt] [_log] [N/A] [6343e19d] - JWT token decoded successfully
+NoneType: None
+[2026-03-10 16:11:48,000117] [INFO] [dynamo] [_log] [N/A] [6343e19d] - Updating event: spoken-eng-2026
+NoneType: None
+[2026-03-10 16:11:48,000275] [INFO] [dynamo] [_log] [N/A] [6343e19d] - Event updated successfully: spoken-eng-2026
+[2026-03-10 16:11:48,000277] [INFO] [api] [_log] [N/A] [6343e19d] - Request completed: PUT /events/spoken-eng-2026 - Status: 200 - Duration: 0.328s
+NoneType: None
+[2026-03-10 16:11:49,000406] [INFO] [api] [_log] [N/A] [1cc8dcf6] - Incoming request: GET /events/spoken-eng-2026
+NoneType: None
+[2026-03-10 16:11:49,000569] [INFO] [api] [_log] [N/A] [1cc8dcf6] - Request completed: GET /events/spoken-eng-2026 - Status: 200 - Duration: 0.163s
+NoneType: None
+[2026-03-10 16:11:49,000572] [INFO] [api] [_log] [N/A] [4379eb30] - Incoming request: GET /events/spoken-eng-2026
+NoneType: None
+[2026-03-10 16:11:49,000714] [INFO] [api] [_log] [N/A] [4379eb30] - Request completed: GET /events/spoken-eng-2026 - Status: 200 - Duration: 0.141s
+NoneType: None
+[2026-03-10 16:11:50,000524] [INFO] [api] [_log] [N/A] [4e59571e] - Incoming request: GET /events/c-lang-2026
+NoneType: None
+[2026-03-10 16:11:50,000673] [INFO] [api] [_log] [N/A] [4e59571e] - Request completed: GET /events/c-lang-2026 - Status: 200 - Duration: 0.149s
+NoneType: None
+[2026-03-10 16:11:50,000677] [INFO] [api] [_log] [N/A] [4ade8d96] - Incoming request: GET /events/c-lang-2026
+NoneType: None
+[2026-03-10 16:11:50,000810] [INFO] [api] [_log] [N/A] [4ade8d96] - Request completed: GET /events/c-lang-2026 - Status: 200 - Duration: 0.133s
+NoneType: None
+[2026-03-10 16:11:51,000060] [INFO] [api] [_log] [N/A] [18c62be7] - Incoming request: GET /events
+NoneType: None
+[2026-03-10 16:11:51,000232] [INFO] [dynamo] [_log] [N/A] [18c62be7] - Found 3 events
+[2026-03-10 16:11:51,000234] [INFO] [api] [_log] [N/A] [18c62be7] - Request completed: GET /events - Status: 200 - Duration: 0.174s
+NoneType: None
+[2026-03-10 16:11:51,000238] [INFO] [api] [_log] [N/A] [54acbf6a] - Incoming request: GET /admin/overview
+NoneType: None
+[2026-03-10 16:11:51,000239] [INFO] [jwt] [_log] [N/A] [54acbf6a] - JWT token decoded successfully
+NoneType: None
+[2026-03-10 16:11:51,000372] [INFO] [api] [_log] [N/A] [4dabb79b] - Incoming request: GET /events
+NoneType: None
+[2026-03-10 16:11:51,000391] [INFO] [dynamo] [_log] [N/A] [54acbf6a] - Found 3 events
+[2026-03-10 16:11:51,000506] [INFO] [dynamo] [_log] [N/A] [4dabb79b] - Found 3 events
+[2026-03-10 16:11:51,000508] [INFO] [api] [_log] [N/A] [4dabb79b] - Request completed: GET /events - Status: 200 - Duration: 0.136s
+NoneType: None
+[2026-03-10 16:11:51,000531] [INFO] [dynamo] [_log] [N/A] [4dabb79b] - Found 0 registrations for event: spoken-eng-2026
+[2026-03-10 16:11:51,000687] [INFO] [dynamo] [_log] [N/A] [6c4d6f1f] - Found 0 registrations for event: c-lang-2026
+[2026-03-10 16:11:51,000845] [INFO] [dynamo] [_log] [N/A] [a7df3f65] - Found 2 registrations for event: gujcet-2026
+[2026-03-10 16:11:51,000847] [INFO] [api] [_log] [N/A] [54acbf6a] - Request completed: GET /admin/overview - Status: 200 - Duration: 0.609s
+NoneType: None
+[2026-03-10 16:11:51,000850] [INFO] [api] [_log] [N/A] [523a63c8] - Incoming request: GET /admin/overview
+NoneType: None
+[2026-03-10 16:11:51,000851] [INFO] [jwt] [_log] [N/A] [523a63c8] - JWT token decoded successfully
+NoneType: None
+[2026-03-10 16:11:51,000993] [INFO] [dynamo] [_log] [N/A] [523a63c8] - Found 3 events
+[2026-03-10 16:11:52,000142] [INFO] [dynamo] [_log] [N/A] [523a63c8] - Found 0 registrations for event: spoken-eng-2026
+[2026-03-10 16:11:52,000313] [INFO] [dynamo] [_log] [N/A] [523a63c8] - Found 0 registrations for event: c-lang-2026
+[2026-03-10 16:11:52,000477] [INFO] [dynamo] [_log] [N/A] [523a63c8] - Found 2 registrations for event: gujcet-2026
+[2026-03-10 16:11:52,000479] [INFO] [api] [_log] [N/A] [523a63c8] - Request completed: GET /admin/overview - Status: 200 - Duration: 0.630s
+NoneType: None
+[2026-03-10 16:12:01,000623] [INFO] [api] [_log] [N/A] [b8be7974] - Incoming request: GET /admin/registrations/gujcet-2026
+NoneType: None
+[2026-03-10 16:12:01,000625] [INFO] [jwt] [_log] [N/A] [b8be7974] - JWT token decoded successfully
+NoneType: None
+[2026-03-10 16:12:01,000938] [INFO] [dynamo] [_log] [N/A] [b8be7974] - Found 2 registrations for event: gujcet-2026
+[2026-03-10 16:12:01,000940] [INFO] [api] [_log] [N/A] [b8be7974] - Request completed: GET /admin/registrations/gujcet-2026 - Status: 200 - Duration: 0.317s
+NoneType: None
+[2026-03-10 16:12:11,000478] [INFO] [api] [_log] [N/A] [69967f60] - Incoming request: GET /events
+NoneType: None
+[2026-03-10 16:12:11,000478] [INFO] [api] [_log] [N/A] [d627633a] - Incoming request: GET /admin/overview
+NoneType: None
+[2026-03-10 16:12:11,000482] [INFO] [jwt] [_log] [N/A] [d627633a] - JWT token decoded successfully
+NoneType: None
+[2026-03-10 16:12:11,000650] [INFO] [dynamo] [_log] [N/A] [d627633a] - Found 3 events
+[2026-03-10 16:12:11,000652] [INFO] [api] [_log] [N/A] [69967f60] - Request completed: GET /events - Status: 200 - Duration: 0.175s
+NoneType: None
+[2026-03-10 16:12:11,000656] [INFO] [api] [_log] [N/A] [1529bf95] - Incoming request: GET /events
+NoneType: None
+[2026-03-10 16:12:11,000661] [INFO] [dynamo] [_log] [N/A] [d627633a] - Found 3 events
+[2026-03-10 16:12:11,000902] [INFO] [dynamo] [_log] [N/A] [1529bf95] - Found 3 events
+[2026-03-10 16:12:11,000902] [INFO] [dynamo] [_log] [N/A] [1529bf95] - Found 0 registrations for event: spoken-eng-2026
+[2026-03-10 16:12:11,000908] [INFO] [api] [_log] [N/A] [1529bf95] - Request completed: GET /events - Status: 200 - Duration: 0.252s
+NoneType: None
+[2026-03-10 16:12:12,000048] [INFO] [dynamo] [_log] [N/A] [1529bf95] - Found 0 registrations for event: c-lang-2026
+[2026-03-10 16:12:12,000247] [INFO] [dynamo] [_log] [N/A] [a6712868] - Found 2 registrations for event: gujcet-2026
+[2026-03-10 16:12:12,000250] [INFO] [api] [_log] [N/A] [d627633a] - Request completed: GET /admin/overview - Status: 200 - Duration: 0.772s
+NoneType: None
+[2026-03-10 16:12:12,000253] [INFO] [api] [_log] [N/A] [54ff9678] - Incoming request: GET /admin/overview
+NoneType: None
+[2026-03-10 16:12:12,000253] [INFO] [jwt] [_log] [N/A] [54ff9678] - JWT token decoded successfully
+NoneType: None
+[2026-03-10 16:12:12,000408] [INFO] [dynamo] [_log] [N/A] [54ff9678] - Found 3 events
+[2026-03-10 16:12:12,000556] [INFO] [dynamo] [_log] [N/A] [54ff9678] - Found 0 registrations for event: spoken-eng-2026
+[2026-03-10 16:12:12,000772] [INFO] [dynamo] [_log] [N/A] [54ff9678] - Found 0 registrations for event: c-lang-2026
+[2026-03-10 16:12:12,000931] [INFO] [dynamo] [_log] [N/A] [54ff9678] - Found 2 registrations for event: gujcet-2026
+[2026-03-10 16:12:12,000932] [INFO] [api] [_log] [N/A] [54ff9678] - Request completed: GET /admin/overview - Status: 200 - Duration: 0.681s
+NoneType: None
+[2026-03-10 16:12:15,000032] [INFO] [api] [_log] [N/A] [abc4f783] - Incoming request: POST /auth/logout
+NoneType: None
+[2026-03-10 16:12:15,000033] [INFO] [api] [_log] [N/A] [abc4f783] - Request completed: POST /auth/logout - Status: 200 - Duration: 0.001s
+NoneType: None
+[2026-03-10 16:12:15,000067] [INFO] [api] [_log] [N/A] [985e6ce9] - Incoming request: GET /events
+NoneType: None
+[2026-03-10 16:12:15,000228] [INFO] [dynamo] [_log] [N/A] [985e6ce9] - Found 1 events
+[2026-03-10 16:12:15,000231] [INFO] [api] [_log] [N/A] [985e6ce9] - Request completed: GET /events - Status: 200 - Duration: 0.164s
+NoneType: None
+[2026-03-10 16:12:21,000291] [INFO] [api] [_log] [N/A] [727837f1] - Incoming request: GET /events/gujcet-2026
+NoneType: None
+[2026-03-10 16:12:21,000467] [INFO] [api] [_log] [N/A] [727837f1] - Request completed: GET /events/gujcet-2026 - Status: 200 - Duration: 0.175s
+NoneType: None

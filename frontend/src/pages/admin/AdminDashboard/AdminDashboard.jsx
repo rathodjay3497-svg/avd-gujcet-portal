@@ -1,27 +1,41 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AdminSidebar from '@/components/layout/AdminSidebar/AdminSidebar';
 import Loader from '@/components/ui/Loader/Loader';
-import Carousel from '@/components/ui/Carousel/Carousel';
 import { eventsAPI, adminAPI } from '@/services/api';
 import styles from './AdminDashboard.module.css';
 
+function sortEvents(events) {
+  const now = new Date();
+  const order = (e) => {
+    if (e.status === 'active') return 0;
+    const d = e.start_date ? new Date(e.start_date) : null;
+    if (e.status !== 'closed' && d && d > now) return 1;
+    return 2;
+  };
+  return [...events].sort((a, b) => {
+    const diff = order(a) - order(b);
+    if (diff !== 0) return diff;
+    const da = a.start_date ? new Date(a.start_date) : new Date(0);
+    const db = b.start_date ? new Date(b.start_date) : new Date(0);
+    return da - db;
+  });
+}
+
 export default function AdminDashboard() {
   const [events, setEvents] = useState([]);
-  const [stats, setStats] = useState(null);
+  const [overview, setOverview] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const eventsRes = await eventsAPI.list('');
+        const [eventsRes, overviewRes] = await Promise.all([
+          eventsAPI.list(''),
+          adminAPI.getOverview(),
+        ]);
         setEvents(eventsRes.data);
-
-        // Get stats for the first event if exists
-        if (eventsRes.data.length > 0) {
-          const statsRes = await adminAPI.getStats(eventsRes.data[0].event_id);
-          setStats(statsRes.data);
-        }
+        setOverview(overviewRes.data);
       } catch (err) {
         console.error('Dashboard fetch error:', err);
       } finally {
@@ -31,8 +45,16 @@ export default function AdminDashboard() {
     fetchData();
   }, []);
 
-  const totalRegs = stats?.total_registrations || 0;
-  const byStream = stats?.by_stream || {};
+  const countMap = useMemo(() => {
+    const m = {};
+    (overview?.events_with_counts || []).forEach(({ event_id, registration_count }) => {
+      m[event_id] = registration_count;
+    });
+    return m;
+  }, [overview]);
+
+  const sortedEvents = useMemo(() => sortEvents(events), [events]);
+  const totalRegs = overview?.total_registrations ?? 0;
 
   return (
     <div className={styles.layout}>
@@ -44,15 +66,15 @@ export default function AdminDashboard() {
           <Loader text="Loading dashboard..." />
         ) : (
           <>
-            {/* Image Placeholder Carousel */}
-            <Carousel />
-
             {/* KPI Cards */}
             <div className={styles.kpiGrid}>
               <KpiCard label="Total Registrations" value={totalRegs} color="#2563EB" />
-              <KpiCard label="Science" value={byStream.Science || 0} color="#2563EB" />
-              <KpiCard label="Commerce" value={byStream.Commerce || 0} color="#10B981" />
-              <KpiCard label="Arts" value={byStream.Arts || 0} color="#F59E0B" />
+              <KpiCard label="Total Events" value={events.length} color="#10B981" />
+              <KpiCard
+                label="Active Events"
+                value={events.filter(e => e.status === 'active').length}
+                color="#F59E0B"
+              />
             </div>
 
             {/* Events Table */}
@@ -69,10 +91,11 @@ export default function AdminDashboard() {
                       <th>Date</th>
                       <th>Status</th>
                       <th>Actions</th>
+                      <th className={styles.thRight}>Registrations</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {events.map((event) => (
+                    {sortedEvents.map((event) => (
                       <tr key={event.event_id}>
                         <td><strong>{event.title}</strong></td>
                         <td>{event.start_date?.slice(0, 10)}</td>
@@ -87,10 +110,15 @@ export default function AdminDashboard() {
                             <Link to={`/admin/events/${event.event_id}/edit`}>Edit</Link>
                           </div>
                         </td>
+                        <td className={styles.tdRight}>
+                          <span className={styles.countBadge}>
+                            {countMap[event.event_id] ?? '—'}
+                          </span>
+                        </td>
                       </tr>
                     ))}
-                    {events.length === 0 && (
-                      <tr><td colSpan={4} className={styles.emptyRow}>No events yet</td></tr>
+                    {sortedEvents.length === 0 && (
+                      <tr><td colSpan={5} className={styles.emptyRow}>No events yet</td></tr>
                     )}
                   </tbody>
                 </table>
