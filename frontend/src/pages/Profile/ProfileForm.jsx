@@ -10,7 +10,7 @@ export default function ProfileForm({ onCancel }) {
 
     const [formData, setFormData] = useState({
         name: user?.name || '',
-        email: user?.email || '',
+        phone: user?.phone || '',
         dob: user?.dob || '',
         gender: user?.gender || '',
         guardian_name: user?.guardian_name || '',
@@ -34,10 +34,22 @@ export default function ProfileForm({ onCancel }) {
         onCancel();
     };
 
+    const isComplete = user?.name && user?.phone && user?.stream && user?.address && user?.school_college && user?.dob && user?.gender;
+
     return (
         <form className={styles.formContainer} onSubmit={handleSubmit}>
             <h3 className={styles.title}>Update Profile</h3>
             <div className={styles.grid}>
+                {/* ─── Google Account (read-only) ─── */}
+                <div className={styles.formGroup} style={{ gridColumn: '1 / -1' }}>
+                    <label>Email Address</label>
+                    <div className={styles.readonlyField}>
+                        <span className={styles.readonlyIcon}>✉</span>
+                        <span className={styles.readonlyValue}>{user?.email}</span>
+                        <span className={styles.readonlyBadge}>Google</span>
+                    </div>
+                </div>
+
                 {/* ─── Personal Details ─── */}
                 <div className={styles.formGroup}>
                     <label>Full Name <span className={styles.required}>*</span></label>
@@ -53,15 +65,22 @@ export default function ProfileForm({ onCancel }) {
                 </div>
 
                 <div className={styles.formGroup}>
-                    <label>Email Address</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className={styles.input}
-                        placeholder="john@example.com"
-                    />
+                    <label>Mobile Number <span className={styles.required}>*</span></label>
+                    <div className={styles.phoneRow}>
+                        <span className={styles.prefix}>+91</span>
+                        <input
+                            type="tel"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
+                            required
+                            className={styles.phoneInput}
+                            placeholder="10-digit mobile number"
+                            maxLength={10}
+                            pattern="^\d{10}$"
+                            title="Enter a 10-digit Indian mobile number"
+                        />
+                    </div>
                 </div>
 
                 <div className={styles.formGroup}>
@@ -214,7 +233,7 @@ export default function ProfileForm({ onCancel }) {
             </div>
 
             <div className={styles.actions}>
-                {user?.name && user?.stream && user?.address && user?.school_college && user?.dob && user?.gender && onCancel && (
+                {isComplete && onCancel && (
                     <Button type="button" variant="secondary" onClick={onCancel} disabled={updateMutation.isPending}>
                         Cancel
                     </Button>

@@ -1,16 +1,15 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from typing import Optional, Dict, Any
 
 
 class RegistrationCreate(BaseModel):
-    phone: str = Field(..., pattern=r"^\d{10}$")
     form_data: Dict[str, Any]
 
 
 class RegistrationResponse(BaseModel):
     registration_id: str
     event_id: str
-    phone: str
+    email: str
     form_data: Dict[str, Any]
     status: str = "confirmed"
     registered_at: str

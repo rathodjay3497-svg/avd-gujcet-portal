@@ -31,6 +31,9 @@ class Settings(BaseSettings):
     ADMIN_USERNAME: str = "admin"
     ADMIN_PASSWORD_HASH: str = ""
 
+    # Google OAuth
+    GOOGLE_CLIENT_ID: str = ""
+
     # Frontend
     FRONTEND_URL: str = "http://localhost:5173"
     FRONTEND_CUSTOM_URL: str = ""

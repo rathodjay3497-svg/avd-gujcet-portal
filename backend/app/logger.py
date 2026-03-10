@@ -52,9 +52,15 @@ class StandardizedFormatter(logging.Formatter):
     def __init__(self):
         super().__init__(
             fmt="[%(asctime)s] [%(levelname)s] [%(service)s] [%(funcName)s] [%(user_id)s] [%(request_id)s] - %(message)s",
-            datefmt="%Y-%m-%d %H:%M:%S,%f"
+            datefmt="%Y-%m-%d %H:%M:%S"
         )
-    
+
+    def formatTime(self, record, datefmt=None):
+        # Use datetime so %f (microseconds) works; logging uses time.strftime which doesn't support %f
+        ct = datetime.fromtimestamp(record.created)
+        fmt = datefmt or "%Y-%m-%d %H:%M:%S"
+        return f"{ct.strftime(fmt)},{record.msecs:06.0f}"
+
     def format(self, record):
         # Set default values for extra fields if not present
         if not hasattr(record, 'service'):
@@ -80,7 +86,7 @@ class ServiceLogger:
         self.logger = logger
     
     def _log(self, level: str, message: str, user_id: Optional[str] = None, 
-             request_id: Optional[str] = None, extra: Optional[dict] = None):
+             request_id: Optional[str] = None, exc_info: bool = False, extra: Optional[dict] = None):
         """Internal method to log with extra context."""
         extra_data = {
             'service': self.service_name,
@@ -91,7 +97,7 @@ class ServiceLogger:
             extra_data.update(extra)
         
         log_func = getattr(self.logger, level.lower())
-        log_func(message, extra=extra_data)
+        log_func(message, extra=extra_data, exc_info=exc_info)
     
     def debug(self, message: str, user_id: Optional[str] = None,
               request_id: Optional[str] = None, **kwargs):
@@ -111,15 +117,12 @@ class ServiceLogger:
     def error(self, message: str, user_id: Optional[str] = None,
               request_id: Optional[str] = None, exc_info: bool = False, **kwargs):
         """Log error message."""
-        extra_data = kwargs
-        extra_data['exc_info'] = exc_info
-        self._log('ERROR', message, user_id, request_id, extra_data)
-        if exc_info:
-            self.logger.exception(message, extra={
-                'service': self.service_name,
-                'user_id': user_id or 'N/A',
-                'request_id': request_id or 'N/A'
-            })
+        # Pull 'extra' out of kwargs if it exists
+        extra = kwargs.pop('extra', {})
+        # Add any remaining kwargs to extra
+        extra.update(kwargs)
+        
+        self._log('ERROR', message, user_id, request_id, exc_info=exc_info, extra=extra)
     
     def critical(self, message: str, user_id: Optional[str] = None,
                  request_id: Optional[str] = None, **kwargs):

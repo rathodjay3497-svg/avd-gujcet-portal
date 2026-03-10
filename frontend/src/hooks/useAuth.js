@@ -1,11 +1,20 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authAPI, usersAPI } from '@/services/api';
+import { authAPI } from '@/services/api';
 import useAuthStore from '@/store/authStore';
 import toast from 'react-hot-toast';
 
 function isProfileComplete(user) {
-  return !!(user?.name && user?.dob && user?.gender && user?.stream && user?.medium && user?.address && user?.school_college);
+  return !!(
+    user?.name &&
+    user?.phone &&
+    user?.dob &&
+    user?.gender &&
+    user?.stream &&
+    user?.medium &&
+    user?.address &&
+    user?.school_college
+  );
 }
 
 export function useAuth() {
@@ -13,44 +22,27 @@ export function useAuth() {
   const navigate = useNavigate();
   const { setAuth, logout: storeLogout } = useAuthStore();
 
-  const sendOTP = async (phone) => {
+  const googleLogin = async (credential, redirectTo) => {
     setLoading(true);
     try {
-      await authAPI.sendOTP(phone);
-      toast.success('OTP sent to your phone!');
-      return true;
-    } catch (err) {
-      toast.error(err.response?.data?.detail || err.message || 'Failed to send OTP');
-      return false;
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const verifyOTP = async (phone, otp, redirectTo) => {
-    setLoading(true);
-    try {
-      const { data: authData } = await authAPI.verifyOTP(phone, otp);
+      const { data: authData } = await authAPI.googleLogin(credential);
       const token = authData.access_token;
-      const user = authData.user || { phone };
+      const user = authData.user || {};
 
-      // Set auth state
       setAuth(token, user, false);
-
       toast.success('Login successful!');
 
-      // Navigate based on context
       if (redirectTo) {
         navigate(redirectTo);
-      } else if (isProfileComplete(user)) {
-        navigate('/');
+      } else if (authData.is_new_user || !isProfileComplete(user)) {
+        navigate('/profile', { state: { message: 'Please complete your profile to register for events.' } });
       } else {
-        navigate('/profile', { state: { message: 'Please complete your profile.' } });
+        navigate('/');
       }
 
       return true;
     } catch (err) {
-      toast.error(err.response?.data?.detail || err.message || 'Invalid OTP');
+      toast.error(err.response?.data?.detail || err.message || 'Google login failed');
       return false;
     } finally {
       setLoading(false);
@@ -79,5 +71,5 @@ export function useAuth() {
     navigate('/');
   };
 
-  return { sendOTP, verifyOTP, adminLogin, logout, loading };
+  return { googleLogin, adminLogin, logout, loading };
 }

@@ -15,6 +15,23 @@ settings = get_settings()
 router = APIRouter()
 
 
+def _flatten_reg(r: dict) -> dict:
+    """Flatten a registration item for API responses — pulls common fields out of form_data."""
+    fd = r.get("form_data", {})
+    return {
+        "registration_id": r.get("registration_id", ""),
+        "email": r.get("email", ""),
+        "phone": r.get("phone") or fd.get("phone", ""),
+        "name": fd.get("name", ""),
+        "stream": fd.get("stream", ""),
+        "school_college": fd.get("school_college") or fd.get("school", ""),
+        "district": fd.get("district", ""),
+        "form_data": fd,
+        "status": r.get("status", "confirmed"),
+        "registered_at": r.get("registered_at", ""),
+    }
+
+
 @router.get("/registrations/{event_id}", summary="Get all registrations for an event")
 def get_registrations(event_id: str, _admin=Depends(require_admin)):
     event = dynamo.get_event(event_id)
@@ -26,16 +43,7 @@ def get_registrations(event_id: str, _admin=Depends(require_admin)):
         "event_id": event_id,
         "event_title": event.get("title", ""),
         "total": len(regs),
-        "registrations": [
-            {
-                "registration_id": r.get("registration_id", ""),
-                "phone": r.get("phone", ""),
-                "form_data": r.get("form_data", {}),
-                "status": r.get("status", "confirmed"),
-                "registered_at": r.get("registered_at", ""),
-            }
-            for r in regs
-        ],
+        "registrations": [_flatten_reg(r) for r in regs],
     }
 
 
@@ -47,34 +55,41 @@ def export_registrations(event_id: str, _admin=Depends(require_admin)):
 
     regs = dynamo.get_event_registrations(event_id)
 
-    # Build CSV
     output = io.StringIO()
     writer = csv.writer(output)
 
-    # Collect all form_data keys for headers
-    all_keys = set()
-    for r in regs:
-        all_keys.update(r.get("form_data", {}).keys())
-    all_keys = sorted(all_keys)
+    # Fixed core columns + dynamic form_data extras
+    core_keys = ["name", "email", "phone", "stream", "school_college", "district"]
+    extra_keys = sorted(
+        {k for r in regs for k in r.get("form_data", {}).keys() if k not in core_keys}
+    )
 
-    headers = ["Registration ID", "Phone", "Status", "Registered At"] + all_keys
+    headers = ["Registration ID", "Name", "Email", "Phone", "Stream", "School/College",
+               "District", "Status", "Registered At"] + extra_keys
     writer.writerow(headers)
 
     for r in regs:
-        form_data = r.get("form_data", {})
+        flat = _flatten_reg(r)
+        fd = flat["form_data"]
         row = [
-            r.get("registration_id", ""),
-            r.get("phone", ""),
-            r.get("status", ""),
-            r.get("registered_at", ""),
-        ] + [form_data.get(k, "") for k in all_keys]
+            flat["registration_id"],
+            flat["name"],
+            flat["email"],
+            flat["phone"],
+            flat["stream"],
+            flat["school_college"],
+            flat["district"],
+            flat["status"],
+            flat["registered_at"],
+        ] + [fd.get(k, "") for k in extra_keys]
         writer.writerow(row)
 
     output.seek(0)
+    filename = f"{event.get('title', event_id)}-registrations.csv".replace(" ", "_")
     return StreamingResponse(
         iter([output.getvalue()]),
         media_type="text/csv",
-        headers={"Content-Disposition": f"attachment; filename={event_id}-registrations.csv"},
+        headers={"Content-Disposition": f"attachment; filename={filename}"},
     )
 
 
@@ -86,13 +101,12 @@ def get_stats(event_id: str, _admin=Depends(require_admin)):
 
     regs = dynamo.get_event_registrations(event_id)
 
-    # Stream breakdown
     stream_counts = {}
     district_counts = {}
     for r in regs:
-        form_data = r.get("form_data", {})
-        stream = form_data.get("stream", "Unknown")
-        district = form_data.get("district", "Unknown")
+        fd = r.get("form_data", {})
+        stream = fd.get("stream", "Unknown")
+        district = fd.get("district", "Unknown")
         stream_counts[stream] = stream_counts.get(stream, 0) + 1
         district_counts[district] = district_counts.get(district, 0) + 1
 
@@ -115,18 +129,18 @@ def send_notifications(event_id: str, body: BulkNotifyRequest, _admin=Depends(re
 
     regs = dynamo.get_event_registrations(event_id)
 
-    # Apply filters
     if body.filter_stream:
         regs = [r for r in regs if r.get("form_data", {}).get("stream") == body.filter_stream]
     if body.filter_district:
         regs = [r for r in regs if r.get("form_data", {}).get("district") == body.filter_district]
 
-    phones = [r["phone"] for r in regs if r.get("phone")]
-    recipients = [
-        {"email": r.get("form_data", {}).get("email")}
+    # Phone is stored at top-level (post-migration) with fallback to form_data
+    phones = [
+        r.get("phone") or r.get("form_data", {}).get("phone", "")
         for r in regs
-        if r.get("form_data", {}).get("email")
+        if r.get("phone") or r.get("form_data", {}).get("phone")
     ]
+    emails = [r["email"] for r in regs if r.get("email")]
 
     sent_sms = 0
     sent_email = 0
@@ -136,8 +150,9 @@ def send_notifications(event_id: str, body: BulkNotifyRequest, _admin=Depends(re
         sent_sms = len(phones)
 
     if body.channel in ("email", "both"):
-        send_bulk_email(recipients, f"Notification - {event.get('title', '')}", body.message)
-        sent_email = len(recipients)
+        recipients = [{"email": e} for e in emails]
+        send_bulk_email(recipients, f"Notification – {event.get('title', '')}", body.message)
+        sent_email = len(emails)
 
     return {
         "message": "Notifications sent",
@@ -148,7 +163,6 @@ def send_notifications(event_id: str, body: BulkNotifyRequest, _admin=Depends(re
 
 @router.get("/users", summary="List all users")
 def list_users(_admin=Depends(require_admin)):
-    # Use GSI2 to query all users
     table = dynamo._get_table()
     resp = table.query(
         IndexName="GSI2",
@@ -162,8 +176,8 @@ def list_users(_admin=Depends(require_admin)):
             {
                 "user_id": u.get("user_id", ""),
                 "name": u.get("name", ""),
-                "phone": u.get("phone", ""),
                 "email": u.get("email", ""),
+                "phone": u.get("phone", ""),
                 "stream": u.get("stream", ""),
                 "district": u.get("district", ""),
                 "created_at": u.get("created_at", ""),

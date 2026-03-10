@@ -22,8 +22,7 @@ api.interceptors.response.use(
 
 // ─── Auth ────────────────────────────────────────────────────
 export const authAPI = {
-  sendOTP: (phone) => api.post('/auth/otp/send', { phone }),
-  verifyOTP: (phone, otp) => api.post('/auth/otp/verify', { phone, otp }),
+  googleLogin: (idToken) => api.post('/auth/google', { id_token: idToken }),
   adminLogin: (username, password) => api.post('/auth/admin/login', { username, password }),
   checkAuth: () => api.get('/auth/me'),
   logout: () => api.post('/auth/logout'),
@@ -41,8 +40,8 @@ export const eventsAPI = {
 
 // ─── Registrations ───────────────────────────────────────────
 export const registrationsAPI = {
-  register: (eventId, phone, formData) =>
-    api.post(`/registrations/${eventId}`, { phone, form_data: formData }),
+  register: (eventId, formData) =>
+    api.post(`/registrations/${eventId}`, { form_data: formData }),
   clickRegister: (eventId) => api.post(`/registrations/${eventId}/click`),
   myRegistrations: () => api.get('/registrations/me'),
   check: (eventId) => api.get(`/registrations/${eventId}/check`),

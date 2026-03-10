@@ -1,56 +1,26 @@
-import { useState } from 'react';
-import { useLocation, Navigate } from 'react-router-dom';
+import { useLocation, Navigate, Link } from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
 import { useAuth } from '@/hooks/useAuth';
 import useAuthStore from '@/store/authStore';
-import OtpInput from '@/components/forms/OtpInput/OtpInput';
-import Button from '@/components/ui/Button/Button';
 import styles from './Login.module.css';
 
 export default function Login() {
-  const [phone, setPhone] = useState('');
-  const [otpSent, setOtpSent] = useState(false);
-  const [countdown, setCountdown] = useState(0);
-  const { sendOTP, verifyOTP, loading } = useAuth();
+  const { googleLogin, loading } = useAuth();
   const { isAuthenticated } = useAuthStore();
   const location = useLocation();
 
-  // If user was redirected here from a protected route, pass that path through
   const redirectTo = location.state?.from || undefined;
 
-  // If already logged in, redirect away from login page
   if (isAuthenticated) {
     return <Navigate to={redirectTo || '/'} replace />;
   }
 
-  const handleSendOTP = async (e) => {
-    e.preventDefault();
-    const success = await sendOTP(phone);
-    if (success) {
-      setOtpSent(true);
-      startCountdown();
-    }
+  const handleGoogleSuccess = async (credentialResponse) => {
+    await googleLogin(credentialResponse.credential, redirectTo);
   };
 
-  const handleVerifyOTP = async (otp) => {
-    await verifyOTP(phone, otp, redirectTo);
-  };
-
-  const handleResend = async () => {
-    const success = await sendOTP(phone);
-    if (success) startCountdown();
-  };
-
-  const startCountdown = () => {
-    setCountdown(30);
-    const timer = setInterval(() => {
-      setCountdown((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+  const handleGoogleError = () => {
+    // GoogleLogin component shows its own error UI; nothing extra needed here
   };
 
   return (
@@ -61,46 +31,41 @@ export default function Login() {
         </div>
 
         <h2 className={styles.title}>Student Login</h2>
-        <p className={styles.subtitle}>Enter your phone number to receive a verification code</p>
+        <p className={styles.subtitle}>
+          Sign in with your Google account to register for counseling events
+        </p>
 
-        {!otpSent ? (
-          <form onSubmit={handleSendOTP}>
-            <label className={styles.label}>Phone Number</label>
-            <div className={styles.phoneRow}>
-              <span className={styles.prefix}>+91</span>
-              <input
-                type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                placeholder="Enter 10-digit number"
-                className={styles.phoneInput}
-                maxLength={10}
-              />
-            </div>
-            <Button type="submit" fullWidth loading={loading} disabled={phone.length !== 10} size="lg">
-              Send OTP
-            </Button>
-          </form>
-        ) : (
-          <div className={styles.otpSection}>
-            <p className={styles.otpHint}>
-              Enter the 6-digit code sent to <strong>+91 {phone}</strong>
-            </p>
-            <OtpInput onComplete={handleVerifyOTP} />
-            <div className={styles.resend}>
-              {countdown > 0 ? (
-                <span>Resend OTP in {countdown}s</span>
-              ) : (
-                <button onClick={handleResend} className={styles.resendBtn}>
-                  Resend OTP
-                </button>
-              )}
-            </div>
-            <button onClick={() => setOtpSent(false)} className={styles.changePhone}>
-              Change phone number
-            </button>
-          </div>
-        )}
+        <div className={styles.googleWrapper}>
+          {loading ? (
+            <div className={styles.loadingText}>Signing in…</div>
+          ) : (
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={handleGoogleError}
+              useOneTap
+              theme="outline"
+              size="large"
+              text="continue_with"
+              shape="rectangular"
+              width="340"
+            />
+          )}
+        </div>
+
+        <div className={styles.divider}>
+          <span>or</span>
+        </div>
+
+        <div className={styles.adminLink}>
+          <Link to="/admin/login" className={styles.adminLinkText}>
+            Admin login
+          </Link>
+        </div>
+
+        <p className={styles.disclaimer}>
+          Your Google account email will be used as your login identifier.
+          You can add your mobile number in your profile after signing in.
+        </p>
       </div>
     </div>
   );

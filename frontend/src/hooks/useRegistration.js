@@ -1,13 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { registrationsAPI, usersAPI } from '@/services/api';
+import { registrationsAPI, adminAPI, usersAPI } from '@/services/api';
 import useAuthStore from '@/store/authStore';
 import toast from 'react-hot-toast';
 
 export function useRegister() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({ eventId, phone, formData }) => {
-      const { data } = await registrationsAPI.register(eventId, phone, formData);
+    mutationFn: async ({ eventId, formData }) => {
+      const { data } = await registrationsAPI.register(eventId, formData);
       return data;
     },
     onSuccess: () => {
@@ -94,7 +94,6 @@ export function useUpdateProfile() {
     onError: (err) => {
       const detail = err.response?.data?.detail;
       if (Array.isArray(detail)) {
-        // Pydantic validation errors: [{loc: ["body","field"], msg: "..."}]
         const messages = detail.map(e => {
           const field = e.loc?.[e.loc.length - 1] || 'field';
           return `${field}: ${e.msg}`;
@@ -106,5 +105,20 @@ export function useUpdateProfile() {
         toast.error('Failed to update profile. Please check your details and try again.');
       }
     },
+  });
+}
+
+// ─── Admin hooks ─────────────────────────────────────────────────
+
+export function useAdminRegistrations(eventId) {
+  return useQuery({
+    queryKey: ['admin-registrations', eventId],
+    queryFn: async () => {
+      const { data } = await adminAPI.getRegistrations(eventId);
+      return data;
+    },
+    enabled: !!eventId,
+    refetchInterval: 30_000,   // auto-poll every 30 seconds
+    staleTime: 25_000,
   });
 }

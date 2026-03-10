@@ -26,3 +26,15 @@ export function useEvent(eventId) {
     enabled: !!eventId,
   });
 }
+
+// All events for admin (no status filter, no sorting)
+export function useAdminEvents() {
+  return useQuery({
+    queryKey: ['admin-events'],
+    queryFn: async () => {
+      const res = await eventsAPI.list('');
+      return res.data || [];
+    },
+    staleTime: 60_000,
+  });
+}

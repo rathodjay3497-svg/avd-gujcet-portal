@@ -1,106 +1,246 @@
-import { useEffect, useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import * as XLSX from 'xlsx';
 import AdminSidebar from '@/components/layout/AdminSidebar/AdminSidebar';
 import Loader from '@/components/ui/Loader/Loader';
 import Button from '@/components/ui/Button/Button';
-import { adminAPI } from '@/services/api';
+import { useAdminRegistrations } from '@/hooks/useRegistration';
 import { formatDateTime } from '@/utils/formatters';
 import toast from 'react-hot-toast';
 import styles from './Registrations.module.css';
 
+const PAGE_SIZE = 10;
+
 export default function Registrations() {
   const { id: eventId } = useParams();
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const [elapsed, setElapsed] = useState(0);
 
+  const { data, isLoading, isFetching, dataUpdatedAt } = useAdminRegistrations(eventId);
+
+  // Tick "updated X seconds ago" counter, reset on every successful fetch
   useEffect(() => {
-    adminAPI.getRegistrations(eventId)
-      .then(({ data }) => setData(data))
-      .catch(() => toast.error('Failed to load registrations'))
-      .finally(() => setLoading(false));
-  }, [eventId]);
+    setElapsed(0);
+    const interval = setInterval(() => setElapsed(s => s + 1), 1000);
+    return () => clearInterval(interval);
+  }, [dataUpdatedAt]);
 
-  const handleExport = async () => {
-    try {
-      const response = await adminAPI.exportCSV(eventId);
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `${eventId}-registrations.csv`;
-      link.click();
-      window.URL.revokeObjectURL(url);
-      toast.success('CSV downloaded');
-    } catch {
-      toast.error('Export failed');
-    }
+  // Reset to page 1 whenever search changes
+  useEffect(() => { setPage(1); }, [search]);
+
+  const allRegs = data?.registrations ?? [];
+
+  const filtered = useMemo(() => {
+    if (!search.trim()) return allRegs;
+    const s = search.toLowerCase();
+    return allRegs.filter(r =>
+      r.registration_id?.toLowerCase().includes(s) ||
+      r.name?.toLowerCase().includes(s) ||
+      r.email?.toLowerCase().includes(s) ||
+      r.phone?.includes(s) ||
+      r.stream?.toLowerCase().includes(s) ||
+      r.school_college?.toLowerCase().includes(s) ||
+      r.district?.toLowerCase().includes(s)
+    );
+  }, [allRegs, search]);
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
+  const handleExportExcel = () => {
+    if (!filtered.length) return toast.error('No data to export');
+
+    const rows = filtered.map(r => ({
+      'Registration ID': r.registration_id,
+      'Name': r.name || '—',
+      'Email': r.email || '—',
+      'Phone': r.phone || '—',
+      'Stream': r.stream || '—',
+      'School / College': r.school_college || '—',
+      'District': r.district || '—',
+      'Status': r.status,
+      'Registered At': formatDateTime(r.registered_at),
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(rows);
+
+    // Auto-fit column widths
+    const colWidths = Object.keys(rows[0]).map(key => ({
+      wch: Math.max(key.length, ...rows.map(r => String(r[key] ?? '').length)) + 2,
+    }));
+    ws['!cols'] = colWidths;
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Registrations');
+
+    const filename = `${data?.event_title || eventId}-registrations.xlsx`.replace(/\s+/g, '_');
+    XLSX.writeFile(wb, filename);
+    toast.success('Excel file downloaded');
   };
 
-  const filteredRegs = data?.registrations?.filter((r) => {
-    if (!search) return true;
-    const s = search.toLowerCase();
-    return (
-      r.registration_id?.toLowerCase().includes(s) ||
-      r.phone?.includes(s) ||
-      JSON.stringify(r.form_data).toLowerCase().includes(s)
-    );
-  }) || [];
+  const goToPage = (p) => setPage(Math.max(1, Math.min(totalPages, p)));
+
+  // Build page number list with ellipsis
+  const pageNumbers = useMemo(() => {
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      if (i === 1 || i === totalPages || Math.abs(i - page) <= 1) {
+        pages.push(i);
+      } else if (pages[pages.length - 1] !== '…') {
+        pages.push('…');
+      }
+    }
+    return pages;
+  }, [page, totalPages]);
 
   return (
     <div className={styles.layout}>
       <AdminSidebar />
       <div className={styles.main}>
+
+        {/* ─── Header ─── */}
         <div className={styles.header}>
           <div>
-            <h1>Registrations</h1>
-            <p className={styles.subtitle}>{data?.event_title} &bull; {data?.total || 0} total</p>
+            <h1 className={styles.pageTitle}>{data?.event_title || 'Registrations'}</h1>
+            <p className={styles.subtitle}>
+              {data?.total ?? 0} total
+              {filtered.length !== allRegs.length && ` · ${filtered.length} matching`}
+            </p>
           </div>
-          <Button onClick={handleExport} variant="secondary">Export CSV</Button>
+
+          <div className={styles.headerActions}>
+            <div className={`${styles.liveChip} ${isFetching ? styles.fetching : ''}`}>
+              <span className={styles.dot} />
+              {isFetching ? 'Refreshing…' : `Updated ${elapsed}s ago`}
+            </div>
+            <Button
+              onClick={handleExportExcel}
+              variant="secondary"
+              disabled={!filtered.length}
+            >
+              ↓ Export Excel
+            </Button>
+          </div>
         </div>
 
-        {loading ? (
-          <Loader />
+        {isLoading ? (
+          <Loader text="Loading registrations…" />
         ) : (
           <div className={styles.tableCard}>
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by name, phone, or registration ID..."
-              className={styles.searchInput}
-            />
 
+            {/* ─── Toolbar ─── */}
+            <div className={styles.toolbar}>
+              <div className={styles.searchWrapper}>
+                <span className={styles.searchIcon}>⌕</span>
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search by name, email, phone, stream, school…"
+                  className={styles.searchInput}
+                />
+                {search && (
+                  <button className={styles.clearBtn} onClick={() => setSearch('')}>✕</button>
+                )}
+              </div>
+              <span className={styles.resultCount}>
+                {filtered.length} result{filtered.length !== 1 ? 's' : ''}
+              </span>
+            </div>
+
+            {/* ─── Table ─── */}
             <div className={styles.tableWrapper}>
               <table className={styles.table}>
                 <thead>
                   <tr>
+                    <th className={styles.thNum}>#</th>
                     <th>Reg ID</th>
                     <th>Name</th>
+                    <th>Email</th>
                     <th>Phone</th>
                     <th>Stream</th>
+                    <th>School / College</th>
                     <th>Status</th>
                     <th>Registered At</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredRegs.map((r) => (
+                  {paginated.map((r, idx) => (
                     <tr key={r.registration_id}>
-                      <td><code>{r.registration_id}</code></td>
-                      <td>{r.form_data?.name || '—'}</td>
-                      <td>{r.phone}</td>
-                      <td>{r.form_data?.stream || '—'}</td>
-                      <td>
-                        <span className={`${styles.badge} ${styles[r.status]}`}>{r.status}</span>
+                      <td className={styles.tdNum}>
+                        {(page - 1) * PAGE_SIZE + idx + 1}
                       </td>
-                      <td>{formatDateTime(r.registered_at)}</td>
+                      <td><code>{r.registration_id}</code></td>
+                      <td>{r.name || '—'}</td>
+                      <td className={styles.emailCell} title={r.email}>{r.email || '—'}</td>
+                      <td>{r.phone || '—'}</td>
+                      <td>{r.stream || '—'}</td>
+                      <td className={styles.schoolCell} title={r.school_college}>
+                        {r.school_college || '—'}
+                      </td>
+                      <td>
+                        <span className={`${styles.badge} ${styles[r.status]}`}>
+                          {r.status}
+                        </span>
+                      </td>
+                      <td className={styles.dateCell}>{formatDateTime(r.registered_at)}</td>
                     </tr>
                   ))}
-                  {filteredRegs.length === 0 && (
-                    <tr><td colSpan={6} className={styles.emptyRow}>No registrations found</td></tr>
+                  {paginated.length === 0 && (
+                    <tr>
+                      <td colSpan={9} className={styles.emptyRow}>
+                        {search
+                          ? `No registrations match "${search}".`
+                          : 'No registrations yet.'}
+                      </td>
+                    </tr>
                   )}
                 </tbody>
               </table>
             </div>
+
+            {/* ─── Pagination ─── */}
+            {totalPages > 1 && (
+              <div className={styles.pagination}>
+                <button
+                  className={styles.pageBtn}
+                  onClick={() => goToPage(page - 1)}
+                  disabled={page === 1}
+                >
+                  ← Prev
+                </button>
+
+                <div className={styles.pageNumbers}>
+                  {pageNumbers.map((p, i) =>
+                    p === '…' ? (
+                      <span key={`e${i}`} className={styles.ellipsis}>…</span>
+                    ) : (
+                      <button
+                        key={p}
+                        className={`${styles.pageBtn} ${p === page ? styles.activePage : ''}`}
+                        onClick={() => goToPage(p)}
+                      >
+                        {p}
+                      </button>
+                    )
+                  )}
+                </div>
+
+                <button
+                  className={styles.pageBtn}
+                  onClick={() => goToPage(page + 1)}
+                  disabled={page === totalPages}
+                >
+                  Next →
+                </button>
+
+                <span className={styles.pageInfo}>
+                  Page {page} of {totalPages} · showing {paginated.length} of {filtered.length}
+                </span>
+              </div>
+            )}
+
           </div>
         )}
       </div>

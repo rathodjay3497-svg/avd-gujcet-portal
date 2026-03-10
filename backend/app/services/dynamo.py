@@ -46,108 +46,43 @@ def _deserialize(obj: Any) -> Any:
 
 # ─── User Operations ────────────────────────────────────────────
 
-def get_user(phone: str) -> Optional[Dict]:
+def get_user(email: str) -> Optional[Dict]:
     request_id = get_request_id()
-    dynamo_logger.debug(f"Getting user: {phone}", request_id=request_id)
+    dynamo_logger.debug(f"Getting user: {email}", request_id=request_id)
     try:
         table = _get_table()
-        resp = table.get_item(Key={"PK": f"USER#{phone}", "SK": "PROFILE"})
+        resp = table.get_item(Key={"PK": f"USER#{email}", "SK": "PROFILE"})
         item = resp.get("Item")
         result = _deserialize(item) if item else None
         if result:
-            dynamo_logger.info(f"User found: {phone}", request_id=request_id)
+            dynamo_logger.info(f"User found: {email}", request_id=request_id)
         else:
-            dynamo_logger.debug(f"User not found: {phone}", request_id=request_id)
+            dynamo_logger.debug(f"User not found: {email}", request_id=request_id)
         return result
     except Exception as e:
-        dynamo_logger.error(f"Error getting user {phone}: {str(e)}", request_id=request_id, exc_info=True)
+        dynamo_logger.error(f"Error getting user {email}: {str(e)}", request_id=request_id, exc_info=True)
         raise
 
 
-def upsert_user(phone: str, data: Dict) -> Dict:
+def upsert_user(email: str, data: Dict) -> Dict:
     request_id = get_request_id()
-    dynamo_logger.info(f"Upserting user: {phone}", request_id=request_id)
+    dynamo_logger.info(f"Upserting user: {email}", request_id=request_id)
     try:
         table = _get_table()
         now = datetime.now(timezone.utc).isoformat()
         item = {
-            "PK": f"USER#{phone}",
+            "PK": f"USER#{email}",
             "SK": "PROFILE",
             "entity_type": "USER",
-            "phone": phone,
+            "email": email,
             "created_at": now,
             **_serialize(data),
         }
         table.put_item(Item=item)
-        dynamo_logger.info(f"User upserted successfully: {phone}", request_id=request_id)
+        dynamo_logger.info(f"User upserted successfully: {email}", request_id=request_id)
         return _deserialize(item)
     except Exception as e:
-        dynamo_logger.error(f"Error upserting user {phone}: {str(e)}", request_id=request_id, exc_info=True)
-        raise
-
-
-# ─── OTP Operations ─────────────────────────────────────────────
-
-def save_otp(phone: str, otp_hash: str, expires_at: int):
-    request_id = get_request_id()
-    dynamo_logger.debug(f"Saving OTP for phone: {phone}", request_id=request_id)
-    try:
-        table = _get_table()
-        table.put_item(Item={
-            "PK": f"OTP#{phone}",
-            "SK": "OTP",
-            "otp_hash": otp_hash,
-            "expires_at": expires_at,
-            "attempts": 0,
-        })
-        dynamo_logger.info(f"OTP saved successfully for phone: {phone}", request_id=request_id)
-    except Exception as e:
-        dynamo_logger.error(f"Error saving OTP for phone {phone}: {str(e)}", request_id=request_id, exc_info=True)
-        raise
-
-
-def get_otp(phone: str) -> Optional[Dict]:
-    request_id = get_request_id()
-    dynamo_logger.debug(f"Getting OTP for phone: {phone}", request_id=request_id)
-    try:
-        table = _get_table()
-        resp = table.get_item(Key={"PK": f"OTP#{phone}", "SK": "OTP"})
-        item = resp.get("Item")
-        result = _deserialize(item) if item else None
-        if result:
-            dynamo_logger.debug(f"OTP found for phone: {phone}", request_id=request_id)
-        else:
-            dynamo_logger.debug(f"No OTP found for phone: {phone}", request_id=request_id)
-        return result
-    except Exception as e:
-        dynamo_logger.error(f"Error getting OTP for phone {phone}: {str(e)}", request_id=request_id, exc_info=True)
-        raise
-
-
-def increment_otp_attempts(phone: str):
-    request_id = get_request_id()
-    dynamo_logger.debug(f"Incrementing OTP attempts for phone: {phone}", request_id=request_id)
-    try:
-        table = _get_table()
-        table.update_item(
-            Key={"PK": f"OTP#{phone}", "SK": "OTP"},
-            UpdateExpression="ADD attempts :inc",
-            ExpressionAttributeValues={":inc": 1},
-        )
-    except Exception as e:
-        dynamo_logger.error(f"Error incrementing OTP attempts for phone {phone}: {str(e)}", request_id=request_id, exc_info=True)
-        raise
-
-
-def delete_otp(phone: str):
-    request_id = get_request_id()
-    dynamo_logger.debug(f"Deleting OTP for phone: {phone}", request_id=request_id)
-    try:
-        table = _get_table()
-        table.delete_item(Key={"PK": f"OTP#{phone}", "SK": "OTP"})
-        dynamo_logger.info(f"OTP deleted for phone: {phone}", request_id=request_id)
-    except Exception as e:
-        dynamo_logger.error(f"Error deleting OTP for phone {phone}: {str(e)}", request_id=request_id, exc_info=True)
+        dynamo_logger.error(f"Error upserting user {email}: {str(e)}", request_id=request_id, exc_info=True)
         raise
 
 
@@ -271,66 +206,66 @@ def increment_seat(event_id: str) -> int:
 
 # ─── Registration Operations ────────────────────────────────────
 
-def create_registration(event_id: str, phone: str, data: Dict) -> Dict:
+def create_registration(event_id: str, email: str, data: Dict) -> Dict:
     request_id = get_request_id()
-    dynamo_logger.info(f"Creating registration for event: {event_id}, phone: {phone}", request_id=request_id)
+    dynamo_logger.info(f"Creating registration for event: {event_id}, email: {email}", request_id=request_id)
     try:
         table = _get_table()
         now = datetime.now(timezone.utc).isoformat()
         item = {
             "PK": f"EVENT#{event_id}",
-            "SK": f"REG#{phone}",
+            "SK": f"REG#{email}",
             "entity_type": "REGISTRATION",
             "event_id": event_id,
-            "phone": phone,
+            "email": email,
             "registered_at": now,
             "status": "confirmed",
             # GSI1: query registrations by user
-            "GSI1PK": f"USER#{phone}",
+            "GSI1PK": f"USER#{email}",
             "GSI1SK": f"REG#{event_id}",
             **_serialize(data),
         }
         table.put_item(Item=item)
-        dynamo_logger.info(f"Registration created successfully for event: {event_id}, phone: {phone}", request_id=request_id)
+        dynamo_logger.info(f"Registration created successfully for event: {event_id}, email: {email}", request_id=request_id)
         return _deserialize(item)
     except Exception as e:
-        dynamo_logger.error(f"Error creating registration for event {event_id}, phone {phone}: {str(e)}", request_id=request_id, exc_info=True)
+        dynamo_logger.error(f"Error creating registration for event {event_id}, email {email}: {str(e)}", request_id=request_id, exc_info=True)
         raise
 
 
-def get_registration(event_id: str, phone: str) -> Optional[Dict]:
+def get_registration(event_id: str, email: str) -> Optional[Dict]:
     request_id = get_request_id()
-    dynamo_logger.debug(f"Getting registration for event: {event_id}, phone: {phone}", request_id=request_id)
+    dynamo_logger.debug(f"Getting registration for event: {event_id}, email: {email}", request_id=request_id)
     try:
         table = _get_table()
-        resp = table.get_item(Key={"PK": f"EVENT#{event_id}", "SK": f"REG#{phone}"})
+        resp = table.get_item(Key={"PK": f"EVENT#{event_id}", "SK": f"REG#{email}"})
         item = resp.get("Item")
         result = _deserialize(item) if item else None
         if result:
-            dynamo_logger.debug(f"Registration found for event: {event_id}, phone: {phone}", request_id=request_id)
+            dynamo_logger.debug(f"Registration found for event: {event_id}, email: {email}", request_id=request_id)
         else:
-            dynamo_logger.debug(f"No registration found for event: {event_id}, phone: {phone}", request_id=request_id)
+            dynamo_logger.debug(f"No registration found for event: {event_id}, email: {email}", request_id=request_id)
         return result
     except Exception as e:
-        dynamo_logger.error(f"Error getting registration for event {event_id}, phone {phone}: {str(e)}", request_id=request_id, exc_info=True)
+        dynamo_logger.error(f"Error getting registration for event {event_id}, email {email}: {str(e)}", request_id=request_id, exc_info=True)
         raise
 
 
-def get_user_registrations(phone: str) -> List[Dict]:
+def get_user_registrations(email: str) -> List[Dict]:
     request_id = get_request_id()
-    dynamo_logger.debug(f"Getting registrations for user: {phone}", request_id=request_id)
+    dynamo_logger.debug(f"Getting registrations for user: {email}", request_id=request_id)
     try:
         table = _get_table()
         resp = table.query(
             IndexName="GSI1",
             KeyConditionExpression="GSI1PK = :pk",
-            ExpressionAttributeValues={":pk": f"USER#{phone}"},
+            ExpressionAttributeValues={":pk": f"USER#{email}"},
         )
         items = [_deserialize(i) for i in resp.get("Items", [])]
-        dynamo_logger.info(f"Found {len(items)} registrations for user: {phone}", request_id=request_id)
+        dynamo_logger.info(f"Found {len(items)} registrations for user: {email}", request_id=request_id)
         return items
     except Exception as e:
-        dynamo_logger.error(f"Error getting registrations for user {phone}: {str(e)}", request_id=request_id, exc_info=True)
+        dynamo_logger.error(f"Error getting registrations for user {email}: {str(e)}", request_id=request_id, exc_info=True)
         raise
 
 

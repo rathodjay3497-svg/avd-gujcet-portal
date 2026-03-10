@@ -9,23 +9,6 @@ def _get_client() -> Client:
     return Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
 
 
-def send_otp_sms(phone: str, otp: str):
-    """Send OTP verification SMS to the student."""
-    request_id = get_request_id()
-    sms_logger.info(f"Sending OTP SMS to phone: {phone}", request_id=request_id, extra={"phone": phone, "type": "otp"})
-    try:
-        client = _get_client()
-        client.messages.create(
-            body=f"Your GUJCET Platform verification code is: {otp}. Valid for 5 minutes.",
-            from_=settings.TWILIO_PHONE_NUMBER,
-            to=f"+91{phone}",
-        )
-        sms_logger.info(f"OTP SMS sent successfully to phone: {phone}", request_id=request_id)
-    except Exception as e:
-        sms_logger.error(f"Error sending OTP SMS to phone {phone}: {str(e)}", request_id=request_id, exc_info=True)
-        raise
-
-
 def send_registration_sms(phone: str, name: str, event_title: str, reg_id: str, event_date: str, venue: str):
     """Send registration confirmation SMS."""
     request_id = get_request_id()

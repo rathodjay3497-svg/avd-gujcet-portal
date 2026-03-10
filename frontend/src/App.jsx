@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import useAuthStore from '@/store/authStore';
 
 // Layout
@@ -50,19 +51,33 @@ export default function App() {
 
 
   return (
-    <>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ''}>
       {!isAdmin && <Navbar />}
       <main className="page-animate">
         <Routes>
           {/* Public */}
           <Route path="/" element={<Landing />} />
           <Route path="/events/:eventId" element={<EventDetail />} />
-          <Route path="/events/:eventId/register" element={<RegisterForm />} />
-          <Route path="/register/success" element={<RegisterSuccess />} />
           <Route path="/login" element={<Login />} />
           <Route path="/help-desk" element={<HelpDesk />} />
 
           {/* Student Protected */}
+          <Route
+            path="/events/:eventId/register"
+            element={
+              <ProtectedRoute>
+                <RegisterForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/register/success"
+            element={
+              <ProtectedRoute>
+                <RegisterSuccess />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/profile"
             element={
@@ -117,6 +132,6 @@ export default function App() {
         </Routes>
       </main>
       {!isAdmin && <Footer />}
-    </>
+    </GoogleOAuthProvider>
   );
 }
