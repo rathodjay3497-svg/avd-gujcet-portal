@@ -1,0 +1,78 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1A3C6E;
+}
+
+.card {
+  background: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(26, 60, 110, 0.08);
+  border: 1px solid #E2E8F0;
+  padding: 2.5rem;
+  width: 90%;
+  max-width: 420px;
+  animation: fadeInUp 0.4s ease;
+}
+
+.logoBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.logoIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: #1A3C6E;
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.25rem;
+  border-radius: 12px;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #1A3C6E;
+  margin-bottom: 2rem;
+}
+
+.field {
+  margin-bottom: 1.5rem;
+}
+.field label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1E293B;
+  margin-bottom: 0.5rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  color: #1E293B;
+  transition: all 0.25s ease;
+  background: #FFFFFF;
+}
+.input:focus {
+  outline: none;
+  border-color: #2563EB;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+.input::placeholder {
+  color: #94A3B8;
+}
+
+/*# sourceMappingURL=AdminLogin.module.css.map */

@@ -1,0 +1,32 @@
+.otpGroup {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.otpBox {
+  width: 52px;
+  height: 56px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1A3C6E;
+  border: 2px solid #E2E8F0;
+  border-radius: 6px;
+  transition: all 0.25s ease;
+  background: #FFFFFF;
+}
+.otpBox:focus {
+  outline: none;
+  border-color: #2563EB;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+@media (max-width: 480px) {
+  .otpBox {
+    width: 44px;
+    height: 48px;
+    font-size: 1.25rem;
+  }
+}
+
+/*# sourceMappingURL=OtpInput.module.css.map */

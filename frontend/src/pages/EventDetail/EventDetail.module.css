@@ -1,0 +1,296 @@
+.page {
+  padding-top: calc(64px + 2rem);
+  padding-bottom: 4rem;
+  min-height: 100vh;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.breadcrumb {
+  font-size: 0.875rem;
+  color: #64748B;
+  margin-bottom: 1rem;
+}
+
+.breadcrumb a {
+  color: #2563EB;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.title {
+  font-size: 1.875rem;
+  color: #1A3C6E;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 1.5rem;
+  }
+}
+
+.metaRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #64748B;
+}
+
+.metaItem svg {
+  color: #2563EB;
+}
+
+.streams {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.description {
+  margin-bottom: 2rem;
+}
+
+.description h3 {
+  color: #1A3C6E;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.description h3::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 48px;
+  height: 3px;
+  background: #F59E0B;
+  border-radius: 2px;
+}
+
+.description h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.description p {
+  line-height: 1.8;
+}
+
+.infoBox {
+  background: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(26, 60, 110, 0.08);
+  border: 1px solid #E2E8F0;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.infoBox h3 {
+  font-size: 1.125rem;
+  color: #1A3C6E;
+  margin-bottom: 1rem;
+}
+
+.infoBox ul li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-size: 0.875rem;
+  color: #64748B;
+}
+
+.infoBox ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  background: #2563EB;
+  border-radius: 50%;
+  transform: translateY(-50%);
+}
+
+.deadline {
+  font-size: 0.875rem;
+  color: #EF4444;
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    order: -1;
+  }
+}
+
+.registerCard {
+  background: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(26, 60, 110, 0.08);
+  border: 1px solid #E2E8F0;
+  padding: 1.5rem;
+  position: sticky;
+  top: 80px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.registerCard h3 {
+  font-size: 1.125rem;
+  color: #1A3C6E;
+  margin-bottom: 0.5rem;
+}
+
+.cardDate {
+  font-size: 0.875rem;
+  color: #64748B;
+  margin-bottom: 1.5rem;
+}
+
+.seatInfo {
+  margin-bottom: 1.5rem;
+}
+
+.seatInfo span {
+  font-size: 0.75rem;
+  color: #64748B;
+}
+
+.seatBar {
+  height: 8px;
+  background: #E2E8F0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 0.25rem;
+}
+
+.seatFill {
+  height: 100%;
+  background: #2563EB;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.registerBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #2563EB;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.25);
+  text-decoration: none;
+  margin-bottom: 1rem;
+  width: auto;
+}
+
+.registerBtn:hover {
+  background: #1A3C6E;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.registerBtn:active {
+  transform: translateY(0);
+}
+
+.registerBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.registerBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #64748B;
+  box-shadow: none;
+}
+
+.registeredBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #10B981;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-decoration: none;
+  margin-bottom: 1rem;
+  width: auto;
+}
+
+.registeredBtn:hover {
+  background: #059669;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.checkStatus {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #64748B;
+}
+
+.checkStatus a {
+  color: #2563EB;
+}
+
+.checkStatus a:hover {
+  text-decoration: underline;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  font-size: 1.25rem;
+  color: #64748B;
+}
+
+/*# sourceMappingURL=EventDetail.module.css.map */

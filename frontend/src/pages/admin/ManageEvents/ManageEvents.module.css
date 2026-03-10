@@ -1,0 +1,104 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main {
+  flex: 1;
+  margin-left: 240px;
+  padding: 2rem;
+  background: #F8FAFC;
+}
+@media (max-width: 768px) {
+  .main {
+    margin-left: 64px;
+    padding: 1rem;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+.header h1 {
+  font-size: 1.875rem;
+  color: #1A3C6E;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(26, 60, 110, 0.08);
+  border: 1px solid #E2E8F0;
+  padding: 1.5rem;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+.cardHeader h3 {
+  font-size: 1.125rem;
+  color: #1A3C6E;
+}
+
+.status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.status.active {
+  background: #D1FAE5;
+  color: #065F46;
+}
+.status.draft {
+  background: #FEF3C7;
+  color: #92400E;
+}
+.status.closed {
+  background: #FEE2E2;
+  color: #991B1B;
+}
+
+.meta {
+  font-size: 0.875rem;
+  color: #64748B;
+  margin-bottom: 0.25rem;
+}
+
+.cardActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #E2E8F0;
+}
+.cardActions a, .cardActions button {
+  font-size: 0.875rem;
+  color: #2563EB;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.cardActions a:hover, .cardActions button:hover {
+  text-decoration: underline;
+}
+
+/*# sourceMappingURL=ManageEvents.module.css.map */

@@ -1,0 +1,130 @@
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main {
+  flex: 1;
+  margin-left: 240px;
+  padding: 2rem;
+  background: #F8FAFC;
+}
+@media (max-width: 768px) {
+  .main {
+    margin-left: 64px;
+    padding: 1rem;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+.header h1 {
+  font-size: 1.875rem;
+  color: #1A3C6E;
+  margin-bottom: 0.25rem;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: #64748B;
+}
+
+.tableCard {
+  background: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(26, 60, 110, 0.08);
+  border: 1px solid #E2E8F0;
+  padding: 1.5rem;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  color: #1E293B;
+  transition: all 0.25s ease;
+  background: #FFFFFF;
+}
+.searchInput:focus {
+  outline: none;
+  border-color: #2563EB;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+.searchInput::placeholder {
+  color: #94A3B8;
+}
+.searchInput {
+  margin-bottom: 1.5rem;
+  max-width: 400px;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.table th, .table td {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #E2E8F0;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+.table th {
+  color: #64748B;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: #F8FAFC;
+  position: sticky;
+  top: 0;
+}
+.table code {
+  font-size: 0.75rem;
+  background: #EFF6FF;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #1A3C6E;
+}
+.table tbody tr:hover {
+  background: #EFF6FF;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.badge.confirmed {
+  background: #D1FAE5;
+  color: #065F46;
+}
+.badge.cancelled {
+  background: #FEE2E2;
+  color: #991B1B;
+}
+.badge.waitlisted {
+  background: #FEF3C7;
+  color: #92400E;
+}
+
+.emptyRow {
+  text-align: center !important;
+  color: #64748B !important;
+  padding: 2rem !important;
+}
+
+/*# sourceMappingURL=Registrations.module.css.map */

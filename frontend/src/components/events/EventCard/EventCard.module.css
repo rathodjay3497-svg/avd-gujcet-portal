@@ -1,0 +1,153 @@
+.card {
+  background: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(26, 60, 110, 0.08);
+  border: 1px solid #E2E8F0;
+  border-top: 3px solid #2563EB;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.body {
+  padding: 1.5rem;
+  flex: 1;
+}
+
+.title {
+  font-size: 1.25rem;
+  color: #1A3C6E;
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.futureBadge {
+  display: inline-block;
+  background: #F59E0B;
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+  text-transform: uppercase;
+  transform: translateY(-2px);
+}
+
+.organizedBy {
+  font-size: 0.875rem;
+  color: #64748B;
+  margin-top: -0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.organizedBy strong {
+  font-weight: 600;
+  color: #1E293B;
+}
+
+.meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.date,
+.venue {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #64748B;
+}
+
+.date svg,
+.venue svg {
+  flex-shrink: 0;
+  color: #2563EB;
+}
+
+.streams {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.seats {
+  margin-top: auto;
+}
+
+.seatBar {
+  height: 6px;
+  background: #E2E8F0;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 0.25rem;
+}
+
+.seatFill {
+  height: 100%;
+  background: #2563EB;
+  border-radius: 3px;
+  transition: width 0.5s ease;
+}
+
+.seatText {
+  font-size: 0.75rem;
+  color: #64748B;
+}
+
+.footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #E2E8F0;
+  display: flex;
+  justify-content: center;
+}
+
+.registerBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #2563EB;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.25);
+}
+
+.registerBtn:hover {
+  background: #1A3C6E;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.registerBtn:active {
+  transform: translateY(0);
+}
+
+.registerBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.registerBtn {
+  text-decoration: none;
+}
+
+/*# sourceMappingURL=EventCard.module.css.map */

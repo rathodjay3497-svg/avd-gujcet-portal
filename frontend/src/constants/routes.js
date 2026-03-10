@@ -1,0 +1,16 @@
+export const ROUTES = {
+  HOME: '/',
+  EVENT_DETAIL: '/events/:eventId',
+  REGISTER: '/events/:eventId/register',
+  REGISTER_CONFIRM: '/events/:eventId/confirm',
+  REGISTER_SUCCESS: '/register/success',
+  LOGIN: '/login',
+  PROFILE: '/profile',
+  ADMIN_LOGIN: '/admin/login',
+  ADMIN_DASHBOARD: '/admin',
+  ADMIN_EVENTS: '/admin/events',
+  ADMIN_EVENT_NEW: '/admin/events/new',
+  ADMIN_EVENT_EDIT: '/admin/events/:id/edit',
+  ADMIN_REGISTRATIONS: '/admin/events/:id/registrations',
+  ADMIN_NOTIFY: '/admin/notify/:eventId',
+};

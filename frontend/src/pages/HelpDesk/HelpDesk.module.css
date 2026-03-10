@@ -1,0 +1,68 @@
+.page {
+  padding-top: 100px;
+  min-height: calc(100vh - 100px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F8FAFC;
+}
+
+.container {
+  text-align: center;
+  background: white;
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  max-width: 600px;
+  width: 90%;
+}
+
+.animationWrapper {
+  margin-bottom: 2rem;
+  position: relative;
+  height: 100px;
+  overflow: hidden;
+  border-bottom: 4px solid #F59E0B;
+}
+
+.jcb {
+  position: absolute;
+  bottom: 0;
+  left: -50px;
+  font-size: 3rem;
+  animation: drive 5s infinite linear;
+}
+
+.constructionSigns {
+  position: absolute;
+  bottom: 0;
+  right: 20px;
+  font-size: 2rem;
+  display: flex;
+  gap: 10px;
+}
+
+@keyframes drive {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(300px); }
+  51% { transform: translateX(300px) scaleX(-1); }
+  100% { transform: translateX(0) scaleX(-1); }
+}
+
+.title {
+  color: #1E293B;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  color: #F59E0B;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.description {
+  color: #64748B;
+  line-height: 1.6;
+}

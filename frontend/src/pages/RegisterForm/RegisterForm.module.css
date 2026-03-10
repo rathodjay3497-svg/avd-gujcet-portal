@@ -1,0 +1,164 @@
+.page {
+  padding-top: calc(64px + 2rem);
+  padding-bottom: 4rem;
+  min-height: 100vh;
+  background: #F8FAFC;
+}
+
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.card {
+  background: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(26, 60, 110, 0.08);
+  border: 1px solid #E2E8F0;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 1.5rem;
+  }
+}
+
+.title {
+  font-size: 1.5rem;
+  color: #1A3C6E;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: #64748B;
+  margin-bottom: 2rem;
+}
+
+.phoneForm {
+  text-align: center;
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1E293B;
+  margin-bottom: 0.75rem;
+  text-align: left;
+}
+
+.required {
+  color: #EF4444;
+  margin-left: 2px;
+}
+
+.phoneInput {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  color: #1E293B;
+  transition: all 0.25s ease;
+  background: #FFFFFF;
+}
+
+.phoneInput:focus {
+  outline: none;
+  border-color: #2563EB;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.phoneInput::placeholder {
+  color: #94A3B8;
+}
+
+.phoneInput {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  max-width: 320px;
+  margin: 0 auto 1.5rem;
+}
+
+.continueBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #2563EB;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.25);
+  text-decoration: none;
+  margin: 0 auto;
+}
+
+.continueBtn:hover {
+  background: #1A3C6E;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.continueBtn:active {
+  transform: translateY(0);
+}
+
+.continueBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.continueBtn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.phoneDisplay {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #EFF6FF;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+  color: #1E293B;
+}
+
+.changeBtn {
+  background: none;
+  border: none;
+  color: #2563EB;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.changeBtn:hover {
+  text-decoration: underline;
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  font-size: 1.25rem;
+  color: #64748B;
+}
+
+/*# sourceMappingURL=RegisterForm.module.css.map */

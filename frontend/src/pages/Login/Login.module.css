@@ -1,0 +1,149 @@
+.page {
+  padding-top: 64px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F8FAFC;
+}
+
+.card {
+  background: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(26, 60, 110, 0.08);
+  border: 1px solid #E2E8F0;
+  padding: 2.5rem;
+  width: 90%;
+  max-width: 440px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  animation: fadeInUp 0.4s ease;
+}
+
+.logoBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.logoIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: #1A3C6E;
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.25rem;
+  border-radius: 12px;
+}
+
+.title {
+  text-align: center;
+  font-size: 1.5rem;
+  color: #1E293B;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #64748B;
+  margin-bottom: 2rem;
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1E293B;
+  margin-bottom: 0.5rem;
+}
+
+.phoneRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: all 0.25s ease;
+}
+
+.phoneRow:focus-within {
+  border-color: #2563EB;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.prefix {
+  padding: 0.75rem 1rem;
+  background: #F8FAFC;
+  color: #64748B;
+  font-weight: 600;
+  font-size: 1rem;
+  border-right: 1px solid #E2E8F0;
+}
+
+.phoneInput {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  font-size: 1rem;
+  color: #1E293B;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+}
+
+.phoneInput:focus {
+  outline: none;
+}
+
+.phoneInput::placeholder {
+  color: #94A3B8;
+}
+
+.otpSection {
+  text-align: center;
+}
+
+.otpHint {
+  font-size: 0.875rem;
+  color: #64748B;
+  margin-bottom: 1.5rem;
+}
+
+.resend {
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+  color: #64748B;
+}
+
+.resendBtn {
+  background: none;
+  border: none;
+  color: #2563EB;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.resendBtn:hover {
+  text-decoration: underline;
+}
+
+.changePhone {
+  display: block;
+  margin: 1rem auto 0;
+  background: none;
+  border: none;
+  color: #64748B;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.changePhone:hover {
+  color: #2563EB;
+}
+
+/*# sourceMappingURL=Login.module.css.map */

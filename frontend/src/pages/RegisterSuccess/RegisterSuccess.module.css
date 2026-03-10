@@ -1,0 +1,261 @@
+.page {
+  padding-top: calc(64px + 2rem);
+  padding-bottom: 4rem;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F8FAFC;
+}
+
+.card {
+  background: #FFFFFF;
+  border-radius: 12px;
+  border: 1px solid #E2E8F0;
+  padding: 2.5rem;
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  animation: scaleIn 0.4s ease;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.checkmark {
+  margin-bottom: 1.5rem;
+}
+.checkmark .circle {
+  stroke-dasharray: 226;
+  stroke-dashoffset: 226;
+  animation: circleAnim 0.6s ease forwards;
+}
+.checkmark .check {
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: checkmark 0.4s ease 0.5s forwards;
+}
+
+@keyframes circleAnim {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes checkmark {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.title {
+  font-size: 1.5rem;
+  color: #1E293B;
+  margin-bottom: 1.5rem;
+}
+
+.regIdBox {
+  background: #EFF6FF;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.regIdLabel {
+  font-size: 0.75rem;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.regIdRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.regId {
+  font-family: monospace;
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1A3C6E;
+  letter-spacing: 2px;
+}
+@media (max-width: 480px) {
+  .regId {
+    font-size: 1.25rem;
+  }
+}
+
+.copyBtn {
+  background: none;
+  border: none;
+  color: #64748B;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
+.copyBtn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #1A3C6E;
+}
+
+/* Admit Card */
+.admitCard {
+  border: 2px solid #1A3C6E;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.admitHeader {
+  background: #1A3C6E;
+  padding: 0.75rem 1.25rem;
+}
+
+.admitHeader h3 {
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.admitBody {
+  padding: 1.25rem;
+}
+
+.admitSection {
+  margin-bottom: 1rem;
+}
+
+.admitSection:last-child {
+  margin-bottom: 0;
+}
+
+.admitSectionTitle {
+  font-size: 0.75rem;
+  color: #2563EB;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.admitGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+@media (max-width: 480px) {
+  .admitGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admitField {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.admitLabel {
+  font-size: 0.6875rem;
+  color: #94A3B8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.admitValue {
+  font-size: 0.875rem;
+  color: #1E293B;
+  font-weight: 500;
+}
+
+/* PDF Download */
+.pdfCard {
+  background: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(26, 60, 110, 0.08);
+  border: 1px solid #E2E8F0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+.pdfCard div {
+  flex: 1;
+  margin: 0 1rem;
+}
+
+.pdfTitle {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #1E293B;
+  margin-bottom: 2px;
+}
+
+.pdfDesc {
+  font-size: 0.75rem;
+  color: #64748B;
+}
+
+.downloadBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #2563EB;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.25);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.downloadBtn:hover {
+  background: #1D4ED8;
+  color: #FFFFFF;
+  transform: translateY(-1px);
+}
+.downloadBtn:active {
+  transform: translateY(0);
+}
+
+.smsNote {
+  font-size: 0.875rem;
+  color: #64748B;
+  margin-bottom: 1.5rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
