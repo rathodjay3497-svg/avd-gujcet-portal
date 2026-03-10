@@ -6,15 +6,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-});
-
-// Attach JWT token to every request
-api.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().token;
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
+  withCredentials: true,
 });
 
 // Handle 401 responses — auto-logout
@@ -22,11 +14,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      const token = useAuthStore.getState().token;
-      // Don't auto-logout on mock token — API calls will naturally fail
-      if (token && token !== 'fake-user-token') {
-        useAuthStore.getState().logout();
-      }
+      useAuthStore.getState().clearSession();
     }
     return Promise.reject(error);
   }
@@ -37,6 +25,8 @@ export const authAPI = {
   sendOTP: (phone) => api.post('/auth/otp/send', { phone }),
   verifyOTP: (phone, otp) => api.post('/auth/otp/verify', { phone, otp }),
   adminLogin: (username, password) => api.post('/auth/admin/login', { username, password }),
+  checkAuth: () => api.get('/auth/me'),
+  logout: () => api.post('/auth/logout'),
 };
 
 // ─── Events ──────────────────────────────────────────────────

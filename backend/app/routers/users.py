@@ -17,6 +17,8 @@ class UpdateProfileRequest(BaseModel):
     guardian_phone: Optional[str] = None
     school_college: Optional[str] = None
     stream: Optional[str] = None
+    medium: Optional[str] = None
+    address: Optional[str] = None
     district: Optional[str] = None
     state: Optional[str] = "Gujarat"
     pin_code: Optional[str] = None

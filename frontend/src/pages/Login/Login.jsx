@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Navigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
+import useAuthStore from '@/store/authStore';
 import OtpInput from '@/components/forms/OtpInput/OtpInput';
 import Button from '@/components/ui/Button/Button';
 import styles from './Login.module.css';
@@ -10,10 +11,16 @@ export default function Login() {
   const [otpSent, setOtpSent] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const { sendOTP, verifyOTP, loading } = useAuth();
+  const { isAuthenticated } = useAuthStore();
   const location = useLocation();
 
   // If user was redirected here from a protected route, pass that path through
   const redirectTo = location.state?.from || undefined;
+
+  // If already logged in, redirect away from login page
+  if (isAuthenticated) {
+    return <Navigate to={redirectTo || '/'} replace />;
+  }
 
   const handleSendOTP = async (e) => {
     e.preventDefault();

@@ -1,9 +1,11 @@
+import { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import useAuthStore from '@/store/authStore';
 
 // Layout
 import Navbar from '@/components/layout/Navbar/Navbar';
 import Footer from '@/components/layout/Footer/Footer';
+import Loader from '@/components/ui/Loader/Loader';
 
 // Pages
 import Landing from '@/pages/Landing/Landing';
@@ -22,19 +24,30 @@ import EventForm from '@/pages/admin/EventForm/EventForm';
 import AdminRegistrations from '@/pages/admin/Registrations/Registrations';
 
 function ProtectedRoute({ children }) {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, isLoading } = useAuthStore();
+  if (isLoading) return <Loader text="Checking authentication..." />;
   if (!isAuthenticated) return <Navigate to="/login" state={{ from: window.location.pathname }} replace />;
   return children;
 }
 
 function AdminRoute({ children }) {
-  const { isAuthenticated, isAdmin } = useAuthStore();
+  const { isAuthenticated, isAdmin, isLoading } = useAuthStore();
+  if (isLoading) return <Loader text="Checking authentication..." />;
   if (!isAuthenticated || !isAdmin) return <Navigate to="/admin/login" replace />;
   return children;
 }
 
 export default function App() {
-  const { isAdmin } = useAuthStore();
+  const { isAdmin, checkAuth, isLoading } = useAuthStore();
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  if (isLoading) {
+    return <Loader text="Loading..." />;
+  }
+
 
   return (
     <>

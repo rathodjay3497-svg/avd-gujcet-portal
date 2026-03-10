@@ -11,17 +11,16 @@ function isProfileComplete(user) {
 export function useAuth() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { setAuth, logout: clearAuth } = useAuthStore();
+  const { setAuth, logout: storeLogout } = useAuthStore();
 
   const sendOTP = async (phone) => {
     setLoading(true);
     try {
-      // await authAPI.sendOTP(phone);
-      await new Promise((r) => setTimeout(r, 500));
-      toast.success('OTP sent to your phone! (MOCK)');
+      await authAPI.sendOTP(phone);
+      toast.success('OTP sent to your phone!');
       return true;
     } catch (err) {
-      toast.error(err.message || 'Failed to send OTP');
+      toast.error(err.response?.data?.detail || err.message || 'Failed to send OTP');
       return false;
     } finally {
       setLoading(false);
@@ -31,48 +30,27 @@ export function useAuth() {
   const verifyOTP = async (phone, otp, redirectTo) => {
     setLoading(true);
     try {
-      // Mock OTP verification (keep for testing)
-      await new Promise((r) => setTimeout(r, 500));
-      if (otp !== '123456') throw new Error('Invalid OTP');
+      const { data: authData } = await authAPI.verifyOTP(phone, otp);
+      const token = authData.access_token;
+      const user = authData.user || { phone };
 
-      // TODO: Replace mock token with real auth when backend OTP is ready
-      // const { data: authData } = await authAPI.verifyOTP(phone, otp);
-      // const token = authData.access_token;
-      const token = 'fake-user-token';
-
-      // Set auth with minimal user data first (phone from login)
-      setAuth(token, { phone }, false);
-
-      // Fetch full profile from DB (skip if using mock token)
-      let user = { phone };
-      const isMockToken = token === 'fake-user-token';
-      if (!isMockToken) {
-        try {
-          const { data } = await usersAPI.getProfile();
-          user = data;
-          useAuthStore.getState().updateUser(user);
-        } catch (e) {
-          // Profile doesn't exist yet (new user) — that's fine
-          console.log('No existing profile found, new user');
-        }
-      }
+      // Set auth state
+      setAuth(token, user, false);
 
       toast.success('Login successful!');
 
-      // If a specific redirect was requested (e.g. from event registration), use it
+      // Navigate based on context
       if (redirectTo) {
         navigate(redirectTo);
-      } else if (!isMockToken && isProfileComplete(user)) {
-        // Profile complete → go to events page
+      } else if (isProfileComplete(user)) {
         navigate('/');
       } else {
-        // Profile incomplete or mock → go to profile to fill details
         navigate('/profile', { state: { message: 'Please complete your profile.' } });
       }
 
       return true;
     } catch (err) {
-      toast.error(err.message || 'Invalid OTP');
+      toast.error(err.response?.data?.detail || err.message || 'Invalid OTP');
       return false;
     } finally {
       setLoading(false);
@@ -82,28 +60,21 @@ export function useAuth() {
   const adminLogin = async (username, password) => {
     setLoading(true);
     try {
-      // const { data } = await authAPI.adminLogin(username, password);
-      await new Promise((r) => setTimeout(r, 500));
-
-      if (username !== 'jay' || password !== '123') {
-        throw new Error('Invalid credentials');
-      }
-
-      const data = { access_token: 'fake-admin-token' };
+      const { data } = await authAPI.adminLogin(username, password);
       setAuth(data.access_token, { username }, true);
-      toast.success('Admin login successful! (MOCK)');
+      toast.success('Admin login successful!');
       navigate('/admin');
       return true;
     } catch (err) {
-      toast.error(err.message || 'Invalid credentials');
+      toast.error(err.response?.data?.detail || err.message || 'Invalid credentials');
       return false;
     } finally {
       setLoading(false);
     }
   };
 
-  const logout = () => {
-    clearAuth();
+  const logout = async () => {
+    await storeLogout();
     toast.success('Logged out');
     navigate('/');
   };

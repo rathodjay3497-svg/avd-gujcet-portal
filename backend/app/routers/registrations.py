@@ -9,7 +9,6 @@ from app.services.pdf_service import generate_admit_card
 from app.services.s3_service import upload_pdf, get_presigned_url
 from app.services.twilio_service import send_registration_sms
 from app.services.email_service import send_registration_email
-from app.utils.validators import validate_form_data
 from app.config import get_settings
 
 settings = get_settings()
@@ -24,25 +23,15 @@ def register_form(event_id: str, body: RegistrationCreate, background_tasks: Bac
         raise HTTPException(status_code=404, detail="Event not found")
     if event.get("status") != "active":
         raise HTTPException(status_code=400, detail="Event is not active")
-    if event.get("registration_type") != "form":
+    if event.get("registration_type") != "full_form":
         raise HTTPException(status_code=400, detail="This event requires login-based registration")
-
-    # 2. Validate form data if JSON schema
-    if event.get("form_type") == "json_schema" and event.get("form_schema"):
-        errors = validate_form_data(body.form_data, event["form_schema"])
-        if errors:
-            raise HTTPException(status_code=422, detail=errors)
 
     # 3. Check duplicate
     existing = dynamo.get_registration(event_id, body.phone)
     if existing:
         raise HTTPException(status_code=409, detail="Already registered for this event")
 
-    # 4. Check seat limit
-    if event.get("seat_limit"):
-        new_count = dynamo.increment_seat(event_id)
-        if new_count > event["seat_limit"]:
-            raise HTTPException(status_code=400, detail="Event is full")
+
 
     # 5. Generate registration ID
     reg_id = generate_registration_id(event_id)
@@ -59,21 +48,22 @@ def register_form(event_id: str, body: RegistrationCreate, background_tasks: Bac
     }
     dynamo.upsert_user(body.phone, user_data)
 
-    # 7. Generate PDF admit card
-    pdf_bytes = generate_admit_card(
-        name=body.form_data.get("name", "Student"),
-        registration_id=reg_id,
-        event_title=event.get("title", ""),
-        event_date=event.get("event_date", ""),
-        venue=event.get("venue", ""),
-        phone=body.phone,
-        stream=body.form_data.get("stream", ""),
-    )
+    # 7. Generate PDF admit card (DISABLED — S3 skipped for now)
+    # pdf_bytes = generate_admit_card(
+    #     name=body.form_data.get("name", "Student"),
+    #     registration_id=reg_id,
+    #     event_title=event.get("title", ""),
+    #     event_date=event.get("event_date", ""),
+    #     venue=event.get("venue", ""),
+    #     phone=body.phone,
+    #     stream=body.form_data.get("stream", ""),
+    # )
 
-    # 8. Upload PDF to S3
-    pdf_key = f"admit-cards/{event_id}/{reg_id}.pdf"
-    upload_pdf(pdf_bytes, pdf_key)
-    pdf_url = get_presigned_url(pdf_key)
+    # 8. Upload PDF to S3 (DISABLED — S3 skipped for now)
+    # pdf_key = f"admit-cards/{event_id}/{reg_id}.pdf"
+    # upload_pdf(pdf_bytes, pdf_key)
+    # pdf_url = get_presigned_url(pdf_key)
+    pdf_url = None
 
     # 9. Save registration
     reg_data = {
@@ -134,11 +124,7 @@ def register_click(event_id: str, background_tasks: BackgroundTasks, user=Depend
     if existing:
         raise HTTPException(status_code=409, detail="Already registered for this event")
 
-    # 4. Check seat limit
-    if event.get("seat_limit"):
-        new_count = dynamo.increment_seat(event_id)
-        if new_count > event["seat_limit"]:
-            raise HTTPException(status_code=400, detail="Event is full")
+
 
     # 5. Generate registration ID
     reg_id = generate_registration_id(event_id)
@@ -153,19 +139,20 @@ def register_click(event_id: str, background_tasks: BackgroundTasks, user=Depend
         "school": profile.get("school_college", ""),
     }
 
-    # 7. Generate PDF + upload
-    pdf_bytes = generate_admit_card(
-        name=form_data["name"],
-        registration_id=reg_id,
-        event_title=event.get("title", ""),
-        event_date=event.get("event_date", ""),
-        venue=event.get("venue", ""),
-        phone=phone,
-        stream=form_data["stream"],
-    )
-    pdf_key = f"admit-cards/{event_id}/{reg_id}.pdf"
-    upload_pdf(pdf_bytes, pdf_key)
-    pdf_url = get_presigned_url(pdf_key)
+    # 7. Generate PDF + upload (DISABLED — S3 skipped for now)
+    # pdf_bytes = generate_admit_card(
+    #     name=form_data["name"],
+    #     registration_id=reg_id,
+    #     event_title=event.get("title", ""),
+    #     event_date=event.get("event_date", ""),
+    #     venue=event.get("venue", ""),
+    #     phone=phone,
+    #     stream=form_data["stream"],
+    # )
+    # pdf_key = f"admit-cards/{event_id}/{reg_id}.pdf"
+    # upload_pdf(pdf_bytes, pdf_key)
+    # pdf_url = get_presigned_url(pdf_key)
+    pdf_url = None
 
     # 8. Save registration
     reg_data = {

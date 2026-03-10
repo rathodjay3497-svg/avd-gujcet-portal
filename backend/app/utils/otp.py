@@ -1,6 +1,6 @@
 import random
 import string
-from passlib.hash import bcrypt
+import bcrypt
 
 
 def generate_otp(length: int = 6) -> str:
@@ -10,9 +10,12 @@ def generate_otp(length: int = 6) -> str:
 
 def hash_otp(otp: str) -> str:
     """Hash OTP using bcrypt."""
-    return bcrypt.hash(otp)
+    # bcrypt requires bytes
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(otp.encode('utf-8'), salt)
+    return hashed.decode('utf-8')
 
 
 def verify_otp(otp: str, otp_hash: str) -> bool:
     """Verify OTP against its bcrypt hash."""
-    return bcrypt.verify(otp, otp_hash)
+    return bcrypt.checkpw(otp.encode('utf-8'), otp_hash.encode('utf-8'))
