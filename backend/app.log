@@ -238,3 +238,11 @@ NoneType: None
 [2026-03-11 11:53:15,000365] [INFO] [app] [setup_logging] [N/A] [N/A] - Logging initialized. Log level: INFO. Log file: D:\Jay Rathod\Projects\website\backend\app.log
 [2026-03-11 11:59:52,000043] [INFO] [app] [setup_logging] [N/A] [N/A] - File logging enabled: D:\Jay Rathod\Projects\website\backend\app.log
 [2026-03-11 11:59:52,000044] [INFO] [app] [setup_logging] [N/A] [N/A] - Logging initialized. Log level: INFO. Log file: D:\Jay Rathod\Projects\website\backend\app.log
+[2026-03-11 12:03:56,000814] [INFO] [api] [_log] [N/A] [b742208e] - Incoming request: GET /events
+NoneType: None
+[2026-03-11 12:03:56,000872] [INFO] [app] [load] [N/A] [N/A] - Found credentials in shared credentials file: ~/.aws/credentials
+[2026-03-11 12:03:57,000317] [INFO] [dynamo] [_log] [N/A] [b742208e] - Found 3 events
+[2026-03-11 12:03:57,000320] [INFO] [api] [_log] [N/A] [b742208e] - Request completed: GET /events - Status: 200 - Duration: 0.506s
+NoneType: None
+[2026-03-11 12:03:58,000614] [INFO] [app] [setup_logging] [N/A] [N/A] - File logging enabled: D:\Jay Rathod\Projects\website\backend\app.log
+[2026-03-11 12:03:58,000615] [INFO] [app] [setup_logging] [N/A] [N/A] - Logging initialized. Log level: INFO. Log file: D:\Jay Rathod\Projects\website\backend\app.log
