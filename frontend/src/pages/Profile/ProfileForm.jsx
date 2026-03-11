@@ -63,7 +63,7 @@ export default function ProfileForm({ onCancel }) {
                     </div>
 
                     <div className={styles.formGroup}>
-                        <label>Mobile Number <span className={styles.required}>*</span></label>
+                        <label>Mobile Number (Whatsapp) <span className={styles.required}>*</span></label>
                         <div className={styles.phoneRow}>
                             <span className={styles.prefix}>+91</span>
                             <input
@@ -173,7 +173,7 @@ export default function ProfileForm({ onCancel }) {
             {/* ─── Section 3: Contact & Location ─── */}
             <div className={styles.section}>
                 <div className={styles.grid}>
-                    <div className={styles.formGroup}>
+                    {/* <div className={styles.formGroup}>
                         <label>Guardian Name</label>
                         <input
                             type="text"
@@ -183,9 +183,9 @@ export default function ProfileForm({ onCancel }) {
                             className={styles.input}
                             placeholder="Parent / Guardian name"
                         />
-                    </div>
+                    </div> */}
 
-                    <div className={styles.formGroup}>
+                    {/* <div className={styles.formGroup}>
                         <label>Guardian Phone</label>
                         <div className={styles.phoneRow}>
                             <span className={styles.prefix}>+91</span>
@@ -201,7 +201,7 @@ export default function ProfileForm({ onCancel }) {
                                 title="Enter a 10-digit Indian mobile number"
                             />
                         </div>
-                    </div>
+                    </div> */}
 
                     <div className={styles.formGroup} style={{ gridColumn: '1 / -1' }}>
                         <label>Address <span className={styles.required}>*</span></label>
