@@ -10,6 +10,7 @@ import Loader from '@/components/ui/Loader/Loader';
 
 // Pages
 import Landing from '@/pages/Landing/Landing';
+import Gujcet2026 from '@/pages/Gujcet2026/Gujcet2026';
 import EventDetail from '@/pages/EventDetail/EventDetail';
 import RegisterForm from '@/pages/RegisterForm/RegisterForm';
 import RegisterSuccess from '@/pages/RegisterSuccess/RegisterSuccess';
@@ -57,6 +58,7 @@ export default function App() {
         <Routes>
           {/* Public */}
           <Route path="/" element={<Landing />} />
+          <Route path="/events/gujcet-2026" element={<Gujcet2026 />} />
           <Route path="/events/:eventId" element={<EventDetail />} />
           <Route path="/login" element={<Login />} />
           <Route path="/help-desk" element={<HelpDesk />} />

@@ -1,0 +1,605 @@
+/* ===== GUJCET 2026 – Light Blue/Orange Theme ===== */
+
+.pageWrapper {
+  background: #f0f6ff;
+  min-height: 100vh;
+  color: #1e293b;
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+/* ---------- HERO ---------- */
+.heroSection {
+  position: relative;
+  padding: 7rem 2rem 5rem;
+  background: linear-gradient(135deg, #0e4f8d 0%, #1a6fc4 60%, #2b8de8 100%);
+  text-align: center;
+  overflow: hidden;
+  color: #fff;
+}
+
+.heroSection::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 70% 30%, rgba(255,255,255,0.12) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.heroBadge {
+  display: inline-block;
+  background: rgba(249, 115, 22, 0.9);
+  color: #fff;
+  padding: 0.5rem 1.6rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 1.8rem;
+  letter-spacing: 0.03em;
+  box-shadow: 0 4px 14px rgba(249, 115, 22, 0.4);
+}
+
+.headline {
+  font-size: 3.2rem;
+  font-weight: 900;
+  line-height: 1.2;
+  margin-bottom: 1.5rem;
+  color: #fff;
+}
+
+.subHeadline {
+  font-size: 1.3rem;
+  color: rgba(255,255,255,0.88);
+  max-width: 780px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.65;
+}
+
+.ctaButton {
+  display: inline-block;
+  background: #f97316;
+  color: #fff;
+  padding: 1rem 2.8rem;
+  border-radius: 999px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(249,115,22,0.4);
+}
+
+.ctaButton:hover {
+  background: #ea580c;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(249,115,22,0.5);
+}
+
+/* ---------- STATS RIBBON ---------- */
+.statsRibbon {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 4rem;
+}
+
+.statCard {
+  background: rgba(255,255,255,0.13);
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 1.8rem 1.5rem;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.statCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+
+.statValue {
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: #fbbf24;
+  margin-bottom: 0.5rem;
+}
+
+.statText {
+  font-size: 0.95rem;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.5;
+}
+
+/* ---------- SECTION COMMON ---------- */
+.section {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 3.5rem;
+  color: #0e4f8d;
+  position: relative;
+}
+
+.sectionTitle::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 5px;
+  background: #f97316;
+  border-radius: 999px;
+  margin: 0.75rem auto 0;
+}
+
+/* ---------- PROGRAMS GRID ---------- */
+.programsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.programCard {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.programCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(to right, #0e4f8d, #2b8de8);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.programCard:hover::before { opacity: 1; }
+
+.programCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 40px rgba(14,79,141,0.12);
+  border-color: #93c5fd;
+}
+
+.programCard h3 {
+  font-size: 1.5rem;
+  color: #0e4f8d;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.programCard p {
+  color: #475569;
+  line-height: 1.7;
+  font-size: 1.05rem;
+}
+
+/* ---------- FEATURES LIST ---------- */
+.featuresList {
+  list-style: none;
+  padding: 0;
+  margin-top: 1.5rem;
+}
+
+.featuresList li {
+  color: #334155;
+  margin-bottom: 1.1rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.featuresList li::before {
+  content: '✓';
+  color: #16a34a;
+  font-weight: 900;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* ---------- REALITY CHECK ---------- */
+.realityCheck {
+  background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+  border: 2px solid #fdba74;
+  border-radius: 24px;
+  padding: 4rem 3rem;
+  text-align: center;
+  margin: 0 auto;
+  max-width: 900px;
+  box-shadow: 0 8px 30px rgba(249,115,22,0.08);
+}
+
+.realityCheck p {
+  font-size: 1.35rem;
+  line-height: 1.8;
+  color: #78350f;
+  font-style: italic;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* ---------- ABOUT US ---------- */
+.aboutUsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.aboutLeft h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #0e4f8d;
+  margin-bottom: 1.5rem;
+  line-height: 1.3;
+}
+
+.aboutLeft p {
+  color: #475569;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+}
+
+.quoteBox {
+  padding: 1.8rem 2rem;
+  background: #eff6ff;
+  border-radius: 20px;
+  border-left: 6px solid #0e4f8d;
+  margin-top: 1.5rem;
+}
+
+.quoteBox p {
+  font-style: italic;
+  color: #1e3a5f;
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.aboutImage {
+  width: 100%;
+  border-radius: 20px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+  object-fit: cover;
+}
+
+/* ---------- METHODOLOGY ---------- */
+.methodology {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.methodItem {
+  display: flex;
+  gap: 1.25rem;
+  background: #fff;
+  padding: 1.8rem;
+  border-radius: 18px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.methodItem:hover {
+  transform: translateX(8px);
+  border-color: #93c5fd;
+  box-shadow: 0 8px 24px rgba(14,79,141,0.1);
+}
+
+.methodIcon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: #eff6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0e4f8d;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.methodContent h4 {
+  font-size: 1.25rem;
+  margin-bottom: 0.4rem;
+  color: #0e4f8d;
+}
+
+.methodContent p {
+  color: #64748b;
+  line-height: 1.5;
+  font-size: 1rem;
+}
+
+/* ---------- SUBJECTS ---------- */
+.subjectsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.subjectCard {
+  background: #fff;
+  border-radius: 24px;
+  padding: 2.5rem;
+  border-top: 6px solid;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.subjectCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 35px rgba(0,0,0,0.1);
+}
+
+.subjectCard.physics { border-color: #2563eb; }
+.subjectCard.chemistry { border-color: #16a34a; }
+.subjectCard.mathsBio { border-color: #7c3aed; }
+
+.subjectTitle {
+  font-size: 1.8rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.subjectBadge {
+  font-size: 0.9rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 99px;
+  font-weight: 600;
+}
+
+/* ---------- COMPARISON TABLE ---------- */
+.tableWrapper {
+  background: #fff;
+  border-radius: 24px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  margin-top: 1rem;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.06);
+}
+
+.comparisonTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.comparisonTable th,
+.comparisonTable td {
+  padding: 1.4rem 1.8rem;
+  text-align: left;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 1.05rem;
+}
+
+.comparisonTable th {
+  background: #0e4f8d;
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+}
+
+.comparisonTable tr:last-child td { border-bottom: none; }
+.comparisonTable tr:hover td { background: #f8fafc; }
+
+.comparisonTable td:nth-child(1) {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.comparisonTable td:nth-child(2) { color: #94a3b8; }
+
+.comparisonTable td:nth-child(3) {
+  color: #0e4f8d;
+  font-weight: 600;
+  background: #eff6ff;
+}
+
+/* ---------- FACULTY SECTION ---------- */
+.facultyGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.facultyCard {
+  background: #fff;
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+}
+
+.facultyCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 35px rgba(14,79,141,0.12);
+  border-color: #93c5fd;
+}
+
+.facultyAvatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0e4f8d, #2b8de8);
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.2rem;
+}
+
+.facultyName {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0e4f8d;
+  margin-bottom: 0.3rem;
+}
+
+.facultySubject {
+  display: inline-block;
+  background: #eff6ff;
+  color: #1d4ed8;
+  padding: 0.3rem 0.9rem;
+  border-radius: 99px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+}
+
+.facultyQualification {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-bottom: 0.4rem;
+  line-height: 1.5;
+}
+
+.facultyExperience {
+  color: #f97316;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+/* ---------- RESULTS / SUCCESS SECTION ---------- */
+.resultsSection {
+  background: linear-gradient(135deg, #0e4f8d 0%, #1a6fc4 100%);
+  padding: 5rem 2rem;
+  text-align: center;
+  color: #fff;
+}
+
+.resultsContent {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.resultsImage {
+  width: 100%;
+  max-width: 900px;
+  border-radius: 20px;
+  margin-top: 2.5rem;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+}
+
+/* ---------- SOCIAL SECTION ---------- */
+.socialSection {
+  text-align: center;
+  padding: 5rem 2rem;
+  background: #fff;
+  border-top: 1px solid #e2e8f0;
+}
+
+.socialLinks {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.socialBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 2rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  color: #fff;
+}
+
+.socialBtn.whatsapp {
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  box-shadow: 0 6px 16px rgba(37, 211, 102, 0.3);
+}
+
+.socialBtn.whatsapp:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(37, 211, 102, 0.4);
+}
+
+.socialBtn.instagram {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  box-shadow: 0 6px 16px rgba(220, 39, 67, 0.3);
+}
+
+.socialBtn.instagram:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px rgba(220, 39, 67, 0.4);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 1024px) {
+  .aboutUsGrid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .statsRibbon { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .heroSection { padding: 5rem 1.25rem 3.5rem; }
+  .headline { font-size: 2rem; }
+  .subHeadline { font-size: 1.1rem; }
+  .statsRibbon { grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .statValue { font-size: 1.8rem; }
+  .statText { font-size: 0.85rem; }
+  .section { padding: 3.5rem 1.25rem; }
+  .sectionTitle { font-size: 1.8rem; margin-bottom: 2.5rem; }
+  .realityCheck { padding: 2.5rem 1.5rem; }
+  .realityCheck p { font-size: 1.1rem; }
+  .subjectsGrid { grid-template-columns: 1fr; }
+  .subjectTitle { font-size: 1.4rem; }
+  .comparisonTable th,
+  .comparisonTable td { padding: 1rem; font-size: 0.9rem; }
+  .facultyGrid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; }
+  .resultsSection { padding: 3.5rem 1.25rem; }
+  .aboutLeft h2 { font-size: 1.7rem; }
+}
+
+@media (max-width: 480px) {
+  .headline { font-size: 1.65rem; }
+  .statsRibbon { grid-template-columns: 1fr; }
+  .statCard { padding: 1.2rem; }
+  .programsGrid { grid-template-columns: 1fr; }
+  .comparisonTable { display: block; overflow-x: auto; }
+  .facultyGrid { grid-template-columns: 1fr 1fr; }
+  .socialLinks { flex-direction: column; align-items: center; }
+  .ctaButton { padding: 0.85rem 2rem; font-size: 1rem; }
+}

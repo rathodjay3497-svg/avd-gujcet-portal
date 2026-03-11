@@ -85,20 +85,12 @@ export default function EventDetail() {
               ))}
             </div>
 
-            <div className={styles.description}>
-              <h3>About This Event</h3>
-              <p>{event.description || 'Join us for expert counseling on college admissions after GUJCET. Our experienced counselors will guide you through the admission process, college selection, and career planning.'}</p>
-            </div>
-
-            <div className={styles.infoBox}>
-              <h3>What to Bring</h3>
-              <ul>
-                <li>Printed or digital copy of your admit card</li>
-                <li>Valid photo ID (Aadhaar, school ID)</li>
-                <li>GUJCET score card (if available)</li>
-                <li>Pen and notebook for notes</li>
-              </ul>
-            </div>
+            {event.description && (
+              <div className={styles.description}>
+                <h3>About This Event</h3>
+                <p>{event.description}</p>
+              </div>
+            )}
 
             {event.registration_deadline && (
               <p className={styles.deadline}>
