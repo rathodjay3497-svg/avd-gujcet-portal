@@ -3,13 +3,13 @@ import { BookOpen, Target, Clock, AlertTriangle, Award, Zap, MessageCircle, Inst
 import styles from './Gujcet2026.module.css';
 
 const FACULTY = [
-  { name: 'Yagnik Kakadiya', subject: 'Mathematics / Statistics', qualification: 'M.Tech (Structural Engineering), B.Ed.', experience: '6 Years' },
-  { name: 'Prashant Gandhi', subject: 'Chemistry', qualification: 'M.Sc., B.Ed.', experience: '10 Years' },
-  { name: 'Nikhil Vaghasiya', subject: 'Biology', qualification: 'M.Sc., B.Ed.', experience: '12 Years' },
-  { name: 'Mayank Bhatt', subject: 'Biology', qualification: 'M.Sc., B.Ed.', experience: '10 Years' },
-  { name: 'Viral Valand', subject: 'Physics', qualification: 'B.E. EC, B.Ed.', experience: '8 Years' },
-  { name: 'Rahul Vaghasiya', subject: 'Physics', qualification: 'M.Sc., B.Ed.', experience: '10 Years' },
-  { name: 'Priyank Shah', subject: 'Chemistry', qualification: 'B.Sc, M.Sc (Organic Chemistry), B.Ed, JAM', experience: '4 Years' },
+  { name: 'Yagnik Kakadiya', subject: 'Mathematics / Statistics', qualification: 'M.Tech (Structural Engineering), B.Ed.', experience: '8 Years' },
+  { name: 'Prashant Gandhi', subject: 'Chemistry', qualification: 'M.Sc., B.Ed.', experience: '12 Years' },
+  { name: 'Nikhil Vaghasiya', subject: 'Biology', qualification: 'M.Sc., B.Ed.', experience: '14 Years' },
+  { name: 'Mayank Bhatt', subject: 'Biology', qualification: 'M.Sc., B.Ed.', experience: '12 Years' },
+  { name: 'Viral Valand', subject: 'Physics', qualification: 'B.E. EC, B.Ed.', experience: '10 Years' },
+  { name: 'Rahul Vaghasiya', subject: 'Physics', qualification: 'M.Sc., B.Ed.', experience: '12 Years' },
+  { name: 'Priyank Shah', subject: 'Chemistry', qualification: 'B.Sc, M.Sc (Organic Chemistry), B.Ed, JAM', experience: '6 Years' },
 ];
 
 export default function Gujcet2026() {
@@ -23,21 +23,21 @@ export default function Gujcet2026() {
         <div className={styles.heroContent}>
           <div className={styles.heroBadge}>Gujarat's Most Elite Sprint</div>
           <h1 className={styles.headline}>
-            Master GUJCET 2026 in Just 15&nbsp;Days:<br />
+            Master GUJCET 2026 in Just 11&nbsp;Days:<br />
             Precision Coaching by Expert Faculty.
           </h1>
           <p className={styles.subHeadline}>
-            Short on time? Join Gujarat's most elite 15-day sprint. We turn average scores into 110+ through surgical precision and expert-led strategies.
+            Short on time? Join Gujarat's most elite 11-day sprint. We turn average scores into 110+ through surgical precision and expert-led strategies.
           </p>
           <a href="#programs" className={styles.ctaButton}>Explore Programs</a>
 
           <div className={styles.statsRibbon}>
             <div className={styles.statCard}>
               <div className={styles.statValue}>1.17 L+</div>
-              <div className={styles.statText}>Aspirants appeared in 2025 — competition is fierce!</div>
+              <div className={styles.statText}>Aspirants appeared in 2025 - competition is fierce!</div>
             </div>
             <div className={styles.statCard}>
-              <div className={styles.statValue}>15 Days</div>
+              <div className={styles.statValue}>11 Days</div>
               <div className={styles.statText}>Total syllabus via our 'High-Yield Topic' methodology.</div>
             </div>
             <div className={styles.statCard}>
@@ -57,7 +57,7 @@ export default function Gujcet2026() {
         <h2 className={styles.sectionTitle}>Elite Programs</h2>
         <div className={styles.programsGrid}>
           <div className={styles.programCard}>
-            <h3><Zap size={22} color="#f97316" /> The 15-Day Power Sprint</h3>
+            <h3><Zap size={22} color="#f97316" /> The 11-Day Power Sprint</h3>
             <p>An intensive, 10-hour-a-day program designed for students who want a final, massive boost before the exam.</p>
           </div>
           <div className={styles.programCard}>
@@ -66,7 +66,7 @@ export default function Gujcet2026() {
           </div>
           <div className={styles.programCard}>
             <h3><Target size={22} color="#0e4f8d" /> OMR Mastery Test Series</h3>
-            <p>15+ Mock Tests with instant AI-driven OMR analysis.</p>
+            <p>11+ Mock Tests with instant AI-driven OMR analysis.</p>
           </div>
         </div>
 
@@ -98,13 +98,13 @@ export default function Gujcet2026() {
         <h2 className={styles.sectionTitle}>Why We Are Different</h2>
         <div className={styles.aboutUsGrid}>
           <div className={styles.aboutLeft}>
-            <h2>Beyond Rote Learning — We Build Rankers in Record Time.</h2>
+            <h2>Beyond Rote Learning - We Build Rankers in Record Time.</h2>
             <p>
-              <strong>Our Philosophy:</strong> We don't just teach subjects; we teach the Art of the OMR. When you have 15 days left, you don't need a library — you need a roadmap.
+              <strong>Our Philosophy:</strong> We don't just teach subjects; we teach the Art of the OMR. When you have 11 days left, you don't need a library - you need a roadmap.
             </p>
             <div className={styles.quoteBox}>
               <p>
-                "Our faculty has analyzed over 1,500 past GUJCET questions to curate this 15-day syllabus. We don't teach what's in the book; we teach what's on the paper."
+                "Our faculty has analyzed over 1,500 past GUJCET questions to curate this 11-day syllabus. We don't teach what's in the book; we teach what's on the paper."
               </p>
             </div>
           </div>
@@ -119,8 +119,8 @@ export default function Gujcet2026() {
         </div>
 
         <div className={styles.methodology} style={{ marginTop: '3rem' }}>
-          <h3 className={styles.sectionTitle} style={{ fontSize: '1.8rem' }}>The 15-Day Methodology</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
+          <h3 className={styles.sectionTitle} style={{ fontSize: '1.8rem' }}>The 11-Day Methodology</h3>
+          <div className={styles.methodologyGrid}>
             <div className={styles.methodItem}>
               <div className={styles.methodIcon}><Target size={24} /></div>
               <div className={styles.methodContent}>
@@ -157,7 +157,7 @@ export default function Gujcet2026() {
             </div>
             <ul className={styles.featuresList}>
               <li><strong>High-Yield:</strong> Electrostatics, Magnetism, Semiconductor Electronics.</li>
-              <li><strong>Hack:</strong> 20-Page Formula Handbook — covers 70% of the paper.</li>
+              <li><strong>Hack:</strong> 20-Page Formula Handbook - covers 70% of the paper.</li>
               <li>"70% of GUJCET Physics is direct formula application."</li>
             </ul>
           </div>
@@ -178,8 +178,8 @@ export default function Gujcet2026() {
               <span className={styles.subjectBadge} style={{ background: '#ede9fe', color: '#6d28d9' }}>The Rank Decider</span>
             </div>
             <ul className={styles.featuresList}>
-              <li><strong>Maths:</strong> Calculus & Vectors — Option-Substitution tricks.</li>
-              <li><strong>Biology:</strong> 100% NCERT — memory-palace techniques for classification & physiology.</li>
+              <li><strong>Maths:</strong> Calculus & Vectors - Option-Substitution tricks.</li>
+              <li><strong>Biology:</strong> 100% NCERT - memory-palace techniques for classification & physiology.</li>
             </ul>
           </div>
         </div>
@@ -187,14 +187,14 @@ export default function Gujcet2026() {
 
       {/* ===== COMPARISON TABLE ===== */}
       <section className={styles.section} style={{ paddingTop: 0 }}>
-        <h2 className={styles.sectionTitle}>Why Choose the 15-Day Sprint?</h2>
+        <h2 className={styles.sectionTitle}>Why Choose the 11-Day Sprint?</h2>
         <div className={styles.tableWrapper}>
           <table className={styles.comparisonTable}>
             <thead>
               <tr>
                 <th>Feature</th>
                 <th>Self-Study / Regular Classes</th>
-                <th>Our 15-Day Expert Sprint</th>
+                <th>Our 11-Day Expert Sprint</th>
               </tr>
             </thead>
             <tbody>
@@ -228,7 +228,7 @@ export default function Gujcet2026() {
       {/* ===== PROVEN RESULTS ===== */}
       <section className={styles.resultsSection}>
         <div className={styles.resultsContent}>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.5rem' }}>Proven Results — 2024 Science Toppers</h2>
+          <h2 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '0.5rem' }}>Proven Results - 2024 Science Toppers</h2>
           <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '1.15rem', maxWidth: '700px', margin: '0 auto' }}>
             Our students consistently achieve top scores. Here are a few of our achievers.
           </p>

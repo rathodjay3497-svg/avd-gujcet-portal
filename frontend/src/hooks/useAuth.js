@@ -31,10 +31,15 @@ export function useAuth() {
       setAuth(token, user, false);
       toast.success('Login successful!');
 
-      if (redirectTo) {
+      if (authData.is_new_user || !isProfileComplete(user)) {
+        navigate('/profile', { 
+          state: { 
+            message: 'Please complete your profile details before registering for an event.',
+            returnTo: redirectTo 
+          } 
+        });
+      } else if (redirectTo) {
         navigate(redirectTo);
-      } else if (authData.is_new_user || !isProfileComplete(user)) {
-        navigate('/profile', { state: { message: 'Please complete your profile to register for events.' } });
       } else {
         navigate('/');
       }

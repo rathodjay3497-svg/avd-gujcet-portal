@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import Badge from '@/components/ui/Badge/Badge';
 import { STREAM_COLORS } from '@/constants/streams';
 import { formatDate, formatTime } from '@/utils/formatters';
+import RegisterButton from '@/components/events/RegisterButton/RegisterButton';
 import styles from './EventCard.module.css';
 
 export default function EventCard({ event }) {
@@ -68,9 +69,7 @@ export default function EventCard({ event }) {
 
       {!event.future_scope && (
         <div className={styles.footer}>
-          <Link to={`/events/${event.event_id}`} className={styles.registerBtn}>
-            Register Now
-          </Link>
+          <RegisterButton event={event} />
         </div>
       )}
     </div>

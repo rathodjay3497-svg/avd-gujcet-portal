@@ -30,9 +30,24 @@ export default function Profile() {
   useEffect(() => {
     if (location.state?.message) {
       toast(location.state.message, { icon: 'ℹ️' });
-      navigate(location.pathname, { replace: true, state: {} });
+      // Keep the returnTo state alive by spreading it
+      navigate(location.pathname, { replace: true, state: { ...location.state, message: null } });
     }
-  }, [location.state?.message]);
+  }, [location.state?.message, navigate, location.pathname]);
+
+  // Handle returnTo redirect after successful profile update
+  useEffect(() => {
+    if (!isEditing && !isProfileIncomplete && location.state?.returnTo) {
+      const returnUrl = location.state.returnTo;
+      // Clear returnTo so we don't loop
+      navigate(location.pathname, { replace: true, state: { ...location.state, returnTo: null } });
+      
+      // Add a slight delay to let user see profile is saved
+      setTimeout(() => {
+        navigate(returnUrl);
+      }, 500);
+    }
+  }, [isEditing, isProfileIncomplete, location.state?.returnTo, navigate, location.pathname]);
 
   return (
     <div className={styles.page}>

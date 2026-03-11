@@ -13,6 +13,16 @@ export function useRegister() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['my-registrations'] });
       queryClient.invalidateQueries({ queryKey: ['check-registration'] });
+      // Although full form redirects to /success, we can show a toast just in case.
+      toast.success('Registered successfully! 🎉', {
+        position: 'top-center',
+        duration: 5000,
+        style: {
+          fontSize: '1.2rem',
+          padding: '16px 24px',
+          maxWidth: '500px',
+        },
+      });
     },
     onError: (err) => {
       const detail = err.response?.data?.detail;
@@ -39,6 +49,15 @@ export function useClickRegister() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['my-registrations'] });
       queryClient.invalidateQueries({ queryKey: ['check-registration'] });
+      toast.success('Registered successfully! 🎉', {
+        position: 'top-center',
+        duration: 5000,
+        style: {
+          fontSize: '1.2rem',
+          padding: '16px 24px',
+          maxWidth: '500px',
+        },
+      });
     },
     onError: (err) => {
       const detail = err.response?.data?.detail;

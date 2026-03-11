@@ -7,6 +7,7 @@ import Loader from '@/components/ui/Loader/Loader';
 import { STREAM_COLORS } from '@/constants/streams';
 import { formatDate } from '@/utils/formatters';
 import useAuthStore from '@/store/authStore';
+import RegisterButton from '@/components/events/RegisterButton/RegisterButton';
 import styles from './EventDetail.module.css';
 
 export default function EventDetail() {
@@ -20,25 +21,7 @@ export default function EventDetail() {
   if (isLoading) return <Loader text="Loading event details..." />;
   if (error || !event) return <div className={styles.error}>Event not found</div>;
 
-  const isClickRegister = event.registration_type === 'click_to_register';
   const isClosed = event.status === 'closed';
-
-  const getRegisterLink = () => {
-    if (isAlreadyRegistered) return '/profile';
-    if (isClosed) return null;
-    if (isClickRegister) {
-      return isAuthenticated ? `/events/${eventId}/confirm` : '/login';
-    }
-    return `/events/${eventId}/register`;
-  };
-
-  const getRegisterText = () => {
-    if (isAlreadyRegistered) return 'Already Registered — View Details';
-    if (isClosed) return 'Registration Closed';
-    if (isClickRegister && !isAuthenticated) return 'Login to Register';
-    if (isClickRegister) return 'Register Now — 1 Click';
-    return 'Register Now';
-  };
 
   return (
     <div className={styles.page}>
@@ -108,14 +91,12 @@ export default function EventDetail() {
               <p className={styles.cardDate}>Fee: {event.fee === 0 || !event.fee ? 'Free' : `₹${event.fee}`}</p>
 
               <div style={{ textAlign: 'center' }}>
-                {getRegisterLink() ? (
-                  <Link to={getRegisterLink()} className={isAlreadyRegistered ? styles.registeredBtn : styles.registerBtn}>
-                    {getRegisterText()}
-                  </Link>
-                ) : (
+                {isClosed ? (
                   <button className={styles.registerBtn} disabled>
-                    {getRegisterText()}
+                    Registration Closed
                   </button>
+                ) : (
+                  <RegisterButton event={event} />
                 )}
               </div>
 

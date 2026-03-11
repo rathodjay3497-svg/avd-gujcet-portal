@@ -73,9 +73,9 @@ export default function Landing() {
         <div className={styles.container}>
           <h2 className={styles.sectionTitle}>How It Works</h2>
           <div className={styles.steps}>
-            <Step number="1" title="Choose an Event" desc="Browse available counseling events and pick one that matches your stream." />
-            <Step number="2" title="Fill the Form" desc="Complete the registration form with your details — it takes less than 2 minutes." />
-            <Step number="3" title="Get Your Admit Card" desc="Receive instant SMS + Email confirmation with your downloadable PDF admit card." />
+            <Step number="1" title="Login / Create Account" desc="Log in seamlessly with your Google account to get started in seconds." />
+            <Step number="2" title="Complete Your Profile" desc="Fill out your academic and contact details once to save time later." />
+            <Step number="3" title="Register Instantly" desc="Browse events and register in just one click to secure your spot." />
           </div>
         </div>
       </section>
