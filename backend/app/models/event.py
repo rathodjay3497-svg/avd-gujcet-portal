@@ -24,6 +24,8 @@ class EventCreate(BaseModel):
     venue: str = ""
     start_date: Optional[str] = None
     end_date: Optional[str] = None
+    start_time: Optional[str] = None
+    end_time: Optional[str] = None
     organized_by: Optional[str] = None
     future_scope: Optional[bool] = False
     registration_deadline: Optional[str] = None
@@ -39,6 +41,8 @@ class EventUpdate(BaseModel):
     venue: Optional[str] = None
     start_date: Optional[str] = None
     end_date: Optional[str] = None
+    start_time: Optional[str] = None
+    end_time: Optional[str] = None
     organized_by: Optional[str] = None
     future_scope: Optional[bool] = None
     registration_deadline: Optional[str] = None
@@ -55,6 +59,8 @@ class EventResponse(BaseModel):
     venue: str
     start_date: Optional[str] = None
     end_date: Optional[str] = None
+    start_time: Optional[str] = None
+    end_time: Optional[str] = None
     organized_by: Optional[str] = None
     future_scope: Optional[bool] = False
     registration_deadline: Optional[str]

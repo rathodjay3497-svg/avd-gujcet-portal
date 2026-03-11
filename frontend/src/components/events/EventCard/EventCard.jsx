@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import Badge from '@/components/ui/Badge/Badge';
 import { STREAM_COLORS } from '@/constants/streams';
-import { formatDate } from '@/utils/formatters';
+import { formatDate, formatTime } from '@/utils/formatters';
 import styles from './EventCard.module.css';
 
 export default function EventCard({ event }) {
@@ -32,6 +32,15 @@ export default function EventCard({ event }) {
             </svg>
             {formatDate(event.start_date)}{event.end_date ? ` - ${formatDate(event.end_date)}` : ''}
           </span>
+          {event.start_time && (
+            <span className={styles.date}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              {formatTime(event.start_time)}{event.end_time ? ` - ${formatTime(event.end_time)}` : ''}
+            </span>
+          )}
           <span className={styles.venue}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />

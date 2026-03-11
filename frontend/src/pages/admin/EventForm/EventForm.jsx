@@ -22,6 +22,8 @@ export default function EventForm() {
     venue: '',
     start_date: '',
     end_date: '',
+    start_time: '',
+    end_time: '',
     fee: 0,
     registration_deadline: '',
     status: 'draft',
@@ -93,6 +95,8 @@ export default function EventForm() {
             <Field label="Venue" name="venue" value={form.venue} onChange={handleChange} />
             <Field label="Start Date" name="start_date" type="datetime-local" value={form.start_date} onChange={handleChange} />
             <Field label="End Date (Optional)" name="end_date" type="datetime-local" value={form.end_date} onChange={handleChange} />
+            <Field label="Start Time" name="start_time" type="time" value={form.start_time} onChange={handleChange} />
+            <Field label="End Time (Optional)" name="end_time" type="time" value={form.end_time} onChange={handleChange} />
             <Field label="Registration Deadline" name="registration_deadline" type="datetime-local" value={form.registration_deadline} onChange={handleChange} />
             <Field label="Fee" name="fee" type="number" value={form.fee} onChange={handleChange} />
             <Field label="Streams (comma-separated)" name="streams" value={form.streams} onChange={handleChange} />

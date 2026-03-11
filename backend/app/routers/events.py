@@ -80,6 +80,8 @@ def _format_event(event: dict) -> dict:
         "venue": event.get("venue", ""),
         "start_date": event.get("start_date"),
         "end_date": event.get("end_date"),
+        "start_time": event.get("start_time"),
+        "end_time": event.get("end_time"),
         "organized_by": event.get("organized_by"),
         "future_scope": event.get("future_scope", False),
         "registration_deadline": event.get("registration_deadline"),
