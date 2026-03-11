@@ -143,7 +143,17 @@ def get_me(request: Request):
 
 @router.post("/logout", summary="Clear auth cookie and logout")
 def logout(response: Response):
-    response.delete_cookie(key=COOKIE_NAME, path="/")
+    cookie_samesite = (settings.COOKIE_SAMESITE or "lax").lower()
+    secure = settings.ENVIRONMENT != "development"
+    if cookie_samesite == "none":
+        secure = True
+    response.delete_cookie(
+        key=COOKIE_NAME,
+        path="/",
+        httponly=True,
+        secure=secure,
+        samesite=cookie_samesite,
+    )
     return {"message": "Logged out successfully"}
 
 
