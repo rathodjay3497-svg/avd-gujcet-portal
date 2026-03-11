@@ -408,7 +408,9 @@
 .ctaBanner p {
   color: rgba(255, 255, 255, 0.7);
   font-size: 1.125rem;
-  margin-bottom: 2rem;
+  margin: 0 auto 2rem;
+  max-width: 600px;
+  text-align: center;
 }
 
 /*# sourceMappingURL=Landing.module.css.map */

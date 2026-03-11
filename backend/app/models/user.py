@@ -9,7 +9,6 @@ class UserProfile(BaseModel):
     phone: Optional[str] = None
     picture: Optional[str] = None
     google_sub: Optional[str] = None
-    dob: Optional[str] = None
     gender: Optional[str] = None
     guardian_name: Optional[str] = None
     guardian_phone: Optional[str] = None
@@ -17,9 +16,6 @@ class UserProfile(BaseModel):
     stream: Optional[str] = None
     medium: Optional[str] = None
     address: Optional[str] = None
-    district: Optional[str] = None
-    state: Optional[str] = "Gujarat"
-    pin_code: Optional[str] = None
     created_at: Optional[str] = None
 
 

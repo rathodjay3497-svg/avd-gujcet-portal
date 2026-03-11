@@ -13,7 +13,7 @@ export default function EventCard({ event }) {
         <h3 className={styles.title}>
           {event.title}
           {event.future_scope && (
-            <span className={styles.futureBadge}>Future Scope</span>
+            <span className={styles.futureBadge}>Coming soon</span>
           )}
         </h3>
         {event.organized_by && (

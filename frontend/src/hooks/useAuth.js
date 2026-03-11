@@ -8,7 +8,6 @@ function isProfileComplete(user) {
   return !!(
     user?.name &&
     user?.phone &&
-    user?.dob &&
     user?.gender &&
     user?.stream &&
     user?.medium &&

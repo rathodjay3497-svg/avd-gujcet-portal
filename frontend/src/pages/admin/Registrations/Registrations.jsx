@@ -40,8 +40,7 @@ export default function Registrations() {
       r.email?.toLowerCase().includes(s) ||
       r.phone?.includes(s) ||
       r.stream?.toLowerCase().includes(s) ||
-      r.school_college?.toLowerCase().includes(s) ||
-      r.district?.toLowerCase().includes(s)
+      r.school_college?.toLowerCase().includes(s)
     );
   }, [allRegs, search]);
 
@@ -58,7 +57,6 @@ export default function Registrations() {
       'Phone': r.phone || '—',
       'Stream': r.stream || '—',
       'School / College': r.school_college || '—',
-      'District': r.district || '—',
       'Status': r.status,
       'Registered At': formatDateTime(r.registered_at),
     }));

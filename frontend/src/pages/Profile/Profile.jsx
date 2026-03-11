@@ -24,7 +24,7 @@ export default function Profile() {
     return event?.title || eventId;
   };
 
-  const isProfileIncomplete = !user?.name || !user?.phone || !user?.dob || !user?.gender || !user?.stream || !user?.medium || !user?.address || !user?.school_college;
+  const isProfileIncomplete = !user?.name || !user?.phone || !user?.gender || !user?.stream || !user?.medium || !user?.address || !user?.school_college;
   const [isEditing, setIsEditing] = useState(isProfileIncomplete);
 
   useEffect(() => {

@@ -26,7 +26,7 @@ export default function EventForm() {
     registration_deadline: '',
     status: 'draft',
     form_type: 'json_schema',
-    form_schema_text: '[\n  { "field_id": "name", "label": "Full Name", "type": "text", "required": true },\n  { "field_id": "phone", "label": "Phone Number", "type": "phone", "required": true },\n  { "field_id": "email", "label": "Email", "type": "email", "required": false },\n  { "field_id": "stream", "label": "Stream", "type": "select", "options": ["Science","Commerce","Arts"], "required": true },\n  { "field_id": "school", "label": "School / College", "type": "text", "required": true },\n  { "field_id": "district", "label": "District", "type": "text", "required": true }\n]',
+    form_schema_text: '[\n  { "field_id": "name", "label": "Full Name", "type": "text", "required": true },\n  { "field_id": "phone", "label": "Phone Number", "type": "phone", "required": true },\n  { "field_id": "email", "label": "Email", "type": "email", "required": false },\n  { "field_id": "stream", "label": "Stream", "type": "select", "options": ["Science","Commerce","Arts"], "required": true },\n  { "field_id": "school", "label": "School / College", "type": "text", "required": true }\n]',
     form_html: '',
     streams: 'Science,Commerce,Arts',
   });

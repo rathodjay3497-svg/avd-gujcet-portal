@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
 import styles from './Footer.module.css';
+import useAuthStore from '@/store/authStore';
 
 export default function Footer() {
+  const { isAuthenticated, isAdmin } = useAuthStore();
+
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
@@ -17,13 +20,22 @@ export default function Footer() {
           <div className={styles.links}>
             <h4>Quick Links</h4>
             <Link to="/">Home</Link>
-            <Link to="/login">Student Login</Link>
-            <Link to="/admin/login">Admin</Link>
+            {!isAuthenticated ? (
+              <>
+                <Link to="/login">Student Login</Link>
+                <Link to="/admin/login">Admin</Link>
+              </>
+            ) : isAdmin ? (
+              <Link to="/admin">Admin Dashboard</Link>
+            ) : (
+              <Link to="/profile">My Profile</Link>
+            )}
           </div>
 
           <div className={styles.contact}>
             <h4>Contact</h4>
-            <p>{import.meta.env.VITE_CONTACT_EMAIL || 'support@gujcet.com'}</p>
+            <p>{import.meta.env.VITE_CONTACT_NUMBER || '+91 77788 88198'}</p>
+            <p>{import.meta.env.VITE_CONTACT_EMAIL || 'anandclasses369@gmail.com'}</p>
             <p>Ahmedabad, Gujarat, India</p>
           </div>
         </div>

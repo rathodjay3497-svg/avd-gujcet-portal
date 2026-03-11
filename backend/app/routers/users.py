@@ -12,7 +12,6 @@ router = APIRouter()
 class UpdateProfileRequest(BaseModel):
     name: str
     phone: Optional[str] = Field(None, pattern=r"^\d{10}$", description="10-digit Indian mobile number")
-    dob: Optional[str] = None
     gender: Optional[str] = None
     guardian_name: Optional[str] = None
     guardian_phone: Optional[str] = None
@@ -20,9 +19,7 @@ class UpdateProfileRequest(BaseModel):
     stream: Optional[str] = None
     medium: Optional[str] = None
     address: Optional[str] = None
-    district: Optional[str] = None
-    state: Optional[str] = "Gujarat"
-    pin_code: Optional[str] = None
+
 
 
 @router.get("/me", response_model=UserProfile)
