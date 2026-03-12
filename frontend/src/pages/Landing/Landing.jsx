@@ -44,9 +44,9 @@ export default function Landing() {
       {/* Stats Strip */}
       <section className={styles.stats}>
         <div className={styles.statsContainer}>
-          <StatItem icon="users" value="2,500+" label="Students Registered" />
-          <StatItem icon="calendar" value="5+" label="Events Available" />
-          <StatItem icon="award" value="20+" label="Expert Counselors" />
+          <StatItem icon="users" value="50+" label="Students Registered" />
+          <StatItem icon="calendar" value="3+" label="Events Available" />
+          <StatItem icon="award" value="10+" label="Expert Counselors" />
         </div>
       </section>
 

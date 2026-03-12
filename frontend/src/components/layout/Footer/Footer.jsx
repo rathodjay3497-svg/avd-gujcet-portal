@@ -34,6 +34,7 @@ export default function Footer() {
 
           <div className={styles.contact}>
             <h4>Contact</h4>
+            <p>{import.meta.env.VITE_CONTACT_NUMBER || '+91 95586 10369'}</p>
             <p>{import.meta.env.VITE_CONTACT_NUMBER || '+91 77788 88198'}</p>
             <p>{import.meta.env.VITE_CONTACT_EMAIL || 'anandclasses369@gmail.com'}</p>
             <p>Anand, Gujarat, India</p>

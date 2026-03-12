@@ -240,7 +240,7 @@ export default function Gujcet2026() {
         </div>
       </section>
 
-      {/* ===== SOCIAL ===== */}
+      {/* ===== SOCIAL =====
       <section className={styles.socialSection}>
         <h3 style={{ fontSize: '2rem', fontWeight: 800, color: '#0e4f8d', marginBottom: '0.5rem', textAlign: 'center' }}>Join Our Community</h3>
         <p style={{ color: '#64748b', marginBottom: '2rem', fontSize: '1.1rem', textAlign: 'center', margin: '0 auto 2rem auto', maxWidth: '600px' }}>Get daily tips, hacks, and updates straight to your phone.</p>
@@ -252,7 +252,7 @@ export default function Gujcet2026() {
             <Instagram size={20} /> Follow on Instagram
           </a>
         </div>
-      </section>
+      </section> */}
 
     </div>
   );
