@@ -2,7 +2,7 @@ import axios from 'axios';
 import useAuthStore from '@/store/authStore';
 
 const api = axios.create({
-  baseURL: 'https://cgznggdc2l37ep6rh2shy5cqvu0mwluy.lambda-url.ap-south-1.on.aws',
+  baseURL: 'https://hadtg6sq6whqva6aajw3o4a7qu0rxdpj.lambda-url.ap-south-1.on.aws',
   headers: {
     'Content-Type': 'application/json',
   },
