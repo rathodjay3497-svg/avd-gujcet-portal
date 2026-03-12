@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import useAuthStore from '@/store/authStore';
 
@@ -51,9 +51,12 @@ export default function App() {
   }
 
 
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
+
   return (
     <GoogleOAuthProvider clientId='864847094209-u3t36jucer522tvpb4mq8qpqv33l76i9.apps.googleusercontent.com'>
-      {!isAdmin && <Navbar />}
+      {!isAdminRoute && <Navbar />}
       <main className="page-animate">
         <Routes>
           {/* Public */}
@@ -133,7 +136,7 @@ export default function App() {
           />
         </Routes>
       </main>
-      {!isAdmin && <Footer />}
+      {!isAdminRoute && <Footer />}
     </GoogleOAuthProvider>
   );
 }

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { authAPI } from '@/services/api';
 import useAuthStore from '@/store/authStore';
 import toast from 'react-hot-toast';
@@ -19,11 +20,15 @@ function isProfileComplete(user) {
 export function useAuth() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const { setAuth, logout: storeLogout } = useAuthStore();
 
   const googleLogin = async (credential, redirectTo) => {
     setLoading(true);
     try {
+      // Clear any stale cache from a previous user's session before logging in
+      queryClient.clear();
+
       const { data: authData } = await authAPI.googleLogin(credential);
       const token = authData.access_token;
       const user = authData.user || {};
@@ -56,6 +61,7 @@ export function useAuth() {
   const adminLogin = async (username, password) => {
     setLoading(true);
     try {
+      queryClient.clear();
       const { data } = await authAPI.adminLogin(username, password);
       setAuth(data.access_token, { username }, true);
       toast.success('Admin login successful!');
@@ -71,6 +77,7 @@ export function useAuth() {
 
   const logout = async () => {
     await storeLogout();
+    queryClient.clear(); // wipe all cached query data on logout
     toast.success('Logged out');
     navigate('/');
   };
