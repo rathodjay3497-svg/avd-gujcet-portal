@@ -30,8 +30,7 @@ export default function Navbar() {
     <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
       <div className={styles.container}>
         <Link to="/" className={styles.logo}>
-          <span className={styles.logoIcon}>GC</span>
-          <span className={styles.logoText}>GUJCET Counseling</span>
+          <span className={styles.logoText}>GUJCET Crash Course 2026</span>
         </Link>
 
         <button
@@ -53,13 +52,13 @@ export default function Navbar() {
               setTimeout(() => document.getElementById('events')?.scrollIntoView({ behavior: 'smooth' }), 50);
             }
           }}>Events</Link>
-          <Link to="/#faq" onClick={() => {
+          {/* <Link to="/#faq" onClick={() => {
             if (location.pathname === '/') {
               setTimeout(() => document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' }), 50);
             }
-          }}>FAQ</Link>
+          }}>FAQ</Link> */}
           <Link to="/events/gujcet-2026" className={location.pathname === '/events/gujcet-2026' ? styles.active : ''}>
-            Gujcet Preparation
+            GUJCET Crash Course
           </Link>
           <Link to="/help-desk" className={location.pathname === '/help-desk' ? styles.active : ''}>
             Admission help desk

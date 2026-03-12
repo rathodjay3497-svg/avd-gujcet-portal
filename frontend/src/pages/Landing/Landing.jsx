@@ -29,10 +29,10 @@ export default function Landing() {
       <section className={styles.hero}>
         <div className={styles.heroContent}>
           <h1 className={styles.heroTitle}>
-            <span>GUJCET</span><br />Counseling 2026
+            <span>GUJCET</span><br /> Crash Course 2026
           </h1>
           <p className={styles.heroSubtitle}>
-            Expert guidance for college admissions. Register now for free — seats are limited.
+            Prepare Smart, Not Just Hard - Turn Your Preparation into Selection
           </p>
           <div className={styles.heroCtas}>
             <a href="#events" className={styles.ctaPrimary}>Register Now</a>
@@ -81,7 +81,7 @@ export default function Landing() {
       </section>
 
       {/* FAQ */}
-      <section className={styles.faqSection} id="faq">
+      {/* <section className={styles.faqSection} id="faq">
         <div className={styles.container}>
           <h2 className={styles.sectionTitle}>Frequently Asked Questions</h2>
           <div className={styles.faqList}>
@@ -91,7 +91,7 @@ export default function Landing() {
             <FaqItem question="Can I register for multiple events?" answer="Yes, you can register for as many events as you want, as long as seats are available." />
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Banner */}
       <section className={styles.ctaBanner}>

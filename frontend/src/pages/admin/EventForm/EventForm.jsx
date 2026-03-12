@@ -91,7 +91,7 @@ export default function EventForm() {
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.grid}>
             <Field label="Event ID (slug)" name="event_id" value={form.event_id} onChange={handleChange} disabled={isEdit} placeholder="e.g. gujcet-2026" />
-            <Field label="Title" name="title" value={form.title} onChange={handleChange} placeholder="GUJCET Free Counseling 2026" />
+            <Field label="Title" name="title" value={form.title} onChange={handleChange} placeholder="GUJCET Crash Course 2026" />
             <Field label="Venue" name="venue" value={form.venue} onChange={handleChange} />
             <Field label="Start Date" name="start_date" type="datetime-local" value={form.start_date} onChange={handleChange} />
             <Field label="End Date (Optional)" name="end_date" type="datetime-local" value={form.end_date} onChange={handleChange} />

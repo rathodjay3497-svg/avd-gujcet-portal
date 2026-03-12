@@ -53,7 +53,7 @@ export default function Gujcet2026() {
       </section>
 
       {/* ===== 2. PROGRAMS ===== */}
-      <section id="programs" className={styles.section}>
+      {/* <section id="programs" className={styles.section}>
         <h2 className={styles.sectionTitle}>Elite Programs</h2>
         <div className={styles.programsGrid}>
           <div className={styles.programCard}>
@@ -81,7 +81,7 @@ export default function Gujcet2026() {
             </ul>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ===== 3. DID YOU KNOW ===== */}
       <section className={styles.section} style={{ paddingTop: 0 }}>

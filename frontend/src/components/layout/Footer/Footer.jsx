@@ -11,10 +11,10 @@ export default function Footer() {
         <div className={styles.grid}>
           <div className={styles.brand}>
             <div className={styles.logo}>
-              <span className={styles.logoIcon}>GC</span>
-              <span>GUJCET Counseling</span>
+              {/* <span className={styles.logoIcon}>GC</span> */}
+              <span>GUJCET Crash Course</span>
             </div>
-            <p>Free expert counseling for GUJCET students to make informed college admission decisions.</p>
+            <p>Expert guidance for GUJCET preparation to help students build strong concepts and achieve top scores.</p>
           </div>
 
           <div className={styles.links}>
@@ -42,7 +42,7 @@ export default function Footer() {
         </div>
 
         <div className={styles.bottom}>
-          <p>&copy; {new Date().getFullYear()} GUJCET Free Counseling Platform. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} GUJCET Counseling Platform. All rights reserved.</p>
         </div>
       </div>
     </footer>
