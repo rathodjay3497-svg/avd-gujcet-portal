@@ -99,7 +99,7 @@ export function useCheckRegistration(eventId) {
   });
 }
 
-export function useUpdateProfile() {
+export function useUpdateProfile(onDone) {
   const { updateUser } = useAuthStore();
   return useMutation({
     mutationFn: async (profileData) => {
@@ -109,6 +109,7 @@ export function useUpdateProfile() {
     onSuccess: (updatedUser) => {
       updateUser(updatedUser);
       toast.success('Profile updated successfully!');
+      onDone?.();
     },
     onError: (err) => {
       const detail = err.response?.data?.detail;

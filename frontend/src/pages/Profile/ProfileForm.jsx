@@ -6,7 +6,7 @@ import useAuthStore from '@/store/authStore';
 
 export default function ProfileForm({ onCancel }) {
     const { user } = useAuthStore();
-    const updateMutation = useUpdateProfile();
+    const updateMutation = useUpdateProfile(onCancel);
 
     const [formData, setFormData] = useState({
         name: user?.name || '',
@@ -26,8 +26,7 @@ export default function ProfileForm({ onCancel }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await updateMutation.mutateAsync(formData);
-        onCancel();
+        updateMutation.mutate(formData);
     };
 
     const isComplete = user?.name && user?.phone && user?.stream && user?.address && user?.school_college && user?.gender;

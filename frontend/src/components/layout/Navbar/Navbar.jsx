@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import useAuthStore from '@/store/authStore';
 import styles from './Navbar.module.css';
 
@@ -7,7 +8,13 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { isAuthenticated, user, logout } = useAuthStore();
+  const queryClient = useQueryClient();
   const location = useLocation();
+
+  const handleLogout = async () => {
+    await logout();
+    queryClient.clear(); // wipe all cached query data (registration status, etc.)
+  };
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -63,7 +70,7 @@ export default function Navbar() {
               <Link to="/profile" className={styles.profileLink}>
                 {user?.name || 'Profile'}
               </Link>
-              <button onClick={logout} className={styles.logoutBtn}>
+              <button onClick={handleLogout} className={styles.logoutBtn}>
                 Logout
               </button>
             </div>

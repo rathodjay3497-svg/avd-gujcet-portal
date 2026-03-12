@@ -99,7 +99,16 @@ export default function Profile() {
           {/* Main Content */}
           <div className={styles.main}>
             {(isEditing || isProfileIncomplete) ? (
-              <ProfileForm onCancel={() => setIsEditing(false)} />
+              <ProfileForm
+                onCancel={() => {
+                  if (isProfileIncomplete) {
+                    // New user — redirect to events section after first save
+                    navigate('/#events');
+                  } else {
+                    setIsEditing(false);
+                  }
+                }}
+              />
             ) : null}
 
             <h2 className={styles.sectionTitle}>My Registrations</h2>
