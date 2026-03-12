@@ -26,6 +26,7 @@ allowed_origins = [
     "https://gujcet-session.netlify.app",  # production frontend
     "http://localhost:5173",
     "http://localhost:3000",
+    "https://suhradyouths.hpparam.com"
 ]
 # Add any extra URLs from env vars (avoids duplicates)
 for url in [settings.FRONTEND_URL, settings.FRONTEND_CUSTOM_URL]:

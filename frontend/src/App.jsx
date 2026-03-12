@@ -52,7 +52,7 @@ export default function App() {
 
 
   return (
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ''}>
+    <GoogleOAuthProvider clientId='864847094209-u3t36jucer522tvpb4mq8qpqv33l76i9.apps.googleusercontent.com'>
       {!isAdmin && <Navbar />}
       <main className="page-animate">
         <Routes>
