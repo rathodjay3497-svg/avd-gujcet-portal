@@ -36,7 +36,7 @@ export default function Landing() {
           </p>
           <div className={styles.heroCtas}>
             <a href="#events" className={styles.ctaPrimary}>Register Now</a>
-            <a href="#how-it-works" className={styles.ctaSecondary}>Learn More</a>
+            <Link to="/events/gujcet-2026" className={styles.ctaSecondary}>Learn More</Link>
           </div>
         </div>
       </section>
@@ -94,13 +94,13 @@ export default function Landing() {
       </section> */}
 
       {/* CTA Banner */}
-      <section className={styles.ctaBanner}>
+      {/* <section className={styles.ctaBanner}>
         <div className={styles.container}>
           <h2>Ready to get counseled?</h2>
           <p>Register for free today and take the first step toward your dream college.</p>
           <a href="#events" className={styles.ctaPrimary}>Register Now</a>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }
