@@ -227,7 +227,7 @@ Stay tuned! We are collecting and organizing admission information from various 
 <div className={styles.careerSection}>
 
 <h2 className={styles.careerTitle}>
-Explore Career Paths After 10th & 12th
+Explore Career Paths After 12th
 </h2>
 
 <p className={styles.careerText}>
