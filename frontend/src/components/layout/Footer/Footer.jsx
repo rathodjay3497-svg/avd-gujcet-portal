@@ -34,15 +34,15 @@ export default function Footer() {
 
           <div className={styles.contact}>
             <h4>Contact</h4>
-            <p>{import.meta.env.VITE_CONTACT_NUMBER || '+91 95586 10369'}</p>
-            <p>{import.meta.env.VITE_CONTACT_NUMBER || '+91 77788 88198'}</p>
-            <p>{import.meta.env.VITE_CONTACT_EMAIL || 'anandclasses369@gmail.com'}</p>
+            <p>{'+91 95586 10369'}</p>
+            <p>{'+91 77788 88198'}</p>
+            <p>{'anandclasses369@gmail.com'}</p>
             <p>Anand, Gujarat, India</p>
           </div>
         </div>
 
         <div className={styles.bottom}>
-          <p>&copy; {new Date().getFullYear()} GUJCET Counseling Platform. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} GUJCET Crash Course Platform. All rights reserved.</p>
         </div>
       </div>
     </footer>

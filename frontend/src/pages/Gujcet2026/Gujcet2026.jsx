@@ -84,7 +84,7 @@ export default function Gujcet2026() {
       </section> */}
 
       {/* ===== 3. DID YOU KNOW ===== */}
-      <section className={styles.section} style={{ paddingTop: 0 }}>
+      <section className={styles.section}>
         <div className={styles.realityCheck}>
           <AlertTriangle color="#ea580c" size={48} style={{ marginBottom: '1rem' }} />
           <p>
