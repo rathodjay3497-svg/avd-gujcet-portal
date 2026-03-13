@@ -32,7 +32,9 @@ export default function Landing() {
             <span>GUJCET</span><br /> Crash Course 2026
           </h1>
           <p className={styles.heroSubtitle}>
-            Prepare Smart, Not Just Hard - Turn Your Preparation into Selection
+            Prepare Smart, Not Just Hard.
+            <br />
+            Turn Your Preparation into Selection.
           </p>
           <div className={styles.heroCtas}>
             <a href="#events" className={styles.ctaPrimary}>Register Now</a>
@@ -79,6 +81,31 @@ export default function Landing() {
           </div>
         </div>
       </section>
+
+      {/* About Us
+      <section className={styles.aboutUs} id="about-us">
+        <div className={styles.container}>
+          <h2 className={styles.sectionTitle}>About Us</h2>
+          <div className={styles.aboutGrid}>
+            <div className={styles.aboutContent}>
+              <div className={styles.aboutText}>
+                <p><strong>Core Focus:</strong> Quality education for Standards 7–12, prioritizing concept-based learning and academic foundations.</p>
+                <p><strong>Academic Programs:</strong></p>
+                <ul>
+                  <li><strong>Std 7-10:</strong> Science, Math, Social Science, and English.</li>
+                  <li><strong>Std 11-12:</strong> Dedicated Science and Commerce streams.</li>
+                </ul>
+                <p><strong>Future-Ready Skills:</strong> Free courses in Python Programming and Robotics to build modern technical literacy.</p>
+                <p><strong>Exam Excellence:</strong> Specialized GUJCET Crash Courses led by subject experts for competitive success.</p>
+                <p><strong>Why ACC?</strong> Experienced faculty, simplified learning, and a supportive environment designed for confidence.</p>
+              </div>
+            </div>
+            <div className={styles.aboutImageContainer}>
+              <img src="/assets/gujcet/369.jpg.jpeg" alt="About Anand Coaching Centre" className={styles.aboutImage} />
+            </div>
+          </div>
+        </div>
+      </section> */}
 
       {/* FAQ */}
       {/* <section className={styles.faqSection} id="faq">

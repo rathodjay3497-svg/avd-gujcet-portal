@@ -13,8 +13,12 @@ export default function EventCard({ event }) {
       <div className={styles.body}>
         <h3 className={styles.title}>
           {event.title}
-          {event.future_scope && (
+          {event.future_scope ? (
             <span className={styles.futureBadge}>Coming soon</span>
+          ) : (
+            <span className={styles.liveBadge} title="Active Event">
+              <span className={styles.blinkingDot}></span> Live
+            </span>
           )}
         </h3>
         {event.organized_by && (

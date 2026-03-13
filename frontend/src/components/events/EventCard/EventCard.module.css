@@ -41,6 +41,36 @@
   transform: translateY(-2px);
 }
 
+.liveBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #4475ef; /* Blue */
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+  text-transform: uppercase;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(68, 117, 239, 0.25);
+}
+
+.blinkingDot {
+  width: 6px;
+  height: 6px;
+  background-color: #fff;
+  border-radius: 50%;
+  animation: blink 1.2s infinite ease-in-out;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 .organizedBy {
   font-size: 0.875rem;
   color: #64748B;

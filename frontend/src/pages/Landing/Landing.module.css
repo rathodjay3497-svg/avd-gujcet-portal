@@ -338,6 +338,101 @@
   margin: 0 auto 1rem;
 }
 
+.aboutUs {
+  padding: 4rem 0;
+  background: #EFF6FF;
+}
+
+.aboutGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+@media (max-width: 992px) {
+  .aboutGrid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+.aboutContent {
+  width: 100%;
+}
+
+.aboutText {
+  color: #475569;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.sectionTitleLeft {
+  color: #1A3C6E;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+  margin-bottom: 2rem;
+  font-size: 1.875rem;
+}
+
+.sectionTitleLeft::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 48px;
+  height: 3px;
+  background: #F59E0B;
+  border-radius: 2px;
+}
+
+.aboutText {
+  color: #475569;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.aboutText p {
+  margin-bottom: 1rem;
+}
+
+.aboutText strong {
+  color: #1A3C6E;
+  font-weight: 600;
+}
+
+.aboutText ul {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+  list-style-type: disc;
+}
+
+.aboutText li {
+  margin-bottom: 0.5rem;
+}
+
+.aboutImageContainer {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(26, 60, 110, 0.12);
+  display: flex;
+  width: 100%;
+}
+
+.aboutImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.aboutImageContainer:hover .aboutImage {
+  transform: scale(1.03);
+}
+
 .faqSection {
   padding: 4rem 0;
   background: #EFF6FF;

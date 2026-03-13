@@ -30,7 +30,7 @@ export default function Navbar() {
     <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
       <div className={styles.container}>
         <Link to="/" className={styles.logo}>
-          <span className={styles.logoText}>GUJCET Crash Course 2026</span>
+          <span className={styles.logoText}>Anand Coaching Centre (ACC)</span>
         </Link>
 
         <button
@@ -61,7 +61,7 @@ export default function Navbar() {
             GUJCET Crash Course
           </Link>
           <Link to="/help-desk" className={location.pathname === '/help-desk' ? styles.active : ''}>
-            Admission help desk
+            Admission Help Desk
           </Link>
 
           {isAuthenticated ? (
