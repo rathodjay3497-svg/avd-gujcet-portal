@@ -22,7 +22,7 @@ export default function Footer() {
             <Link to="/">Home</Link>
             {!isAuthenticated ? (
               <>
-                <Link to="/login">Student Login</Link>
+                {/* <Link to="/login">Student Login</Link> */}
                 <Link to="/admin/login">Admin</Link>
               </>
             ) : isAdmin ? (
