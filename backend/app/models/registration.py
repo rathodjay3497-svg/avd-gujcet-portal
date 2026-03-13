@@ -1,9 +1,29 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from typing import Optional, Dict, Any
+import re
 
 
 class RegistrationCreate(BaseModel):
     form_data: Dict[str, Any]
+
+
+class PublicRegistrationRequest(BaseModel):
+    name: str
+    phone: str  # 10-digit mobile number
+    gender: str = "Male"
+    school_college: str
+    stream: str
+    medium: str = "English"
+    address: str
+    email: Optional[str] = None
+
+    @field_validator("phone")
+    @classmethod
+    def validate_phone(cls, v: str) -> str:
+        digits = re.sub(r"\D", "", v)
+        if len(digits) != 10:
+            raise ValueError("Phone number must be exactly 10 digits")
+        return digits
 
 
 class RegistrationResponse(BaseModel):

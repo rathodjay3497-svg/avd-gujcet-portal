@@ -285,12 +285,29 @@ def get_event_registrations(event_id: str) -> List[Dict]:
         raise
 
 
+def get_registration_by_phone(event_id: str, phone: str) -> Optional[Dict]:
+    """Check if a phone number is already registered for an event."""
+    request_id = get_request_id()
+    dynamo_logger.debug(f"Checking phone duplicate for event: {event_id}, phone: {phone}", request_id=request_id)
+    try:
+        registrations = get_event_registrations(event_id)
+        for reg in registrations:
+            form_data = reg.get("form_data", {})
+            if form_data.get("phone") == phone or reg.get("phone") == phone:
+                dynamo_logger.info(f"Phone duplicate found for event: {event_id}, phone: {phone}", request_id=request_id)
+                return reg
+        return None
+    except Exception as e:
+        dynamo_logger.error(f"Error checking phone duplicate for event {event_id}: {str(e)}", request_id=request_id, exc_info=True)
+        raise
+
+
 # ─── Registration Counter ───────────────────────────────────────
 
-def get_next_registration_id(event_id: str, year: int) -> str:
+def get_next_registration_id(event_id: str) -> str:
     """Generate next registration ID using an atomic counter."""
     request_id = get_request_id()
-    dynamo_logger.debug(f"Generating next registration ID for event: {event_id}, year: {year}", request_id=request_id)
+    dynamo_logger.debug(f"Generating next registration ID for event: {event_id}", request_id=request_id)
     try:
         table = _get_table()
         resp = table.update_item(
@@ -301,9 +318,11 @@ def get_next_registration_id(event_id: str, year: int) -> str:
             ReturnValues="UPDATED_NEW",
         )
         count = int(resp["Attributes"]["count"])
-        reg_id = f"GCK-{year}-{count:05d}"
+        # User requested to fix the registration ID to use the event number
+        reg_id = f"GCK-{event_id}-{count:05d}"
         dynamo_logger.info(f"Generated registration ID: {reg_id}", request_id=request_id)
         return reg_id
     except Exception as e:
         dynamo_logger.error(f"Error generating registration ID for event {event_id}: {str(e)}", request_id=request_id, exc_info=True)
         raise
+

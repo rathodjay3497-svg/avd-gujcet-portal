@@ -1,78 +1,70 @@
-import { useEffect, useRef } from 'react';
-import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useEvent } from '@/hooks/useEvent';
-import { useRegister, useCheckRegistration } from '@/hooks/useRegistration';
-import useAuthStore from '@/store/authStore';
-import DynamicForm from '@/components/forms/DynamicForm/DynamicForm';
-import HtmlFormRenderer from '@/components/forms/HtmlFormRenderer/HtmlFormRenderer';
+import { usePublicRegister } from '@/hooks/useRegistration';
 import Loader from '@/components/ui/Loader/Loader';
-import Button from '@/components/ui/Button/Button';
 import styles from './RegisterForm.module.css';
+
+const STREAMS = [
+  'Science (PCM)',
+  'Science (PCB)',
+  'Science (PCMB)',
+  'Other',
+];
 
 export default function RegisterForm() {
   const { eventId } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
-  const { isAuthenticated, user } = useAuthStore();
   const { data: event, isLoading: isEventLoading } = useEvent(eventId);
-  const registerMutation = useRegister();
-  const hasRedirected = useRef(false);
+  const registerMutation = usePublicRegister();
 
-  const phone = user?.phone;
-  const { data: checkData, isLoading: isCheckLoading } = useCheckRegistration(eventId);
+  const [form, setForm] = useState({
+    name: '',
+    phone: '',
+    gender: 'Male',
+    school_college: '',
+    stream: '',
+    medium: 'English',
+    address: '',
+  });
+  const [errors, setErrors] = useState({});
 
-  const isProfileIncomplete = !user?.name || !user?.stream || !user?.address || !user?.school_college;
+  useEffect(() => { window.scrollTo(0, 0); }, []);
 
-  useEffect(() => {
-    if (hasRedirected.current) return;
-    if (!isAuthenticated) {
-      hasRedirected.current = true;
-      navigate('/login', { state: { from: location.pathname }, replace: true });
-    } else if (isProfileIncomplete) {
-      hasRedirected.current = true;
-      navigate('/profile', { state: { message: 'Please complete your profile to register for events.' }, replace: true });
-    }
-  }, [isAuthenticated, isProfileIncomplete, navigate, location.pathname]);
-
-  if (isEventLoading || isCheckLoading) return <Loader text="Loading..." />;
+  if (isEventLoading) return <Loader text="Loading event…" />;
   if (!event) return <div className={styles.error}>Event not found</div>;
-  if (!isAuthenticated || isProfileIncomplete) return null;
 
-  if (checkData?.registered) {
-    return (
-      <div className={styles.page}>
-        <div className={styles.container}>
-          <div className={styles.card} style={{ textAlign: 'center' }}>
-            <h2 className={styles.title}>Already Registered</h2>
-            <p className={styles.subtitle} style={{ marginBottom: '2rem' }}>
-              You have already registered for this event.
-            </p>
-            <Link to="/profile">
-              <Button>View My Registrations</Button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // ── Validation ────────────────────────────────────────────────
+  const validate = () => {
+    const e = {};
+    if (!form.name.trim()) e.name = 'Full name is required';
+    if (!/^\d{10}$/.test(form.phone.trim())) e.phone = 'Enter a valid 10-digit mobile number';
+    if (!form.gender) e.gender = 'Please select gender';
+    if (!form.school_college.trim()) e.school_college = 'School / College name is required';
+    if (!form.stream) e.stream = 'Please select academic stream';
+    if (!form.medium) e.medium = 'Please select medium';
+    if (!form.address.trim()) e.address = 'Address is required';
+    return e;
+  };
 
-  const isAutoRegistering = useRef(false);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) setErrors(prev => ({ ...prev, [name]: undefined }));
+  };
 
-  const handleFormSubmit = async (formData = {}) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     try {
       const result = await registerMutation.mutateAsync({
         eventId,
-        phone,
-        formData: {
-          name: user.name,
-          stream: user.stream,
-          medium: user.medium,
-          email: user.email,
-          address: user.address,
-          school_college: user.school_college,
-          ...formData,
-          phone
-        },
+        formData: { ...form, phone: form.phone.trim() },
       });
 
       navigate('/register/success', {
@@ -84,79 +76,155 @@ export default function RegisterForm() {
           eventEndDate: event.end_date,
           eventFee: event.fee,
           organizedBy: event.organized_by,
-          userName: user.name,
-          userPhone: user.phone,
-          userEmail: user.email,
-          userStream: user.stream,
-          userSchool: user.school_college,
-          userAddress: user.address,
-          userMedium: user.medium,
+          userName: form.name,
+          userPhone: form.phone.trim(),
+          userStream: form.stream,
+          userSchool: form.school_college,
+          userMedium: form.medium,
+          userGender: form.gender,
         },
       });
-    } catch (err) {
-      isAutoRegistering.current = false;
+    } catch {
+      // Error toast is shown by the hook
     }
   };
-
-  useEffect(() => {
-    // Auto-register gujcet-2026 if all conditions are met
-    if (
-      eventId === 'gujcet-2026' &&
-      event &&
-      isAuthenticated &&
-      !isProfileIncomplete &&
-      !checkData?.registered &&
-      !isAutoRegistering.current
-    ) {
-      isAutoRegistering.current = true;
-      handleFormSubmit({});
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eventId, event, isAuthenticated, isProfileIncomplete, checkData]);
-
-  if (eventId === 'gujcet-2026' && isAutoRegistering.current) {
-    return <Loader text="Registering you automatically..." />;
-  }
-
-  // Determine if we should bypass the explicit form for this event
-  const bypassForm = eventId === 'gujcet-2026';
 
   return (
     <div className={styles.page}>
       <div className={styles.container}>
         <div className={styles.card}>
           <h2 className={styles.title}>Register for {event.title}</h2>
-          <p className={styles.subtitle}>{event.venue} &bull; {event.start_date?.slice(0, 10)}</p>
-
-          <div className={styles.phoneDisplay}>
-            Registering as: <strong>{user?.name} (+91 {phone})</strong>
-          </div>
-
-          {!bypassForm && event.form_type === 'html' && event.form_html ? (
-            <HtmlFormRenderer
-              htmlString={event.form_html}
-              onSubmit={handleFormSubmit}
-            />
-          ) : !bypassForm && event.form_schema ? (
-            <DynamicForm
-              schema={event.form_schema}
-              onSubmit={handleFormSubmit}
-              loading={registerMutation.isPending}
-            />
-          ) : (
-            <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-              <p style={{ marginBottom: '1.5rem', color: '#64748B' }}>
-                Your profile details will be used for this registration.
-              </p>
-              <Button
-                onClick={() => handleFormSubmit({})}
-                loading={registerMutation.isPending}
-                size="lg"
-              >
-                Confirm Registration
-              </Button>
-            </div>
+          {event.venue && event.start_date && (
+            <p className={styles.subtitle}>{event.venue} &bull; {event.start_date?.slice(0, 10)}</p>
           )}
+
+          <form onSubmit={handleSubmit} noValidate>
+
+            {/* ── Row 1: Name + Phone ── */}
+            <div className={styles.row}>
+              <div className={styles.field}>
+                <label className={styles.label}>Full Name <span className={styles.required}>*</span></label>
+                <input
+                  className={`${styles.input} ${errors.name ? styles.inputError : ''}`}
+                  type="text"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  placeholder="Firstname Lastname"
+                />
+                {errors.name && <span className={styles.errorMsg}>{errors.name}</span>}
+              </div>
+
+              <div className={styles.field}>
+                <label className={styles.label}>Mobile Number (WhatsApp) <span className={styles.required}>*</span></label>
+                <div className={`${styles.phoneWrapper} ${errors.phone ? styles.inputError : ''}`}>
+                  <span className={styles.phonePrefix}>+91</span>
+                  <input
+                    className={styles.phoneInput}
+                    type="tel"
+                    name="phone"
+                    value={form.phone}
+                    onChange={handleChange}
+                    placeholder="10-digit mobile number"
+                    maxLength={10}
+                  />
+                </div>
+                {errors.phone && <span className={styles.errorMsg}>{errors.phone}</span>}
+              </div>
+            </div>
+
+            {/* ── Gender ── */}
+            <div className={styles.field}>
+              <label className={styles.label}>Gender <span className={styles.required}>*</span></label>
+              <div className={styles.radioGroup}>
+                {['Male', 'Female'].map(g => (
+                  <label key={g} className={styles.radioLabel}>
+                    <input
+                      type="radio"
+                      name="gender"
+                      value={g}
+                      checked={form.gender === g}
+                      onChange={handleChange}
+                    />
+                    {g}
+                  </label>
+                ))}
+              </div>
+              {errors.gender && <span className={styles.errorMsg}>{errors.gender}</span>}
+            </div>
+
+            {/* ── School / College ── */}
+            <div className={styles.field}>
+              <label className={styles.label}>School / College Name <span className={styles.required}>*</span></label>
+              <input
+                className={`${styles.input} ${errors.school_college ? styles.inputError : ''}`}
+                type="text"
+                name="school_college"
+                value={form.school_college}
+                onChange={handleChange}
+                placeholder="Example High School"
+              />
+              {errors.school_college && <span className={styles.errorMsg}>{errors.school_college}</span>}
+            </div>
+
+            {/* ── Row 2: Stream + Medium ── */}
+            <div className={styles.row}>
+              <div className={styles.field}>
+                <label className={styles.label}>Academic Stream <span className={styles.required}>*</span></label>
+                <select
+                  className={`${styles.select} ${errors.stream ? styles.inputError : ''}`}
+                  name="stream"
+                  value={form.stream}
+                  onChange={handleChange}
+                >
+                  <option value="">Select Stream</option>
+                  {STREAMS.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+                {errors.stream && <span className={styles.errorMsg}>{errors.stream}</span>}
+              </div>
+
+              <div className={styles.field}>
+                <label className={styles.label}>Medium <span className={styles.required}>*</span></label>
+                <div className={styles.radioGroup}>
+                  {['Gujarati', 'English'].map(m => (
+                    <label key={m} className={styles.radioLabel}>
+                      <input
+                        type="radio"
+                        name="medium"
+                        value={m}
+                        checked={form.medium === m}
+                        onChange={handleChange}
+                      />
+                      {m}
+                    </label>
+                  ))}
+                </div>
+                {errors.medium && <span className={styles.errorMsg}>{errors.medium}</span>}
+              </div>
+            </div>
+
+            {/* ── Address ── */}
+            <div className={styles.field}>
+              <label className={styles.label}>Full Address <span className={styles.required}>*</span></label>
+              <textarea
+                className={`${styles.textarea} ${errors.address ? styles.inputError : ''}`}
+                name="address"
+                value={form.address}
+                onChange={handleChange}
+                placeholder="Enter your full address"
+                rows={3}
+              />
+              {errors.address && <span className={styles.errorMsg}>{errors.address}</span>}
+            </div>
+
+            <button
+              type="submit"
+              className={styles.submitBtn}
+              disabled={registerMutation.isPending}
+            >
+              {registerMutation.isPending ? 'Submitting…' : 'Submit Registration'}
+            </button>
+          </form>
         </div>
       </div>
     </div>

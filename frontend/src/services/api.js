@@ -3,6 +3,7 @@ import useAuthStore from '@/store/authStore';
 
 const api = axios.create({
   baseURL: 'https://hadtg6sq6whqva6aajw3o4a7qu0rxdpj.lambda-url.ap-south-1.on.aws',
+  // baseURL: 'http://localhost:8000',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -43,6 +44,8 @@ export const registrationsAPI = {
   register: (eventId, formData) =>
     api.post(`/registrations/${eventId}`, { form_data: formData }),
   clickRegister: (eventId) => api.post(`/registrations/${eventId}/click`),
+  publicRegister: (eventId, formData) =>
+    api.post(`/registrations/${eventId}/public`, formData),
   myRegistrations: () => api.get('/registrations/me'),
   check: (eventId) => api.get(`/registrations/${eventId}/check`),
 };
