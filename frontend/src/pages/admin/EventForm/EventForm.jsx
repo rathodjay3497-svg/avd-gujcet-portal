@@ -27,6 +27,7 @@ export default function EventForm() {
     fee: 0,
     registration_deadline: '',
     status: 'draft',
+    contact_details: '',
     form_type: 'json_schema',
     form_schema_text: '[\n  { "field_id": "name", "label": "Full Name", "type": "text", "required": true },\n  { "field_id": "phone", "label": "Phone Number", "type": "phone", "required": true },\n  { "field_id": "email", "label": "Email", "type": "email", "required": false },\n  { "field_id": "stream", "label": "Stream", "type": "select", "options": ["Science","Commerce","Arts"], "required": true },\n  { "field_id": "school", "label": "School / College", "type": "text", "required": true }\n]',
     form_html: '',
@@ -38,7 +39,12 @@ export default function EventForm() {
       eventsAPI.get(id).then(({ data }) => {
         setForm({
           ...data,
+          start_date: data.start_date || '',
+          end_date: data.end_date || '',
+          start_time: data.start_time || '',
+          end_time: data.end_time || '',
           registration_deadline: data.registration_deadline || '',
+          contact_details: data.contact_details || '',
           form_schema_text: data.form_schema ? JSON.stringify(data.form_schema, null, 2) : '',
           form_html: data.form_html || '',
           streams: data.streams?.join(',') || '',
@@ -104,6 +110,7 @@ export default function EventForm() {
           </div>
 
           <Field label="Description" name="description" value={form.description} onChange={handleChange} textarea />
+          <Field label="Contact Details (Optional)" name="contact_details" value={form.contact_details} onChange={handleChange} placeholder="e.g. John Doe - 9876543210" />
 
           <div className={styles.grid}>
             <div className={styles.field}>

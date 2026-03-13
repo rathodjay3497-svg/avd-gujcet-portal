@@ -29,6 +29,7 @@ class EventCreate(BaseModel):
     organized_by: Optional[str] = None
     future_scope: Optional[bool] = False
     registration_deadline: Optional[str] = None
+    contact_details: Optional[str] = None
     status: EventStatus = EventStatus.DRAFT
 
 
@@ -46,6 +47,7 @@ class EventUpdate(BaseModel):
     organized_by: Optional[str] = None
     future_scope: Optional[bool] = None
     registration_deadline: Optional[str] = None
+    contact_details: Optional[str] = None
     status: Optional[EventStatus] = None
 
 
@@ -64,6 +66,7 @@ class EventResponse(BaseModel):
     organized_by: Optional[str] = None
     future_scope: Optional[bool] = False
     registration_deadline: Optional[str]
+    contact_details: Optional[str] = None
     status: str
     created_at: str
 
