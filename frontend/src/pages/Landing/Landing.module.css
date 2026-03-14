@@ -281,7 +281,7 @@
 }
 
 .howItWorks {
-  padding: 4rem 0;
+  padding-bottom: 4rem;
   background: #FFFFFF;
 }
 
@@ -336,6 +336,20 @@
   font-size: 1.25rem;
   border-radius: 50%;
   margin: 0 auto 1rem;
+}
+
+.homeImageSection {
+  padding-bottom: 4rem;
+  background: #FFFFFF;
+}
+
+.homeImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(26, 60, 110, 0.12);
+  margin: 0 auto;
 }
 
 .aboutUs {

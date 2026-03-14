@@ -6,10 +6,8 @@ import Loader from '@/components/ui/Loader/Loader';
 import styles from './RegisterForm.module.css';
 
 const STREAMS = [
-  'Science (PCM)',
-  'Science (PCB)',
-  'Science (PCMB)',
-  'Other',
+  'A Group (PCM)',
+  'B Group (PCB)',
 ];
 
 export default function RegisterForm() {

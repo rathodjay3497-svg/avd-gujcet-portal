@@ -76,10 +76,14 @@
 }
 
 .table td {
-  padding: 12px 14px;
+  padding: 16px 14px;
+  /* Increased padding for better breathing room */
   border-bottom: 1px solid #eee;
-  vertical-align: top;
   font-size: 0.875rem;
+
+  /* The Magic Sauce for Centering */
+  vertical-align: middle !important;
+  text-align: center;
 }
 
 .table tbody tr:nth-child(even) {
@@ -95,15 +99,22 @@
   color: #6b7280;
 }
 
+.comingSoon {
+  color: #94a3b8;
+  font-style: italic;
+  font-weight: 400;
+}
+
 .courseBadge {
   background: #bfe7d0;
   color: #065f46;
   padding: 6px 12px;
-  border-radius: 20px;
+  border-radius: 8px;
+  /* Slightly more modern than 20px */
   font-weight: 600;
   font-size: 0.8125rem;
   display: inline-block;
-  white-space: normal;
+  line-height: 1.4;
 }
 
 .link {
@@ -124,12 +135,16 @@
 
 .linkContent {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: baseline;
-  gap: 0.25rem 0.5rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
   width: 100%;
-  min-width: 0;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
 }
 
 .linkText {
@@ -145,6 +160,49 @@
 .linkSeparator {
   color: #64748b;
   white-space: nowrap;
+}
+
+
+/* Primary Action Button (Link 1) */
+.actionButton {
+  background: #3d71e0;
+  /* Matches your header color */
+  color: white !important;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  /* transition: transform 0.1s, background 0.2s; */
+  border: 1px solid #1a3c6e;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+  transition: all 0.2s ease;
+}
+
+.actionButton:hover {
+  background: #1d4ed8;
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Secondary Action Button (Link 2) */
+.actionButtonOutline {
+  background: transparent;
+  color: #1a3c6e !important;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid #1a3c6e;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.actionButtonOutline:hover {
+  background: #f1f5f9;
+  text-decoration: none !important;
 }
 
 /* Tablet */
@@ -406,34 +464,34 @@
   }
 }
 
-.careerSection{
-  margin-top:60px;
-  text-align:center;
-  }
-  
-  .careerTitle{
-  font-size:26px;
-  font-weight:700;
-  margin-bottom:10px;
-  }
-  
-  .careerText{
-  max-width:750px;
-  margin:auto;
-  color:#666;
-  line-height:1.6;
-  margin-bottom:25px;
-  }
-  
-  .imageContainer{
-  display:flex;
-  justify-content:center;
-  overflow-x:auto;
-  }
-  
-  .careerImage{
-  max-width:100%;
-  height:auto;
-  border-radius:10px;
-  box-shadow:0 6px 20px rgba(0,0,0,0.08);
-  }
+.careerSection {
+  margin-top: 60px;
+  text-align: center;
+}
+
+.careerTitle {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.careerText {
+  max-width: 750px;
+  margin: auto;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+}
+
+.careerImage {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}

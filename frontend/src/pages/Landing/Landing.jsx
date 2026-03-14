@@ -82,6 +82,17 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* Hero Image Section */}
+      <section className={styles.homeImageSection}>
+        <div className={styles.container}>
+          <img 
+            src="/assets/gujcet/homepage.png" 
+            alt="GUJCET Portal Homepage" 
+            className={styles.homeImage} 
+          />
+        </div>
+      </section>
+
       {/* About Us
       <section className={styles.aboutUs} id="about-us">
         <div className={styles.container}>

@@ -29,7 +29,7 @@ export default function Gujcet2026() {
           <p className={styles.subHeadline}>
             Short on time? Join Gujarat's most elite 11-day sprint. We turn average scores into 110+ through surgical precision and expert-led strategies.
           </p>
-          <a href="#programs" className={styles.ctaButton}>Explore Programs</a>
+          {/* <a href="#programs" className={styles.ctaButton}>Explore Programs</a> */}
 
           <div className={styles.statsRibbon}>
             <div className={styles.statCard}>
@@ -111,8 +111,8 @@ export default function Gujcet2026() {
 
           <div>
             <img
-              src="/assets/gujcet/acc-class.jpg"
-              alt="Anand Coaching Centre – Admissions Open"
+              src="/assets/gujcet/acc-class.jpeg"
+              alt="Anand Coaching Centre - Admissions Open"
               className={styles.aboutImage}
             />
           </div>
