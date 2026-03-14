@@ -24,7 +24,7 @@ import AdminRegistrations from '@/pages/admin/Registrations/Registrations';
 
 function AdminRoute({ children }) {
   const { isAuthenticated, isAdmin, isLoading } = useAuthStore();
-  if (isLoading) return <Loader text="Checking authentication..." />;
+  if (isLoading) return <Loader text="Checking authentication..." fullPage />;
   if (!isAuthenticated || !isAdmin) return <Navigate to="/admin/login" replace />;
   return children;
 }
@@ -37,7 +37,7 @@ export default function App() {
   }, []);
 
   if (isLoading) {
-    return <Loader text="Loading..." />;
+    return <Loader text="Loading..." fullPage />;
   }
 
   const location = useLocation();
