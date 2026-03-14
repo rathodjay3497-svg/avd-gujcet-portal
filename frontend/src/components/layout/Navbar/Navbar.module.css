@@ -16,9 +16,8 @@
 
 .container {
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px;
+  max-width: 100%;
+  padding: 0 4%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -54,7 +53,7 @@
 .navLinks {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 2.5rem;
 }
 
 .navLinks a {

@@ -317,8 +317,7 @@ def get_next_registration_id(event_id: str) -> str:
             ExpressionAttributeValues={":inc": 1},
             ReturnValues="UPDATED_NEW",
         )
-        count = int(resp["Attributes"]["count"])
-        # User requested to fix the registration ID to use the event number
+        count = int(resp["Attributes"]["count"]) # count fetch from backend
         reg_id = f"GCK-{event_id}-{count:05d}"
         dynamo_logger.info(f"Generated registration ID: {reg_id}", request_id=request_id)
         return reg_id

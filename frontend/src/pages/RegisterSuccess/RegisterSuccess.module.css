@@ -27,21 +27,32 @@
 .circle {
   stroke-dasharray: 226;
   stroke-dashoffset: 226;
-  animation: drawCircle 0.6s ease forwards;
+  animation: drawCircle 2.5s ease infinite;
 }
 
 .check {
   stroke-dasharray: 50;
   stroke-dashoffset: 50;
-  animation: drawCheck 0.4s 0.5s ease forwards;
+  animation: drawCheck 2.5s ease infinite;
 }
 
+/* Circle: 0%→28% draw in, 28%→80% hold, 80%→100% reset */
 @keyframes drawCircle {
-  to { stroke-dashoffset: 0; }
+  0%   { stroke-dashoffset: 226; opacity: 1; }
+  28%  { stroke-dashoffset: 0;   opacity: 1; }
+  80%  { stroke-dashoffset: 0;   opacity: 1; }
+  100% { stroke-dashoffset: 226; opacity: 1; }
 }
 
+/* Check: starts at 20% (≈0.5s into 2.5s cycle), draw in by 36%, hold, reset */
 @keyframes drawCheck {
-  to { stroke-dashoffset: 0; }
+  0%   { stroke-dashoffset: 50; opacity: 0; }
+  20%  { stroke-dashoffset: 50; opacity: 0; }
+  21%  { stroke-dashoffset: 50; opacity: 1; }
+  36%  { stroke-dashoffset: 0;  opacity: 1; }
+  80%  { stroke-dashoffset: 0;  opacity: 1; }
+  99%  { stroke-dashoffset: 50; opacity: 1; }
+  100% { stroke-dashoffset: 50; opacity: 0; }
 }
 
 /* ── Title / subtitle ── */

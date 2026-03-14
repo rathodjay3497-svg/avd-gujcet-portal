@@ -71,7 +71,7 @@ export default function Landing() {
       </section>
 
       {/* How It Works */}
-      <section className={styles.howItWorks} id="how-it-works">
+      {/* <section className={styles.howItWorks} id="how-it-works">
         <div className={styles.container}>
           <h2 className={styles.sectionTitle}>How It Works</h2>
           <div className={styles.steps}>
@@ -80,15 +80,15 @@ export default function Landing() {
             <Step number="3" title="Register Instantly" desc="Browse events and register in just one click to secure your spot." />
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Hero Image Section */}
       <section className={styles.homeImageSection}>
         <div className={styles.container}>
-          <img 
-            src="/assets/gujcet/homepage.png" 
-            alt="GUJCET Portal Homepage" 
-            className={styles.homeImage} 
+          <img
+            src="/assets/gujcet/homepage.png"
+            alt="GUJCET Portal Homepage"
+            className={styles.homeImage}
           />
         </div>
       </section>
