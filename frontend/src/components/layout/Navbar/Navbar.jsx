@@ -21,7 +21,8 @@ export default function Navbar() {
     <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
       <div className={styles.container}>
         <Link to="/" className={styles.logo}>
-          <span className={styles.logoText}>Suhrad Youths Anand (SYA)</span>
+          <img src="/assets/logo.jpeg" alt="Suhrad Youths Logo" className={styles.logoImg} />
+          <span className={styles.logoText}>Suhrad Youths</span>
         </Link>
 
         <button
@@ -59,12 +60,12 @@ export default function Navbar() {
             Admission Help Desk
           </Link>
 
-          {/* <Link
+          <Link
             to="/events/gujcet-2026"
             className={location.pathname === '/events/gujcet-2026' ? styles.active : ''}
           >
-            Admission Help Desk
-          </Link> */}
+            GUJCET Preparation
+          </Link>
 
         </div>
       </div>

@@ -110,16 +110,6 @@
   overflow: hidden;
 }
 
-.helpList::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 5px;
-  background: #2563eb;
-}
-
 .helpListTitle {
   font-size: 1.05rem;
   font-weight: 700;
@@ -174,8 +164,8 @@
 }
 
 .heroContactCard:hover {
-  border-color: #2563eb;
-  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
 }
 
 .heroContactCard svg {

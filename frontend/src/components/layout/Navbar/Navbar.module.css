@@ -31,23 +31,18 @@
   text-decoration: none;
 }
 
-.logoIcon {
-  background: #1A3C6E;
-  color: #fff;
-  font-weight: 800;
-  font-size: 0.875rem;
-  width: 36px;
-  height: 36px;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.logoImg {
+  height: 52px;
+  width: auto;
+  border-radius: 8px;
+  object-fit: contain;
 }
 
 .logoText {
-  font-weight: 700;
-  font-size: 1.125rem;
+  font-weight: 800;
+  font-size: 1.25rem;
   color: #1A3C6E;
+  letter-spacing: -0.01em;
 }
 
 .navLinks {

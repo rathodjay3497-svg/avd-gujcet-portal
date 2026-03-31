@@ -211,7 +211,7 @@ export default function HelpDesk() {
                 rel="noopener noreferrer"
                 className={styles.whatsappBtn}
               >
-                <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#25D366"/><path d="M23.4 8.6A10.2 10.2 0 0 0 16 5.8C10.4 5.8 5.8 10.4 5.8 16c0 1.8.5 3.6 1.4 5.2L5.6 26.8l5.8-1.5A10.2 10.2 0 0 0 16 26.2c5.6 0 10.2-4.6 10.2-10.2 0-2.7-1.1-5.3-2.8-7.4zM16 24.4a8.4 8.4 0 0 1-4.3-1.2l-.3-.2-3.4.9.9-3.3-.2-.3A8.5 8.5 0 0 1 7.6 16c0-4.6 3.8-8.4 8.4-8.4 2.3 0 4.4.9 6 2.4a8.3 8.3 0 0 1 2.4 6c0 4.7-3.8 8.4-8.4 8.4zm4.6-6.3c-.3-.1-1.6-.8-1.8-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1-.2.1-.4.2-.7 0-.3-.1-1.2-.4-2.3-1.4a8.5 8.5 0 0 1-1.6-2c-.2-.3 0-.5.1-.6l.5-.6.2-.4v-.4l-.9-2.1c-.2-.5-.5-.4-.7-.4h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.2.2 2 3 4.8 4.2.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.6-.6 1.8-1.3.2-.6.2-1.1.2-1.2 0-.1-.3-.2-.6-.3z" fill="#fff"/></svg>
+                <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#25D366" /><path d="M23.4 8.6A10.2 10.2 0 0 0 16 5.8C10.4 5.8 5.8 10.4 5.8 16c0 1.8.5 3.6 1.4 5.2L5.6 26.8l5.8-1.5A10.2 10.2 0 0 0 16 26.2c5.6 0 10.2-4.6 10.2-10.2 0-2.7-1.1-5.3-2.8-7.4zM16 24.4a8.4 8.4 0 0 1-4.3-1.2l-.3-.2-3.4.9.9-3.3-.2-.3A8.5 8.5 0 0 1 7.6 16c0-4.6 3.8-8.4 8.4-8.4 2.3 0 4.4.9 6 2.4a8.3 8.3 0 0 1 2.4 6c0 4.7-3.8 8.4-8.4 8.4zm4.6-6.3c-.3-.1-1.6-.8-1.8-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1-.2.1-.4.2-.7 0-.3-.1-1.2-.4-2.3-1.4a8.5 8.5 0 0 1-1.6-2c-.2-.3 0-.5.1-.6l.5-.6.2-.4v-.4l-.9-2.1c-.2-.5-.5-.4-.7-.4h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.2.2 2 3 4.8 4.2.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.6-.6 1.8-1.3.2-.6.2-1.1.2-1.2 0-.1-.3-.2-.6-.3z" fill="#fff" /></svg>
                 Join WhatsApp
               </a>
             </div>
@@ -219,13 +219,13 @@ export default function HelpDesk() {
         </div>
 
         {/* ── Second Banner Image ── */}
-        <div className={styles.heroBanner}>
+        {/* <div className={styles.heroBanner}>
           <img
             src="/assets/admission/admission-desk-1.jpg"
             alt="Career streams after 10th and 12th"
             className={styles.heroBannerImage}
           />
-        </div>
+        </div> */}
 
         <div className={styles.tableWrapper}>
           <table className={styles.table}>
@@ -318,54 +318,6 @@ export default function HelpDesk() {
 
         </div>
 
-        <div className={styles.contactSection}>
-
-          <p className={styles.contactText}>
-            For further information feel free to contact us.
-          </p>
-
-          <div className={styles.contactGrid}>
-            <div className={styles.contactBlock}>
-              <span className={styles.contactIcon} aria-hidden="true">
-                <Phone size={28} strokeWidth={1.75} />
-              </span>
-              <span className={styles.contactLabel}>Call us</span>
-              <a href="tel:+919558610369" className={styles.contactTel}>
-                +91 95586 10369
-              </a>
-            </div>
-
-            <div className={styles.contactDivider} aria-hidden="true" />
-
-            <div className={styles.contactBlock}>
-              <span className={styles.contactIcon} aria-hidden="true">
-                <Mail size={28} strokeWidth={1.75} />
-              </span>
-              <span className={styles.contactLabel}>Email us</span>
-              <a href="mailto:hpymhelpdesk@gmail.com" className={styles.contactLink}>
-                hpymhelpdesk@gmail.com
-              </a>
-            </div>
-
-            <div className={styles.contactDivider} aria-hidden="true" />
-
-            <div className={styles.contactBlock}>
-              <span className={styles.contactIcon} aria-hidden="true">
-                <Instagram size={28} strokeWidth={1.75} />
-              </span>
-              <span className={styles.contactLabel}>Instagram</span>
-              <a
-                href="https://www.instagram.com/anand_classes369?igsh=MXFvMnYxOTZobzM1NQ%3D%3D"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.contactLink}
-              >
-                @anand_classes369
-              </a>
-            </div>
-          </div>
-
-        </div>
 
       </div>
     </div>
