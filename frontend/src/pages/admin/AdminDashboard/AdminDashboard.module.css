@@ -24,7 +24,7 @@
 
 .kpiGrid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   margin-bottom: 2rem;
 }
@@ -191,6 +191,26 @@
   text-align: center !important;
   color: #64748B !important;
   padding: 2rem !important;
+}
+
+.thRight {
+  text-align: right;
+}
+
+.tdRight {
+  text-align: right;
+}
+
+.countBadge {
+  display: inline-block;
+  background: #EFF6FF;
+  color: #2563EB;
+  font-weight: 700;
+  font-size: 0.875rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  min-width: 2rem;
+  text-align: center;
 }
 
 /*# sourceMappingURL=AdminDashboard.module.css.map */

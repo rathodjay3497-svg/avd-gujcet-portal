@@ -1,21 +1,40 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { registrationsAPI, usersAPI } from '@/services/api';
+import { registrationsAPI, adminAPI, usersAPI } from '@/services/api';
 import useAuthStore from '@/store/authStore';
 import toast from 'react-hot-toast';
 
 export function useRegister() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({ eventId, phone, formData }) => {
-      const { data } = await registrationsAPI.register(eventId, phone, formData);
+    mutationFn: async ({ eventId, formData }) => {
+      const { data } = await registrationsAPI.register(eventId, formData);
       return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['my-registrations'] });
       queryClient.invalidateQueries({ queryKey: ['check-registration'] });
+      // Although full form redirects to /success, we can show a toast just in case.
+      toast.success('Registered successfully! 🎉', {
+        position: 'top-center',
+        duration: 5000,
+        style: {
+          fontSize: '1.2rem',
+          padding: '16px 24px',
+          maxWidth: '500px',
+        },
+      });
     },
     onError: (err) => {
-      toast.error(err.response?.data?.detail || 'Registration failed');
+      const detail = err.response?.data?.detail;
+      if (Array.isArray(detail)) {
+        const messages = detail.map(e => {
+          const field = e.loc?.[e.loc.length - 1] || 'field';
+          return `${field}: ${e.msg}`;
+        });
+        toast.error(messages.join('\n'), { duration: 5000 });
+      } else {
+        toast.error(detail || 'Registration failed');
+      }
     },
   });
 }
@@ -30,9 +49,27 @@ export function useClickRegister() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['my-registrations'] });
       queryClient.invalidateQueries({ queryKey: ['check-registration'] });
+      toast.success('Registered successfully! 🎉', {
+        position: 'top-center',
+        duration: 5000,
+        style: {
+          fontSize: '1.2rem',
+          padding: '16px 24px',
+          maxWidth: '500px',
+        },
+      });
     },
     onError: (err) => {
-      toast.error(err.response?.data?.detail || 'Registration failed');
+      const detail = err.response?.data?.detail;
+      if (Array.isArray(detail)) {
+        const messages = detail.map(e => {
+          const field = e.loc?.[e.loc.length - 1] || 'field';
+          return `${field}: ${e.msg}`;
+        });
+        toast.error(messages.join('\n'), { duration: 5000 });
+      } else {
+        toast.error(detail || 'Registration failed');
+      }
     },
   });
 }
@@ -49,18 +86,20 @@ export function useMyRegistrations() {
   });
 }
 
-export function useCheckRegistration(eventId, phone) {
+export function useCheckRegistration(eventId) {
+  const { isAuthenticated } = useAuthStore();
   return useQuery({
-    queryKey: ['check-registration', eventId, phone],
+    queryKey: ['check-registration', eventId],
     queryFn: async () => {
-      const { data } = await registrationsAPI.check(eventId, phone);
+      if (!isAuthenticated) return { registered: false };
+      const { data } = await registrationsAPI.check(eventId);
       return data;
     },
-    enabled: !!eventId && !!phone,
+    enabled: !!eventId && isAuthenticated,
   });
 }
 
-export function useUpdateProfile() {
+export function useUpdateProfile(onDone) {
   const { updateUser } = useAuthStore();
   return useMutation({
     mutationFn: async (profileData) => {
@@ -70,9 +109,36 @@ export function useUpdateProfile() {
     onSuccess: (updatedUser) => {
       updateUser(updatedUser);
       toast.success('Profile updated successfully!');
+      onDone?.();
     },
     onError: (err) => {
-      toast.error(err.response?.data?.detail || 'Failed to update profile');
+      const detail = err.response?.data?.detail;
+      if (Array.isArray(detail)) {
+        const messages = detail.map(e => {
+          const field = e.loc?.[e.loc.length - 1] || 'field';
+          return `${field}: ${e.msg}`;
+        });
+        toast.error(messages.join('\n'), { duration: 5000 });
+      } else if (typeof detail === 'string') {
+        toast.error(detail);
+      } else {
+        toast.error('Failed to update profile. Please check your details and try again.');
+      }
     },
+  });
+}
+
+// ─── Admin hooks ─────────────────────────────────────────────────
+
+export function useAdminRegistrations(eventId) {
+  return useQuery({
+    queryKey: ['admin-registrations', eventId],
+    queryFn: async () => {
+      const { data } = await adminAPI.getRegistrations(eventId);
+      return data;
+    },
+    enabled: !!eventId,
+    refetchInterval: 30_000,   // auto-poll every 30 seconds
+    staleTime: 25_000,
   });
 }

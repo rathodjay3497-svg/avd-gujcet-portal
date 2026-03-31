@@ -104,11 +104,12 @@ All API calls go through `services/api.js`:
 
 Breakpoints: `sm: 480px`, `md: 768px`, `lg: 1024px`, `xl: 1280px`
 
-## Deployment (Vercel)
+## Deployment (Netlify)
 
 ```
-Build Command:  npm run build
-Output Dir:     dist
-Node Version:   20.x
-Env Variables:  VITE_API_BASE_URL, VITE_APP_NAME, VITE_CONTACT_EMAIL
+Base directory: frontend
+Build command:  npm run build
+Publish dir:    dist
+Node version:   20.x
+Env variables:  VITE_API_BASE_URL, VITE_APP_NAME, VITE_CONTACT_EMAIL
 ```

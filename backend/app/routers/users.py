@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from pydantic import BaseModel
+from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel, Field
 from typing import Optional
 
 from app.dependencies import get_current_user
@@ -8,18 +8,19 @@ from app.services import dynamo
 
 router = APIRouter()
 
+
 class UpdateProfileRequest(BaseModel):
     name: str
-    email: Optional[str] = None
-    dob: Optional[str] = None
+    phone: Optional[str] = Field(None, pattern=r"^\d{10}$", description="10-digit Indian mobile number")
     gender: Optional[str] = None
     guardian_name: Optional[str] = None
     guardian_phone: Optional[str] = None
     school_college: Optional[str] = None
     stream: Optional[str] = None
-    district: Optional[str] = None
-    state: Optional[str] = "Gujarat"
-    pin_code: Optional[str] = None
+    medium: Optional[str] = None
+    address: Optional[str] = None
+
+
 
 @router.get("/me", response_model=UserProfile)
 def get_my_profile(current_user: dict = Depends(get_current_user)):
@@ -28,14 +29,17 @@ def get_my_profile(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
-@router.put("/me", response_model=UserProfile)
+
+@router.put("/me")
 def update_my_profile(payload: UpdateProfileRequest, current_user: dict = Depends(get_current_user)):
-    phone = current_user["sub"]
-    user = dynamo.get_user(phone)
+    email = current_user["sub"]
+    user = dynamo.get_user(email)
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    # Update only the allowed fields. Phone (primary key) remains untouched.
-    updates = payload.dict(exclude_unset=True)
-    updated_user = dynamo.upsert_user(phone, updates)
+    updates = payload.model_dump(exclude_none=True)
+    # email is the PK — never allow updates to overwrite it from request body
+    updates.pop("email", None)
+    merged = {**user, **updates}
+    updated_user = dynamo.upsert_user(email, merged)
     return updated_user

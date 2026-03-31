@@ -22,11 +22,13 @@ export default function EventForm() {
     venue: '',
     start_date: '',
     end_date: '',
+    start_time: '',
+    end_time: '',
     fee: 0,
     registration_deadline: '',
     status: 'draft',
     form_type: 'json_schema',
-    form_schema_text: '[\n  { "field_id": "name", "label": "Full Name", "type": "text", "required": true },\n  { "field_id": "phone", "label": "Phone Number", "type": "phone", "required": true },\n  { "field_id": "email", "label": "Email", "type": "email", "required": false },\n  { "field_id": "stream", "label": "Stream", "type": "select", "options": ["Science","Commerce","Arts"], "required": true },\n  { "field_id": "school", "label": "School / College", "type": "text", "required": true },\n  { "field_id": "district", "label": "District", "type": "text", "required": true }\n]',
+    form_schema_text: '[\n  { "field_id": "name", "label": "Full Name", "type": "text", "required": true },\n  { "field_id": "phone", "label": "Phone Number", "type": "phone", "required": true },\n  { "field_id": "email", "label": "Email", "type": "email", "required": false },\n  { "field_id": "stream", "label": "Stream", "type": "select", "options": ["Science","Commerce","Arts"], "required": true },\n  { "field_id": "school", "label": "School / College", "type": "text", "required": true }\n]',
     form_html: '',
     streams: 'Science,Commerce,Arts',
   });
@@ -89,10 +91,12 @@ export default function EventForm() {
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.grid}>
             <Field label="Event ID (slug)" name="event_id" value={form.event_id} onChange={handleChange} disabled={isEdit} placeholder="e.g. gujcet-2026" />
-            <Field label="Title" name="title" value={form.title} onChange={handleChange} placeholder="GUJCET Free Counseling 2026" />
+            <Field label="Title" name="title" value={form.title} onChange={handleChange} placeholder="GUJCET Crash Course 2026" />
             <Field label="Venue" name="venue" value={form.venue} onChange={handleChange} />
             <Field label="Start Date" name="start_date" type="datetime-local" value={form.start_date} onChange={handleChange} />
             <Field label="End Date (Optional)" name="end_date" type="datetime-local" value={form.end_date} onChange={handleChange} />
+            <Field label="Start Time" name="start_time" type="time" value={form.start_time} onChange={handleChange} />
+            <Field label="End Time (Optional)" name="end_time" type="time" value={form.end_time} onChange={handleChange} />
             <Field label="Registration Deadline" name="registration_deadline" type="datetime-local" value={form.registration_deadline} onChange={handleChange} />
             <Field label="Fee" name="fee" type="number" value={form.fee} onChange={handleChange} />
             <Field label="Streams (comma-separated)" name="streams" value={form.streams} onChange={handleChange} />

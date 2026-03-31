@@ -29,14 +29,14 @@ export default function Landing() {
       <section className={styles.hero}>
         <div className={styles.heroContent}>
           <h1 className={styles.heroTitle}>
-            <span>GUJCET</span><br />Counseling 2026
+            <span>GUJCET</span><br /> Crash Course 2026
           </h1>
           <p className={styles.heroSubtitle}>
-            Expert guidance for college admissions. Register now for free — seats are limited.
+            Prepare Smart, Not Just Hard - Turn Your Preparation into Selection
           </p>
           <div className={styles.heroCtas}>
             <a href="#events" className={styles.ctaPrimary}>Register Now</a>
-            <a href="#how-it-works" className={styles.ctaSecondary}>Learn More</a>
+            <Link to="/events/gujcet-2026" className={styles.ctaSecondary}>Learn More</Link>
           </div>
         </div>
       </section>
@@ -44,9 +44,9 @@ export default function Landing() {
       {/* Stats Strip */}
       <section className={styles.stats}>
         <div className={styles.statsContainer}>
-          <StatItem icon="users" value="2,500+" label="Students Registered" />
-          <StatItem icon="calendar" value="5+" label="Events Available" />
-          <StatItem icon="award" value="20+" label="Expert Counselors" />
+          <StatItem icon="users" value="50+" label="Students Registered" />
+          <StatItem icon="calendar" value="3+" label="Events Available" />
+          <StatItem icon="award" value="10+" label="Expert Counselors" />
         </div>
       </section>
 
@@ -73,15 +73,15 @@ export default function Landing() {
         <div className={styles.container}>
           <h2 className={styles.sectionTitle}>How It Works</h2>
           <div className={styles.steps}>
-            <Step number="1" title="Choose an Event" desc="Browse available counseling events and pick one that matches your stream." />
-            <Step number="2" title="Fill the Form" desc="Complete the registration form with your details — it takes less than 2 minutes." />
-            <Step number="3" title="Get Your Admit Card" desc="Receive instant SMS + Email confirmation with your downloadable PDF admit card." />
+            <Step number="1" title="Login / Create Account" desc="Log in seamlessly with your Google account to get started in seconds." />
+            <Step number="2" title="Complete Your Profile" desc="Fill out your academic and contact details once to save time later." />
+            <Step number="3" title="Register Instantly" desc="Browse events and register in just one click to secure your spot." />
           </div>
         </div>
       </section>
 
       {/* FAQ */}
-      <section className={styles.faqSection} id="faq">
+      {/* <section className={styles.faqSection} id="faq">
         <div className={styles.container}>
           <h2 className={styles.sectionTitle}>Frequently Asked Questions</h2>
           <div className={styles.faqList}>
@@ -91,16 +91,16 @@ export default function Landing() {
             <FaqItem question="Can I register for multiple events?" answer="Yes, you can register for as many events as you want, as long as seats are available." />
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Banner */}
-      <section className={styles.ctaBanner}>
+      {/* <section className={styles.ctaBanner}>
         <div className={styles.container}>
           <h2>Ready to get counseled?</h2>
           <p>Register for free today and take the first step toward your dream college.</p>
           <a href="#events" className={styles.ctaPrimary}>Register Now</a>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }

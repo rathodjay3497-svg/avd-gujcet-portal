@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import Badge from '@/components/ui/Badge/Badge';
 import { STREAM_COLORS } from '@/constants/streams';
-import { formatDate } from '@/utils/formatters';
+import { formatDate, formatTime } from '@/utils/formatters';
+import RegisterButton from '@/components/events/RegisterButton/RegisterButton';
 import styles from './EventCard.module.css';
 
 export default function EventCard({ event }) {
@@ -13,7 +14,7 @@ export default function EventCard({ event }) {
         <h3 className={styles.title}>
           {event.title}
           {event.future_scope && (
-            <span className={styles.futureBadge}>Future Scope</span>
+            <span className={styles.futureBadge}>Coming soon</span>
           )}
         </h3>
         {event.organized_by && (
@@ -32,6 +33,15 @@ export default function EventCard({ event }) {
             </svg>
             {formatDate(event.start_date)}{event.end_date ? ` - ${formatDate(event.end_date)}` : ''}
           </span>
+          {event.start_time && (
+            <span className={styles.date}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              {formatTime(event.start_time)}{event.end_time ? ` - ${formatTime(event.end_time)}` : ''}
+            </span>
+          )}
           <span className={styles.venue}>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" />
@@ -59,9 +69,7 @@ export default function EventCard({ event }) {
 
       {!event.future_scope && (
         <div className={styles.footer}>
-          <Link to={`/events/${event.event_id}`} className={styles.registerBtn}>
-            Register Now
-          </Link>
+          <RegisterButton event={event} />
         </div>
       )}
     </div>

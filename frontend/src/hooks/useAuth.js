@@ -1,78 +1,57 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { authAPI, usersAPI } from '@/services/api';
+import { useQueryClient } from '@tanstack/react-query';
+import { authAPI } from '@/services/api';
 import useAuthStore from '@/store/authStore';
 import toast from 'react-hot-toast';
 
 function isProfileComplete(user) {
-  return !!(user?.name && user?.stream && user?.medium && user?.address && user?.school_college);
+  return !!(
+    user?.name &&
+    user?.phone &&
+    user?.gender &&
+    user?.stream &&
+    user?.medium &&
+    user?.address &&
+    user?.school_college
+  );
 }
 
 export function useAuth() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { setAuth, logout: clearAuth } = useAuthStore();
+  const queryClient = useQueryClient();
+  const { setAuth, logout: storeLogout } = useAuthStore();
 
-  const sendOTP = async (phone) => {
+  const googleLogin = async (credential, redirectTo) => {
     setLoading(true);
     try {
-      // await authAPI.sendOTP(phone);
-      await new Promise((r) => setTimeout(r, 500));
-      toast.success('OTP sent to your phone! (MOCK)');
-      return true;
-    } catch (err) {
-      toast.error(err.message || 'Failed to send OTP');
-      return false;
-    } finally {
-      setLoading(false);
-    }
-  };
+      // Clear any stale cache from a previous user's session before logging in
+      queryClient.clear();
 
-  const verifyOTP = async (phone, otp, redirectTo) => {
-    setLoading(true);
-    try {
-      // Mock OTP verification (keep for testing)
-      await new Promise((r) => setTimeout(r, 500));
-      if (otp !== '123456') throw new Error('Invalid OTP');
+      const { data: authData } = await authAPI.googleLogin(credential);
+      const token = authData.access_token;
+      const user = authData.user || {};
 
-      // TODO: Replace mock token with real auth when backend OTP is ready
-      // const { data: authData } = await authAPI.verifyOTP(phone, otp);
-      // const token = authData.access_token;
-      const token = 'fake-user-token';
-
-      // Set auth with minimal user data first (phone from login)
-      setAuth(token, { phone }, false);
-
-      // Fetch full profile from DB (skip if using mock token)
-      let user = { phone };
-      const isMockToken = token === 'fake-user-token';
-      if (!isMockToken) {
-        try {
-          const { data } = await usersAPI.getProfile();
-          user = data;
-          useAuthStore.getState().updateUser(user);
-        } catch (e) {
-          // Profile doesn't exist yet (new user) — that's fine
-          console.log('No existing profile found, new user');
-        }
-      }
-
+      setAuth(token, user, false);
       toast.success('Login successful!');
 
-      // If a specific redirect was requested (e.g. from event registration), use it
-      if (redirectTo) {
+      if (authData.is_new_user || !isProfileComplete(user)) {
+        navigate('/profile', { 
+          state: { 
+            message: 'Please complete your profile details before registering for an event.',
+            returnTo: redirectTo 
+          } 
+        });
+      } else if (redirectTo) {
         navigate(redirectTo);
-      } else if (!isMockToken && isProfileComplete(user)) {
-        // Profile complete → go to events page
-        navigate('/');
       } else {
-        // Profile incomplete or mock → go to profile to fill details
-        navigate('/profile', { state: { message: 'Please complete your profile.' } });
+        navigate('/');
       }
 
       return true;
     } catch (err) {
-      toast.error(err.message || 'Invalid OTP');
+      toast.error(err.response?.data?.detail || err.message || 'Google login failed');
       return false;
     } finally {
       setLoading(false);
@@ -82,31 +61,26 @@ export function useAuth() {
   const adminLogin = async (username, password) => {
     setLoading(true);
     try {
-      // const { data } = await authAPI.adminLogin(username, password);
-      await new Promise((r) => setTimeout(r, 500));
-
-      if (username !== 'jay' || password !== '123') {
-        throw new Error('Invalid credentials');
-      }
-
-      const data = { access_token: 'fake-admin-token' };
+      queryClient.clear();
+      const { data } = await authAPI.adminLogin(username, password);
       setAuth(data.access_token, { username }, true);
-      toast.success('Admin login successful! (MOCK)');
+      toast.success('Admin login successful!');
       navigate('/admin');
       return true;
     } catch (err) {
-      toast.error(err.message || 'Invalid credentials');
+      toast.error(err.response?.data?.detail || err.message || 'Invalid credentials');
       return false;
     } finally {
       setLoading(false);
     }
   };
 
-  const logout = () => {
-    clearAuth();
+  const logout = async () => {
+    await storeLogout();
+    queryClient.clear(); // wipe all cached query data on logout
     toast.success('Logged out');
     navigate('/');
   };
 
-  return { sendOTP, verifyOTP, adminLogin, logout, loading };
+  return { googleLogin, adminLogin, logout, loading };
 }

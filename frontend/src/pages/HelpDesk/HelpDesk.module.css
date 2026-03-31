@@ -1,68 +1,439 @@
+/* Page - extra top padding so content clears fixed navbar (64px) */
 .page {
-  padding-top: 100px;
-  min-height: calc(100vh - 100px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #F8FAFC;
+  padding: 100px 20px 32px;
+  background: #f5f7fb;
+  min-height: 100vh;
 }
 
 .container {
-  text-align: center;
-  background: white;
-  padding: 3rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  max-width: 600px;
-  width: 90%;
-}
-
-.animationWrapper {
-  margin-bottom: 2rem;
-  position: relative;
-  height: 100px;
-  overflow: hidden;
-  border-bottom: 4px solid #F59E0B;
-}
-
-.jcb {
-  position: absolute;
-  bottom: 0;
-  left: -50px;
-  font-size: 3rem;
-  animation: drive 5s infinite linear;
-}
-
-.constructionSigns {
-  position: absolute;
-  bottom: 0;
-  right: 20px;
-  font-size: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
-@keyframes drive {
-  0% { transform: translateX(0); }
-  50% { transform: translateX(300px); }
-  51% { transform: translateX(300px) scaleX(-1); }
-  100% { transform: translateX(0) scaleX(-1); }
-}
-
+/* Titles */
 .title {
-  color: #1E293B;
-  font-size: 2rem;
-  margin-bottom: 1rem;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
 }
 
 .subtitle {
-  color: #F59E0B;
-  font-size: 1.25rem;
+  font-size: 1.125rem;
+  color: #4b5563;
   font-weight: 600;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 .description {
-  color: #64748B;
+  color: #6b7280;
+  max-width: 750px;
   line-height: 1.6;
+  margin-bottom: 2rem;
+  font-size: 0.9375rem;
 }
+
+/* Table wrapper: scroll container so sticky header works */
+.tableWrapper {
+  width: 100%;
+  overflow: auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  -webkit-overflow-scrolling: touch;
+  /* Max height so we get vertical scroll + sticky header on small screens */
+  max-height: calc(100vh - 280px);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 880px;
+  font-size: 0.875rem;
+}
+
+/* Sticky header row */
+.table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.table th {
+  background: #1a3c6e;
+  color: white;
+  padding: 12px 14px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  border-bottom: 2px solid #1a3c6e;
+  white-space: nowrap;
+  box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.05);
+}
+
+.table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+  font-size: 0.875rem;
+}
+
+.table tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.table tbody tr:hover {
+  background: #f1f5f9;
+}
+
+.sr {
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.courseBadge {
+  background: #bfe7d0;
+  color: #065f46;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  display: inline-block;
+  white-space: normal;
+}
+
+.link {
+  color: #2563eb;
+  font-weight: 500;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.linkCell {
+  vertical-align: top;
+  text-align: center;
+}
+
+.linkContent {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.25rem 0.5rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.linkText {
+  color: #475569;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.linkGroup {
+  white-space: nowrap;
+}
+
+.linkSeparator {
+  color: #64748b;
+  white-space: nowrap;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .page {
+    padding: 88px 16px 24px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .description {
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tableWrapper {
+    max-height: calc(100vh - 260px);
+  }
+
+  .table {
+    min-width: 820px;
+    font-size: 0.8125rem;
+  }
+
+  .table th {
+    padding: 10px 12px;
+    font-size: 0.75rem;
+  }
+
+  .table td {
+    padding: 10px 12px;
+    font-size: 0.8125rem;
+  }
+
+  .courseBadge {
+    font-size: 0.75rem;
+    padding: 5px 10px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .page {
+    padding: 84px 12px 20px;
+  }
+
+  .title {
+    font-size: 1.375rem;
+  }
+
+  .subtitle {
+    font-size: 0.9375rem;
+  }
+
+  .description {
+    font-size: 0.8125rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .tableWrapper {
+    max-height: calc(100vh - 240px);
+    border-radius: 8px;
+  }
+
+  .table {
+    min-width: 720px;
+    font-size: 0.75rem;
+  }
+
+  .table th {
+    padding: 8px 10px;
+    font-size: 0.6875rem;
+  }
+
+  .table td {
+    padding: 8px 10px;
+    font-size: 0.75rem;
+  }
+
+  .courseBadge {
+    font-size: 0.6875rem;
+    padding: 4px 8px;
+  }
+
+  .link {
+    font-size: 0.75rem;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .page {
+    padding: 80px 10px 16px;
+  }
+
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .subtitle {
+    font-size: 0.875rem;
+  }
+
+  .tableWrapper {
+    max-height: calc(100vh - 220px);
+  }
+
+  .table th,
+  .table td {
+    padding: 6px 8px;
+  }
+
+  .table th {
+    font-size: 0.625rem;
+  }
+
+  .table td {
+    font-size: 0.6875rem;
+  }
+
+  .courseBadge {
+    font-size: 0.625rem;
+    padding: 3px 6px;
+  }
+}
+
+/* Contact section - matches table card style */
+.contactSection {
+  width: 100%;
+  margin-top: 2rem;
+  padding: 1.75rem 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contactText {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  color: #1e293b;
+}
+
+.contactGrid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0;
+  width: 100%;
+  max-width: 720px;
+}
+
+.contactBlock {
+  flex: 1;
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.25rem;
+  text-align: center;
+}
+
+.contactIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 0.75rem;
+  background: #eff6ff;
+  color: #1a3c6e;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.contactBlock:hover .contactIcon {
+  background: #1a3c6e;
+  color: white;
+}
+
+.contactLabel {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.35rem;
+}
+
+.contactTel,
+.contactLink {
+  color: #2563eb;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  transition: color 0.15s ease;
+  word-break: break-word;
+}
+
+.contactTel:hover,
+.contactLink:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.contactDivider {
+  width: 1px;
+  min-height: 60px;
+  background: #e2e8f0;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .contactSection {
+    padding: 1.25rem 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .contactText {
+    font-size: 1rem;
+  }
+
+  .contactGrid {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .contactBlock {
+    min-width: 0;
+    padding: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .contactBlock:last-of-type {
+    border-bottom: none;
+  }
+
+  .contactDivider {
+    display: none;
+  }
+
+  .contactTel,
+  .contactLink {
+    font-size: 0.875rem;
+  }
+}
+
+.careerSection{
+  margin-top:60px;
+  text-align:center;
+  }
+  
+  .careerTitle{
+  font-size:26px;
+  font-weight:700;
+  margin-bottom:10px;
+  }
+  
+  .careerText{
+  max-width:750px;
+  margin:auto;
+  color:#666;
+  line-height:1.6;
+  margin-bottom:25px;
+  }
+  
+  .imageContainer{
+  display:flex;
+  justify-content:center;
+  overflow-x:auto;
+  }
+  
+  .careerImage{
+  max-width:100%;
+  height:auto;
+  border-radius:10px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.08);
+  }

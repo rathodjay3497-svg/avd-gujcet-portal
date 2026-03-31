@@ -4,11 +4,10 @@ from functools import lru_cache
 
 class Settings(BaseSettings):
     # AWS
+    # Credentials are provided automatically by the Lambda IAM execution role.
+    # boto3 picks them up from the environment — never set them explicitly.
     AWS_REGION: str = "ap-south-1"
-    AWS_ACCESS_KEY_ID: str = ""
-    AWS_SECRET_ACCESS_KEY: str = ""
     DYNAMODB_TABLE_NAME: str = "gujcet-platform"
-    S3_BUCKET_NAME: str = "gujcet-platform-pdfs"
 
     # Twilio
     TWILIO_ACCOUNT_SID: str = ""
@@ -24,14 +23,25 @@ class Settings(BaseSettings):
     JWT_EXPIRY_HOURS: int = 24
     ADMIN_JWT_EXPIRY_HOURS: int = 8
 
+    # Cookies
+    # Use "none" if frontend and backend are on different sites (e.g. Netlify + API Gateway).
+    COOKIE_SAMESITE: str = "none"
+
     # Admin
     ADMIN_USERNAME: str = "admin"
     ADMIN_PASSWORD_HASH: str = ""
+
+    # Google OAuth
+    GOOGLE_CLIENT_ID: str = ""
 
     # Frontend
     FRONTEND_URL: str = "http://localhost:5173"
     FRONTEND_CUSTOM_URL: str = ""
     ENVIRONMENT: str = "development"
+
+    # Logging
+    LOG_LEVEL: str = "INFO"
+    LOG_FILE_PATH: str = "app.log"
 
     class Config:
         env_file = ".env"
@@ -40,4 +50,9 @@ class Settings(BaseSettings):
 
 @lru_cache()
 def get_settings() -> Settings:
-    return Settings()
+    import os
+    settings = Settings()
+    # Override log level from environment if set
+    if os.getenv("LOG_LEVEL"):
+        settings.LOG_LEVEL = os.getenv("LOG_LEVEL")
+    return settings

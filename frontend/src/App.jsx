@@ -1,12 +1,16 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import useAuthStore from '@/store/authStore';
 
 // Layout
 import Navbar from '@/components/layout/Navbar/Navbar';
 import Footer from '@/components/layout/Footer/Footer';
+import Loader from '@/components/ui/Loader/Loader';
 
 // Pages
 import Landing from '@/pages/Landing/Landing';
+import Gujcet2026 from '@/pages/Gujcet2026/Gujcet2026';
 import EventDetail from '@/pages/EventDetail/EventDetail';
 import RegisterForm from '@/pages/RegisterForm/RegisterForm';
 import RegisterSuccess from '@/pages/RegisterSuccess/RegisterSuccess';
@@ -22,34 +26,63 @@ import EventForm from '@/pages/admin/EventForm/EventForm';
 import AdminRegistrations from '@/pages/admin/Registrations/Registrations';
 
 function ProtectedRoute({ children }) {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, isLoading } = useAuthStore();
+  if (isLoading) return <Loader text="Checking authentication..." />;
   if (!isAuthenticated) return <Navigate to="/login" state={{ from: window.location.pathname }} replace />;
   return children;
 }
 
 function AdminRoute({ children }) {
-  const { isAuthenticated, isAdmin } = useAuthStore();
+  const { isAuthenticated, isAdmin, isLoading } = useAuthStore();
+  if (isLoading) return <Loader text="Checking authentication..." />;
   if (!isAuthenticated || !isAdmin) return <Navigate to="/admin/login" replace />;
   return children;
 }
 
 export default function App() {
-  const { isAdmin } = useAuthStore();
+  const { isAdmin, checkAuth, isLoading } = useAuthStore();
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  if (isLoading) {
+    return <Loader text="Loading..." />;
+  }
+
+
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
-    <>
-      {!isAdmin && <Navbar />}
+    <GoogleOAuthProvider clientId='864847094209-u3t36jucer522tvpb4mq8qpqv33l76i9.apps.googleusercontent.com'>
+      {!isAdminRoute && <Navbar />}
       <main className="page-animate">
         <Routes>
           {/* Public */}
           <Route path="/" element={<Landing />} />
+          <Route path="/events/gujcet-2026" element={<Gujcet2026 />} />
           <Route path="/events/:eventId" element={<EventDetail />} />
-          <Route path="/events/:eventId/register" element={<RegisterForm />} />
-          <Route path="/register/success" element={<RegisterSuccess />} />
           <Route path="/login" element={<Login />} />
           <Route path="/help-desk" element={<HelpDesk />} />
 
           {/* Student Protected */}
+          <Route
+            path="/events/:eventId/register"
+            element={
+              <ProtectedRoute>
+                <RegisterForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/register/success"
+            element={
+              <ProtectedRoute>
+                <RegisterSuccess />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/profile"
             element={
@@ -103,7 +136,7 @@ export default function App() {
           />
         </Routes>
       </main>
-      {!isAdmin && <Footer />}
-    </>
+      {!isAdminRoute && <Footer />}
+    </GoogleOAuthProvider>
   );
 }

@@ -1,0 +1,8 @@
+{
+  "name": "gujcet-platform-api",
+  "private": true,
+  "devDependencies": {
+    "serverless": "^3.38.0",
+    "serverless-python-requirements": "^6.1.1"
+  }
+}
