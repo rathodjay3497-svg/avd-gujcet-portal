@@ -29,16 +29,16 @@ export default function Landing() {
       <section className={styles.hero}>
         <div className={styles.heroContent}>
           <h1 className={styles.heroTitle}>
-            <span>GUJCET</span><br /> Crash Course 2026
+            <span>Admission</span><br /> Help Desk 2026
           </h1>
           <p className={styles.heroSubtitle}>
-            Prepare Smart, Not Just Hard.
+            From Doubts to Clarity.
             <br />
-            Turn Your Preparation into Selection.
+            Your Trusted Help Desk for Every Step.
           </p>
           <div className={styles.heroCtas}>
             <a href="#events" className={styles.ctaPrimary}>Register Now</a>
-            <Link to="/events/gujcet-2026" className={styles.ctaSecondary}>Learn More</Link>
+            <Link to="/help-desk" className={styles.ctaSecondary}>Learn More</Link>
           </div>
         </div>
       </section>
@@ -107,7 +107,7 @@ export default function Landing() {
                   <li><strong>Std 11-12:</strong> Dedicated Science and Commerce streams.</li>
                 </ul>
                 <p><strong>Future-Ready Skills:</strong> Free courses in Python Programming and Robotics to build modern technical literacy.</p>
-                <p><strong>Exam Excellence:</strong> Specialized GUJCET Crash Courses led by subject experts for competitive success.</p>
+                <p><strong>Exam Excellence:</strong> Specialized Admission Help Desk led by subject experts for competitive success.</p>
                 <p><strong>Why ACC?</strong> Experienced faculty, simplified learning, and a supportive environment designed for confidence.</p>
               </div>
             </div>

@@ -7,18 +7,20 @@ import styles from './EventCard.module.css';
 
 export default function EventCard({ event }) {
   const streamColor = STREAM_COLORS[event.streams?.[0]] || '#2563EB';
+  const isAdmission = event.event_id === 'admission-2026';
+  const showLive = isAdmission || !event.future_scope;
 
   return (
     <div className={styles.card} style={{ borderTopColor: streamColor }}>
       <div className={styles.body}>
         <h3 className={styles.title}>
           {event.title}
-          {event.future_scope ? (
-            <span className={styles.futureBadge}>Coming soon</span>
-          ) : (
+          {showLive ? (
             <span className={styles.liveBadge} title="Active Event">
               <span className={styles.blinkingDot}></span> Live
             </span>
+          ) : (
+            <span className={styles.futureBadge}>Coming soon</span>
           )}
         </h3>
         {event.organized_by && (
@@ -85,7 +87,7 @@ export default function EventCard({ event }) {
 
       </div>
 
-      {!event.future_scope && (
+      {showLive && (
         <div className={styles.footer}>
           <RegisterButton event={event} />
         </div>

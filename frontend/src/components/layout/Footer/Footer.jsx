@@ -12,9 +12,9 @@ export default function Footer() {
           <div className={styles.brand}>
             <div className={styles.logo}>
               {/* <span className={styles.logoIcon}>GC</span> */}
-              <span>GUJCET Crash Course</span>
+              <span>Admission Help Desk</span>
             </div>
-            <p>Expert guidance for GUJCET preparation to help students build strong concepts and achieve top scores.</p>
+            <p>Expert guidance for Admission Help Desk to help students build successful careers.</p>
           </div>
 
           <div className={styles.links}>
@@ -42,7 +42,7 @@ export default function Footer() {
         </div>
 
         <div className={styles.bottom}>
-          <p>&copy; {new Date().getFullYear()} GUJCET Crash Course Platform. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Admission Help Desk Platform. All rights reserved.</p>
         </div>
       </div>
     </footer>

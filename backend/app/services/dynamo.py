@@ -318,7 +318,7 @@ def get_next_registration_id(event_id: str) -> str:
             ReturnValues="UPDATED_NEW",
         )
         count = int(resp["Attributes"]["count"]) # count fetch from backend
-        reg_id = f"GCK-{event_id}-{count:05d}"
+        reg_id = f"AHD-{event_id}-{count:05d}"
         dynamo_logger.info(f"Generated registration ID: {reg_id}", request_id=request_id)
         return reg_id
     except Exception as e:

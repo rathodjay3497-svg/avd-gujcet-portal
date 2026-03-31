@@ -12,6 +12,7 @@ import Landing from '@/pages/Landing/Landing';
 import Gujcet2026 from '@/pages/Gujcet2026/Gujcet2026';
 import EventDetail from '@/pages/EventDetail/EventDetail';
 import RegisterForm from '@/pages/RegisterForm/RegisterForm';
+import AdmissionRegister from '@/pages/AdmissionRegister/AdmissionRegister';
 import RegisterSuccess from '@/pages/RegisterSuccess/RegisterSuccess';
 import HelpDesk from '@/pages/HelpDesk/HelpDesk';
 
@@ -53,6 +54,7 @@ export default function App() {
           <Route path="/events/gujcet-2026" element={<Gujcet2026 />} />
           <Route path="/events/:eventId" element={<EventDetail />} />
           <Route path="/events/:eventId/register" element={<RegisterForm />} />
+          <Route path="/admission-2026/register" element={<AdmissionRegister />} />
           <Route path="/register/success" element={<RegisterSuccess />} />
           <Route path="/help-desk" element={<HelpDesk />} />
 

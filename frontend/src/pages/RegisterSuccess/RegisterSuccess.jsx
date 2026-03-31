@@ -1,7 +1,7 @@
 import { useLocation, Link } from 'react-router-dom';
 import styles from './RegisterSuccess.module.css';
 
-const WHATSAPP_LINK = 'https://chat.whatsapp.com/GdodTpblcTz54g3X8XWBGJ?mode=gi_t';
+const DEFAULT_WHATSAPP_LINK = 'https://chat.whatsapp.com/GdodTpblcTz54g3X8XWBGJ?mode=gi_t';
 
 function WhatsAppIcon() {
   return (
@@ -23,6 +23,7 @@ export default function RegisterSuccess() {
   const userPhone = state?.userPhone;
   const userStream = state?.userStream;
   const userSchool = state?.userSchool;
+  const WHATSAPP_LINK = state?.whatsappLink || DEFAULT_WHATSAPP_LINK;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(regId);

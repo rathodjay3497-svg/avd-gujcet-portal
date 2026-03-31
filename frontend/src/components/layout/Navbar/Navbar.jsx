@@ -21,7 +21,7 @@ export default function Navbar() {
     <nav className={`${styles.navbar} ${scrolled ? styles.scrolled : ''}`}>
       <div className={styles.container}>
         <Link to="/" className={styles.logo}>
-          <span className={styles.logoText}>Anand Coaching Centre (ACC)</span>
+          <span className={styles.logoText}>Suhrad Youths Anand (SYA)</span>
         </Link>
 
         <button
@@ -53,17 +53,19 @@ export default function Navbar() {
             Events
           </Link>
           <Link
-            to="/events/gujcet-2026"
-            className={location.pathname === '/events/gujcet-2026' ? styles.active : ''}
-          >
-            GUJCET Crash Course
-          </Link>
-          <Link
             to="/help-desk"
             className={location.pathname === '/help-desk' ? styles.active : ''}
           >
             Admission Help Desk
           </Link>
+
+          {/* <Link
+            to="/events/gujcet-2026"
+            className={location.pathname === '/events/gujcet-2026' ? styles.active : ''}
+          >
+            Admission Help Desk
+          </Link> */}
+
         </div>
       </div>
     </nav>

@@ -16,6 +16,9 @@ class PublicRegistrationRequest(BaseModel):
     medium: str = "English"
     address: str
     email: Optional[str] = None
+    standard: Optional[str] = None
+    education_board: Optional[str] = None
+    interested_field: Optional[str] = None
 
     @field_validator("phone")
     @classmethod

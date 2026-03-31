@@ -221,6 +221,9 @@ def register_public(
                 "stream": body.stream,
                 "medium": body.medium,
                 "address": body.address,
+                "standard": body.standard or "",
+                "education_board": body.education_board or "",
+                "interested_field": body.interested_field or "",
             },
         )
 
@@ -237,6 +240,9 @@ def register_public(
         "stream": body.stream,
         "medium": body.medium,
         "address": body.address,
+        "standard": body.standard or "",
+        "education_board": body.education_board or "",
+        "interested_field": body.interested_field or "",
     }
 
     # 8. Save registration
