@@ -10,6 +10,15 @@ const api = axios.create({
   withCredentials: true,
 });
 
+// Attach JWT from Zustand as Authorization header on every request
+api.interceptors.request.use((config) => {
+  const token = useAuthStore.getState().token;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 // Handle 401 responses — auto-logout
 api.interceptors.response.use(
   (response) => response,
@@ -58,6 +67,12 @@ export const adminAPI = {
   getOverview: () => api.get('/admin/overview'),
   sendNotifications: (eventId, data) => api.post(`/admin/notify/${eventId}`, data),
   listUsers: () => api.get('/admin/users'),
+};
+
+// ─── HPCL Cricket ────────────────────────────────────────────
+export const hpclAPI = {
+  register: (formData) => api.post('/hpcl/register', formData),
+  getAdminRegistrations: () => api.get('/hpcl/admin/registrations'),
 };
 
 // ─── Users ───────────────────────────────────────────────────

@@ -8,14 +8,17 @@ import styles from './EventCard.module.css';
 export default function EventCard({ event }) {
   const streamColor = STREAM_COLORS[event.streams?.[0]] || '#2563EB';
   const isAdmission = event.event_id === 'admission-2026';
-  const showLive = isAdmission || !event.future_scope;
+  const isClosed = event.status === 'closed';
+  const showLive = !isClosed && (isAdmission || !event.future_scope);
 
   return (
     <div className={styles.card} style={{ borderTopColor: streamColor }}>
       <div className={styles.body}>
         <h3 className={styles.title}>
           {event.title}
-          {showLive ? (
+          {isClosed ? (
+            <span className={styles.closedBadge}>Closed</span>
+          ) : showLive ? (
             <span className={styles.liveBadge} title="Active Event">
               <span className={styles.blinkingDot}></span> Live
             </span>

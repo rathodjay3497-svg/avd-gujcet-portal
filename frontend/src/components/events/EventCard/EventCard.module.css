@@ -58,6 +58,22 @@
   box-shadow: 0 2px 4px rgba(68, 117, 239, 0.25);
 }
 
+.closedBadge {
+  display: inline-flex;
+  align-items: center;
+  background: #64748B; /* Grey */
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  vertical-align: middle;
+  margin-left: 0.5rem;
+  text-transform: uppercase;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(100, 116, 139, 0.25);
+}
+
 .blinkingDot {
   width: 6px;
   height: 6px;

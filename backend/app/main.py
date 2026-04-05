@@ -7,7 +7,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from mangum import Mangum
 
 from app.config import get_settings
-from app.routers import auth, events, registrations, admin, users
+from app.routers import auth, events, registrations, admin, users, hpcl
 from app.logger import setup_logging, api_logger, generate_request_id, clear_request_id, set_request_id
 
 # Initialize logging at startup
@@ -118,6 +118,7 @@ app.include_router(
 )
 app.include_router(admin.router, prefix="/admin", tags=["Admin"])
 app.include_router(users.router, prefix="/users", tags=["Users"])
+app.include_router(hpcl.router, prefix="/hpcl", tags=["HPCL Cricket"])
 
 
 @app.get("/health")

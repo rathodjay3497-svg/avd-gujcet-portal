@@ -61,11 +61,20 @@ export default function Navbar() {
           </Link>
 
           <Link
+            to="/hpcl-2026"
+            className={location.pathname === '/hpcl-2026' ? styles.active : ''}
+          >
+            HPCL Cricket
+          </Link>
+
+          <Link
             to="/events/gujcet-2026"
             className={location.pathname === '/events/gujcet-2026' ? styles.active : ''}
           >
             GUJCET Preparation
           </Link>
+
+
 
         </div>
       </div>

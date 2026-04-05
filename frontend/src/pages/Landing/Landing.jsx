@@ -52,20 +52,36 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Active Events */}
+      {/* Events Section */}
       <section className={styles.events} id="events">
         <div className={styles.container}>
           <h2 className={styles.sectionTitle}>Upcoming Events</h2>
           {isLoading ? (
             <Loader text="Loading events..." />
-          ) : events?.length > 0 ? (
+          ) : events?.filter(e => e.status !== 'closed').length > 0 ? (
             <div className={styles.eventGrid}>
-              {events.map((event) => (
-                <EventCard key={event.event_id} event={event} />
-              ))}
+              {events
+                .filter(e => e.status !== 'closed')
+                .map((event) => (
+                  <EventCard key={event.event_id} event={event} />
+                ))}
             </div>
           ) : (
-            <p className={styles.noEvents}>No active events right now. Check back soon!</p>
+            <p className={styles.noEvents}>No upcoming events right now. Check back soon!</p>
+          )}
+
+          {/* Closed Events Section */}
+          {!isLoading && events?.filter(e => e.status === 'closed').length > 0 && (
+            <div className={styles.closedEventsSection}>
+              <h2 className={styles.sectionTitle}>Closed Events</h2>
+              <div className={styles.eventGrid}>
+                {events
+                  .filter(e => e.status === 'closed')
+                  .map((event) => (
+                    <EventCard key={event.event_id} event={event} />
+                  ))}
+              </div>
+            </div>
           )}
         </div>
       </section>

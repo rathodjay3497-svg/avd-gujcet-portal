@@ -15,6 +15,9 @@ import RegisterForm from '@/pages/RegisterForm/RegisterForm';
 import AdmissionRegister from '@/pages/AdmissionRegister/AdmissionRegister';
 import RegisterSuccess from '@/pages/RegisterSuccess/RegisterSuccess';
 import HelpDesk from '@/pages/HelpDesk/HelpDesk';
+import HPCLCricket from '@/pages/HPCLCricket/HPCLCricket';
+import HPCLSuccess from '@/pages/HPCLSuccess/HPCLSuccess';
+import HPCLRegistrations from '@/pages/admin/HPCLRegistrations/HPCLRegistrations';
 
 // Admin Pages
 import AdminLogin from '@/pages/admin/AdminLogin/AdminLogin';
@@ -57,6 +60,8 @@ export default function App() {
           <Route path="/admission-2026/register" element={<AdmissionRegister />} />
           <Route path="/register/success" element={<RegisterSuccess />} />
           <Route path="/help-desk" element={<HelpDesk />} />
+          <Route path="/hpcl-2026" element={<HPCLCricket />} />
+          <Route path="/hpcl-2026/success" element={<HPCLSuccess />} />
 
           {/* Admin */}
           <Route path="/admin/login" element={<AdminLogin />} />
@@ -97,6 +102,14 @@ export default function App() {
             element={
               <AdminRoute>
                 <AdminRegistrations />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/hpcl-registrations"
+            element={
+              <AdminRoute>
+                <HPCLRegistrations />
               </AdminRoute>
             }
           />
