@@ -142,10 +142,13 @@ export default function HPCLCricket() {
         </div>
       )}
 
-      <div className={styles.container}>
-        <div className={styles.card}>
-          <h2 className={styles.title}>Register for HPCL Cricket League 2026</h2>
-          <p className={styles.subtitle}>HPCL - Hari Prabodham Cricket League 2026 — Fill in your details to register</p>
+      <div className={`${styles.container} ${localStyles.hpclContainer}`}>
+        <div className={`${styles.card} ${localStyles.hpclCard}`}>
+          <div className={localStyles.headerRow}>
+            <h2 className={`${styles.title} ${localStyles.hpclTitle}`}>Register for HPCL 2026</h2>
+            <span className={localStyles.typeBadge}>Box Cricket</span>
+          </div>
+          <p className={`${styles.subtitle} ${localStyles.hpclSubtitle}`}>HPCL - Hari Prabodham Cricket League 2026 - Fill in your details to register</p>
 
           {/* ── Fee Notice ── */}
           <div className={localStyles.feeNotice}>
@@ -161,9 +164,9 @@ export default function HPCLCricket() {
             {/* ── Row 1: Name + Phone ── */}
             <div className={styles.row}>
               <div className={styles.field}>
-                <label className={styles.label}>Full Name <span className={styles.required}>*</span></label>
+                <label className={`${styles.label} ${localStyles.hpclLabel}`}>Full Name <span className={styles.required}>*</span></label>
                 <input
-                  className={`${styles.input} ${errors.name ? styles.inputError : ''}`}
+                  className={`${styles.input} ${localStyles.hpclInput} ${errors.name ? styles.inputError : ''}`}
                   type="text"
                   name="name"
                   value={form.name}
@@ -174,11 +177,11 @@ export default function HPCLCricket() {
               </div>
 
               <div className={styles.field}>
-                <label className={styles.label}>Mobile Number (WhatsApp) <span className={styles.required}>*</span></label>
-                <div className={`${styles.phoneWrapper} ${errors.phone ? styles.inputError : ''}`}>
-                  <span className={styles.phonePrefix}>+91</span>
+                <label className={`${styles.label} ${localStyles.hpclLabel}`}>Mobile Number (WhatsApp) <span className={styles.required}>*</span></label>
+                <div className={`${styles.phoneWrapper} ${localStyles.hpclPhoneWrapper} ${errors.phone ? styles.inputError : ''}`}>
+                  <span className={`${styles.phonePrefix} ${localStyles.hpclPhonePrefix}`}>+91</span>
                   <input
-                    className={styles.phoneInput}
+                    className={`${styles.phoneInput} ${localStyles.hpclInput}`}
                     type="tel"
                     name="phone"
                     value={form.phone}
@@ -191,72 +194,74 @@ export default function HPCLCricket() {
               </div>
             </div>
 
-            {/* ── Age ── */}
-            <div className={styles.field}>
-              <label className={styles.label}>Age <span className={styles.required}>*</span></label>
-              <input
-                className={`${styles.input} ${errors.age ? styles.inputError : ''}`}
-                type="number"
-                name="age"
-                value={form.age}
-                onChange={handleChange}
-                placeholder="e.g. 17"
-                min={5}
-                max={80}
-              />
-              {errors.age && <span className={styles.errorMsg}>{errors.age}</span>}
+            <div className={styles.row}>
+              <div className={styles.field}>
+                <label className={`${styles.label} ${localStyles.hpclLabel}`}>Age <span className={styles.required}>*</span></label>
+                <input
+                  className={`${styles.input} ${localStyles.hpclInput} ${errors.age ? styles.inputError : ''}`}
+                  type="number"
+                  name="age"
+                  value={form.age}
+                  onChange={handleChange}
+                  placeholder="e.g. 17"
+                  min={5}
+                  max={80}
+                />
+                {errors.age && <span className={styles.errorMsg}>{errors.age}</span>}
+              </div>
+
+              <div className={styles.field}>
+                <label className={`${styles.label} ${localStyles.hpclLabel}`}>Standard <span className={styles.required}>*</span></label>
+                <select
+                  className={`${styles.select} ${localStyles.hpclSelect} ${errors.standard ? styles.inputError : ''}`}
+                  name="standard"
+                  value={form.standard}
+                  onChange={handleChange}
+                >
+                  <option value="">Select Standard</option>
+                  {STANDARDS.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+                {errors.standard && <span className={styles.errorMsg}>{errors.standard}</span>}
+              </div>
             </div>
 
-            {/* ── Address ── */}
-            <div className={styles.field}>
-              <label className={styles.label}>Address <span className={styles.required}>*</span></label>
-              <textarea
-                className={`${styles.textarea} ${errors.address ? styles.inputError : ''}`}
-                name="address"
-                value={form.address}
-                onChange={handleChange}
-                placeholder="Enter your full address"
-                rows={3}
-              />
-              {errors.address && <span className={styles.errorMsg}>{errors.address}</span>}
-            </div>
+            {/* ── Playing Role + Group ── */}
+            <div className={styles.row}>
+              <div className={styles.field}>
+                <label className={`${styles.label} ${localStyles.hpclLabel}`}>Playing Role <span className={styles.required}>*</span></label>
+                <select
+                  className={`${styles.select} ${localStyles.hpclSelect} ${errors.playing_role ? styles.inputError : ''}`}
+                  name="playing_role"
+                  value={form.playing_role}
+                  onChange={handleChange}
+                >
+                  <option value="">Select Playing Role</option>
+                  {PLAYING_ROLES.map(r => <option key={r} value={r}>{r}</option>)}
+                </select>
+                {errors.playing_role && <span className={styles.errorMsg}>{errors.playing_role}</span>}
+              </div>
 
-            {/* ── Standard ── */}
-            <div className={styles.field}>
-              <label className={styles.label}>Standard <span className={styles.required}>*</span></label>
-              <select
-                className={`${styles.select} ${errors.standard ? styles.inputError : ''}`}
-                name="standard"
-                value={form.standard}
-                onChange={handleChange}
-              >
-                <option value="">Select Standard</option>
-                {STANDARDS.map(s => <option key={s} value={s}>{s}</option>)}
-              </select>
-              {errors.standard && <span className={styles.errorMsg}>{errors.standard}</span>}
-            </div>
-
-            {/* ── Playing Role ── */}
-            <div className={styles.field}>
-              <label className={styles.label}>Playing Role <span className={styles.required}>*</span></label>
-              <select
-                className={`${styles.select} ${errors.playing_role ? styles.inputError : ''}`}
-                name="playing_role"
-                value={form.playing_role}
-                onChange={handleChange}
-              >
-                <option value="">Select Playing Role</option>
-                {PLAYING_ROLES.map(r => <option key={r} value={r}>{r}</option>)}
-              </select>
-              {errors.playing_role && <span className={styles.errorMsg}>{errors.playing_role}</span>}
+              <div className={styles.field}>
+                <label className={`${styles.label} ${localStyles.hpclLabel}`}>Group <span className={styles.required}>*</span></label>
+                <select
+                  className={`${styles.select} ${localStyles.hpclSelect} ${errors.group ? styles.inputError : ''}`}
+                  name="group"
+                  value={form.group}
+                  onChange={handleChange}
+                >
+                  <option value="">Select Group</option>
+                  {GROUPS.map(g => <option key={g} value={g}>{g}</option>)}
+                </select>
+                {errors.group && <span className={styles.errorMsg}>{errors.group}</span>}
+              </div>
             </div>
 
             {/* ── Row 3: Batting + Bowling Style ── */}
             <div className={styles.row}>
               <div className={styles.field}>
-                <label className={styles.label}>Batting Style</label>
+                <label className={`${styles.label} ${localStyles.hpclLabel}`}>Batting Style</label>
                 <select
-                  className={styles.select}
+                  className={`${styles.select} ${localStyles.hpclSelect}`}
                   name="batting_style"
                   value={form.batting_style}
                   onChange={handleChange}
@@ -267,9 +272,9 @@ export default function HPCLCricket() {
               </div>
 
               <div className={styles.field}>
-                <label className={styles.label}>Bowling Style</label>
+                <label className={`${styles.label} ${localStyles.hpclLabel}`}>Bowling Style</label>
                 <select
-                  className={styles.select}
+                  className={`${styles.select} ${localStyles.hpclSelect}`}
                   name="bowling_style"
                   value={form.bowling_style}
                   onChange={handleChange}
@@ -280,26 +285,25 @@ export default function HPCLCricket() {
               </div>
             </div>
 
-            {/* ── Group ── */}
+            {/* ── Address ── */}
             <div className={styles.field}>
-              <label className={styles.label}>Group <span className={styles.required}>*</span></label>
-              <select
-                className={`${styles.select} ${errors.group ? styles.inputError : ''}`}
-                name="group"
-                value={form.group}
+              <label className={`${styles.label} ${localStyles.hpclLabel}`}>Address <span className={styles.required}>*</span></label>
+              <textarea
+                className={`${styles.textarea} ${localStyles.hpclTextarea} ${errors.address ? styles.inputError : ''}`}
+                name="address"
+                value={form.address}
                 onChange={handleChange}
-              >
-                <option value="">Select Group</option>
-                {GROUPS.map(g => <option key={g} value={g}>{g}</option>)}
-              </select>
-              {errors.group && <span className={styles.errorMsg}>{errors.group}</span>}
+                placeholder="Enter your full address"
+                rows={2}
+              />
+              {errors.address && <span className={styles.errorMsg}>{errors.address}</span>}
             </div>
 
             {/* ── Reference (optional) ── */}
             <div className={styles.field}>
-              <label className={styles.label}>Reference <span className={localStyles.optional}>(optional)</span></label>
+              <label className={`${styles.label} ${localStyles.hpclLabel}`}>Reference <span className={localStyles.optional}>(optional)</span></label>
               <input
-                className={styles.input}
+                className={`${styles.input} ${localStyles.hpclInput}`}
                 type="text"
                 name="reference"
                 value={form.reference}
@@ -323,9 +327,9 @@ export default function HPCLCricket() {
 
               {form.fees_paid && (
                 <div className={`${styles.field} ${localStyles.paidToField}`}>
-                  <label className={styles.label}>Paid To (Whom) <span className={styles.required}>*</span></label>
+                  <label className={`${styles.label} ${localStyles.hpclLabel}`}>Paid To (Whom) <span className={styles.required}>*</span></label>
                   <input
-                    className={`${styles.input} ${errors.paid_to ? styles.inputError : ''}`}
+                    className={`${styles.input} ${localStyles.hpclInput} ${errors.paid_to ? styles.inputError : ''}`}
                     type="text"
                     name="paid_to"
                     value={form.paid_to}
@@ -339,7 +343,7 @@ export default function HPCLCricket() {
 
             <button
               type="submit"
-              className={styles.submitBtn}
+              className={`${styles.submitBtn} ${localStyles.hpclSubmitBtn}`}
               disabled={isSubmitting}
             >
               {isSubmitting ? 'Submitting…' : 'Submit Registration'}
