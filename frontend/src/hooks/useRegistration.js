@@ -146,7 +146,8 @@ export function useAdminRegistrations(eventId) {
       return data;
     },
     enabled: !!eventId,
-    refetchInterval: 30_000,   // auto-poll every 30 seconds
-    staleTime: 25_000,
+    // No refetchInterval — data is fetched once on mount.
+    // Use the manual Refresh button in the UI to re-fetch.
+    staleTime: Infinity,
   });
 }

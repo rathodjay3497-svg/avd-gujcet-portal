@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import * as XLSX from 'xlsx';
+import { useQueryClient } from '@tanstack/react-query';
 import AdminSidebar from '@/components/layout/AdminSidebar/AdminSidebar';
 import Loader from '@/components/ui/Loader/Loader';
 import Button from '@/components/ui/Button/Button';
@@ -15,16 +16,13 @@ export default function Registrations() {
   const { id: eventId } = useParams();
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
-  const [elapsed, setElapsed] = useState(0);
+  const queryClient = useQueryClient();
 
-  const { data, isLoading, isFetching, dataUpdatedAt } = useAdminRegistrations(eventId);
+  const { data, isLoading, isFetching } = useAdminRegistrations(eventId);
 
-  // Tick "updated X seconds ago" counter, reset on every successful fetch
-  useEffect(() => {
-    setElapsed(0);
-    const interval = setInterval(() => setElapsed(s => s + 1), 1000);
-    return () => clearInterval(interval);
-  }, [dataUpdatedAt]);
+  const handleRefresh = () => {
+    queryClient.invalidateQueries({ queryKey: ['admin-registrations', eventId] });
+  };
 
   // Reset to page 1 whenever search changes
   useEffect(() => { setPage(1); }, [search]);
@@ -114,10 +112,13 @@ export default function Registrations() {
           </div>
 
           <div className={styles.headerActions}>
-            <div className={`${styles.liveChip} ${isFetching ? styles.fetching : ''}`}>
-              <span className={styles.dot} />
-              {isFetching ? 'Refreshing…' : `Updated ${elapsed}s ago`}
-            </div>
+            <Button
+              onClick={handleRefresh}
+              variant="secondary"
+              disabled={isFetching}
+            >
+              {isFetching ? 'Refreshing…' : '↺ Refresh'}
+            </Button>
             <Button
               onClick={handleExportExcel}
               variant="secondary"
