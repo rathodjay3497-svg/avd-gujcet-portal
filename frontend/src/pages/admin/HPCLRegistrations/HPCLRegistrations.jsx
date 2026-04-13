@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { jsPDF } from 'jspdf';
 import * as XLSX from 'xlsx';
@@ -104,7 +104,6 @@ export default function HPCLRegistrations() {
   const [editingId, setEditingId] = useState(null); // phone
   const [editForm, setEditForm] = useState({ fees_paid: false, paid_to: '' });
 
-  const queryClient = useQueryClient();
   const { data, isLoading, isFetching, dataUpdatedAt } = useHPCLRegistrations();
 
   const updateMutation = useMutation({
