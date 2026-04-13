@@ -22,14 +22,14 @@ const GROUPS = [
   'Bhoolku',
   'Samp',
   'Atmiya',
-  'Dastav',
-  'Sarlata',
+  'Dasatva',
+  'Saradta',
   'Swikar',
   'Ekta',
   'Mogri',
 ];
 
-const HPCL_WHATSAPP_LINK = 'https://chat.whatsapp.com/HPCLCricket2026DummyLink';
+const HPCL_WHATSAPP_LINK = 'https://chat.whatsapp.com/DYAFkq1upt51xXS2J4evg1';
 const REGISTRATION_FEE = 350;
 
 export default function HPCLCricket() {

@@ -98,14 +98,24 @@ export default function Landing() {
         </div>
       </section> */}
 
-      {/* Hero Image Section */}
-      <section className={styles.homeImageSection}>
+      {/* HPCL Invitation Section */}
+      <section className={styles.invitationSection}>
         <div className={styles.container}>
-          <img
-            src="/assets/gujcet/homepage.png"
-            alt="GUJCET Portal Homepage"
-            className={styles.homeImage}
-          />
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Exclusive Invitation</h2>
+            <p className={styles.sectionSubtitleText}>Join us for the Hari Prabodham Cricket League 2026</p>
+          </div>
+          <div className={styles.invitationWrapper}>
+            <div className={styles.imageGlow}></div>
+            <img
+              src="/assets/hpcl/hpcl-Invitation.jpeg"
+              alt="HPCL 2026 Official Invitation"
+              className={styles.invitationImage}
+            />
+            <div className={styles.imageOverlay}>
+              <Link to="/hpcl-2026" className={styles.overlayBtn}>Register Now</Link>
+            </div>
+          </div>
         </div>
       </section>
 

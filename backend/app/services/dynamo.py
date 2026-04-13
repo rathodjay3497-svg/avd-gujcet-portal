@@ -285,7 +285,53 @@ def get_event_registrations(event_id: str) -> List[Dict]:
         raise
 
 
+def update_registration_fields(event_id: str, email: str, updates: Dict) -> Optional[Dict]:
+    request_id = get_request_id()
+    dynamo_logger.info(f"Updating registration: {event_id}/{email}", request_id=request_id, extra={"updates": list(updates.keys())})
+    try:
+        table = _get_table()
+        updates = _serialize(updates)
+
+        expr_parts = []
+        attr_names = {}
+        attr_values = {}
+        for idx, (key, val) in enumerate(updates.items()):
+            # Handle nested form_data updates if key starts with "form_data."
+            if key.startswith("form_data."):
+                inner_key = key.split(".", 1)[1]
+                placeholder = f"#fd"
+                inner_placeholder = f"#k{idx}"
+                value_ph = f":v{idx}"
+                expr_parts.append(f"{placeholder}.{inner_placeholder} = {value_ph}")
+                attr_names[placeholder] = "form_data"
+                attr_names[inner_placeholder] = inner_key
+                attr_values[value_ph] = val
+            else:
+                placeholder = f"#k{idx}"
+                value_ph = f":v{idx}"
+                expr_parts.append(f"{placeholder} = {value_ph}")
+                attr_names[placeholder] = key
+                attr_values[value_ph] = val
+
+        if not expr_parts:
+            return get_registration(event_id, email)
+
+        resp = table.update_item(
+            Key={"PK": f"EVENT#{event_id}", "SK": f"REG#{email}"},
+            UpdateExpression="SET " + ", ".join(expr_parts),
+            ExpressionAttributeNames=attr_names,
+            ExpressionAttributeValues=attr_values,
+            ReturnValues="ALL_NEW",
+        )
+        dynamo_logger.info(f"Registration updated successfully: {event_id}/{email}", request_id=request_id)
+        return _deserialize(resp.get("Attributes"))
+    except Exception as e:
+        dynamo_logger.error(f"Error updating registration {event_id}/{email}: {str(e)}", request_id=request_id, exc_info=True)
+        raise
+
+
 def get_registration_by_phone(event_id: str, phone: str) -> Optional[Dict]:
+
     """Check if a phone number is already registered for an event."""
     request_id = get_request_id()
     dynamo_logger.debug(f"Checking phone duplicate for event: {event_id}, phone: {phone}", request_id=request_id)

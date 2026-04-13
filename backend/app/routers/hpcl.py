@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, BackgroundTasks, Depends
 import uuid
 
-from app.models.hpcl import HPCLRegistrationRequest, HPCLRegistrationResponse
+from app.models.hpcl import HPCLRegistrationRequest, HPCLRegistrationResponse, HPCLUpdateRequest
 from app.services import dynamo
 from app.services.twilio_service import send_registration_sms
 from app.dependencies import require_admin
@@ -165,3 +165,30 @@ def get_hpcl_registrations(_admin=Depends(require_admin)):
         "total": len(regs),
         "registrations": [_flatten_hpcl_reg(r) for r in regs],
     }
+
+
+@router.patch(
+    "/admin/registrations/{phone}",
+    summary="Update HPCL registration (admin only)",
+)
+def update_hpcl_registration(
+    phone: str,
+    body: HPCLUpdateRequest,
+    _admin=Depends(require_admin)
+):
+    email_key = f"{phone}@hpcl.local"
+    
+    updates = {}
+    if body.fees_paid is not None:
+        updates["form_data.fees_paid"] = body.fees_paid
+    if body.paid_to is not None:
+        updates["form_data.paid_to"] = body.paid_to
+
+    if not updates:
+        return {"message": "No changes provided"}
+
+    updated = dynamo.update_registration_fields(EVENT_ID, email_key, updates)
+    if not updated:
+        raise HTTPException(status_code=404, detail="Registration not found")
+
+    return _flatten_hpcl_reg(updated)

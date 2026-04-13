@@ -1,5 +1,5 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState, useMemo, useEffect } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { jsPDF } from 'jspdf';
 import * as XLSX from 'xlsx';
 import AdminSidebar from '@/components/layout/AdminSidebar/AdminSidebar';
@@ -100,7 +100,43 @@ export default function HPCLRegistrations() {
   const [filterStandard, setFilterStandard] = useState([]);
   const [filterRole, setFilterRole] = useState([]);
 
-  const { data, isLoading, isFetching } = useHPCLRegistrations();
+  // Edit states
+  const [editingId, setEditingId] = useState(null); // phone
+  const [editForm, setEditForm] = useState({ fees_paid: false, paid_to: '' });
+
+  const queryClient = useQueryClient();
+  const { data, isLoading, isFetching, dataUpdatedAt } = useHPCLRegistrations();
+
+  const updateMutation = useMutation({
+    mutationFn: ({ phone, updates }) => hpclAPI.updateRegistration(phone, updates),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['hpcl-registrations'] });
+      toast.success('Registration updated');
+      setEditingId(null);
+    },
+    onError: (err) => {
+      toast.error(err.response?.data?.detail || 'Update failed');
+    }
+  });
+
+  const handleStartEdit = (r) => {
+    setEditingId(r.phone);
+    setEditForm({
+      fees_paid: !!r.fees_paid,
+      paid_to: r.paid_to || ''
+    });
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+  };
+
+  const handleSaveEdit = (phone) => {
+    if (editForm.fees_paid && !editForm.paid_to.trim()) {
+      return toast.error('Please provide "Paid To" name');
+    }
+    updateMutation.mutate({ phone, updates: editForm });
+  };
 
   const handleRefresh = () => {
     queryClient.invalidateQueries({ queryKey: ['hpcl-registrations'] });
@@ -430,44 +466,105 @@ export default function HPCLRegistrations() {
                     <th>Reference</th>
                     <th>Status</th>
                     <th>Registered At</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {paginated.map((r, idx) => (
-                    <tr key={r.registration_id}>
-                      <td className={styles.tdNum}>
-                        {(page - 1) * PAGE_SIZE + idx + 1}
-                      </td>
-                      <td><code>{r.registration_id}</code></td>
-                      <td>{r.name || '—'}</td>
-                      <td>{r.phone || '—'}</td>
-                      <td>{r.age || '—'}</td>
-                      <td>{r.address || '—'}</td>
-                      <td>{r.standard || '—'}</td>
-                      <td>{r.playing_role || '—'}</td>
-                      <td>{r.batting_style || '—'}</td>
-                      <td>{r.bowling_style || '—'}</td>
-                      <td>{r.group || '—'}</td>
-                      <td>
-                        <span className={`${styles.badge} ${r.fees_paid ? styles.confirmed : styles.waitlisted}`}>
-                          {r.fees_paid ? 'Yes' : 'No'}
-                        </span>
-                      </td>
-                      <td>{r.paid_to || '—'}</td>
-                      <td>{r.reference || '—'}</td>
-                      <td>
-                        <span className={`${styles.badge} ${styles[r.status]}`}>
-                          {r.status}
-                        </span>
-                      </td>
-                      <td className={styles.dateCell}>{formatDateTime(r.registered_at)}</td>
-                    </tr>
-                  ))}
+                  {paginated.map((r, idx) => {
+                    const isEditing = editingId === r.phone;
+                    return (
+                      <tr key={r.registration_id}>
+                        <td className={styles.tdNum}>
+                          {(page - 1) * PAGE_SIZE + idx + 1}
+                        </td>
+                        <td><code>{r.registration_id}</code></td>
+                        <td>{r.name || '—'}</td>
+                        <td>{r.phone || '—'}</td>
+                        <td>{r.age || '—'}</td>
+                        <td>{r.address || '—'}</td>
+                        <td>{r.standard || '—'}</td>
+                        <td>{r.playing_role || '—'}</td>
+                        <td>{r.batting_style || '—'}</td>
+                        <td>{r.bowling_style || '—'}</td>
+                        <td>{r.group || '—'}</td>
+                        <td>
+                          {isEditing ? (
+                            <select
+                              value={editForm.fees_paid ? 'Yes' : 'No'}
+                              onChange={(e) => {
+                                const val = e.target.value === 'Yes';
+                                setEditForm(prev => ({
+                                  ...prev,
+                                  fees_paid: val,
+                                  paid_to: val ? prev.paid_to : ''
+                                }));
+                              }}
+                              className={styles.editSelect}
+                            >
+                              <option value="No">No</option>
+                              <option value="Yes">Yes</option>
+                            </select>
+                          ) : (
+                            <span className={`${styles.badge} ${r.fees_paid ? styles.confirmed : styles.waitlisted}`}>
+                              {r.fees_paid ? 'Yes' : 'No'}
+                            </span>
+                          )}
+                        </td>
+                        <td>
+                          {isEditing ? (
+                            <input
+                              type="text"
+                              value={editForm.paid_to}
+                              onChange={(e) => setEditForm(prev => ({ ...prev, paid_to: e.target.value }))}
+                              placeholder="Name..."
+                              className={styles.editInput}
+                              disabled={!editForm.fees_paid}
+                            />
+                          ) : (
+                            r.paid_to || '—'
+                          )}
+                        </td>
+                        <td>{r.reference || '—'}</td>
+                        <td>
+                          <span className={`${styles.badge} ${styles[r.status]}`}>
+                            {r.status}
+                          </span>
+                        </td>
+                        <td className={styles.dateCell}>{formatDateTime(r.registered_at)}</td>
+                        <td>
+                          {isEditing ? (
+                            <div className={styles.editActions}>
+                              <button
+                                className={styles.saveBtn}
+                                onClick={() => handleSaveEdit(r.phone)}
+                                disabled={updateMutation.isPending}
+                              >
+                                {updateMutation.isPending ? '...' : '✓'}
+                              </button>
+                              <button
+                                className={styles.cancelBtn}
+                                onClick={handleCancelEdit}
+                              >
+                                ✕
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              className={styles.editBtn}
+                              onClick={() => handleStartEdit(r)}
+                            >
+                              Edit
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
                   {paginated.length === 0 && (
                     <tr>
-                      <td colSpan={16} className={styles.emptyRow}>
-                        {search || hasFilters
-                          ? 'No registrations match the current filters.'
+                      <td colSpan={17} className={styles.emptyRow}>
+                        {search
+                          ? `No registrations match "${search}".`
                           : 'No registrations yet.'}
                       </td>
                     </tr>

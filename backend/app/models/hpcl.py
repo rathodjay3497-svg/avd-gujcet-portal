@@ -39,3 +39,16 @@ class HPCLRegistrationResponse(BaseModel):
     form_data: Dict[str, Any]
     status: str = "confirmed"
     registered_at: str
+
+
+class HPCLUpdateRequest(BaseModel):
+    fees_paid: Optional[bool] = None
+    paid_to: Optional[str] = None
+
+    @model_validator(mode="after")
+    def validate_paid_to(self) -> "HPCLUpdateRequest":
+        if self.fees_paid is True and not self.paid_to:
+            raise ValueError("paid_to is required when fees_paid is True")
+        if self.fees_paid is False:
+            self.paid_to = ""
+        return self
