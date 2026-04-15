@@ -74,6 +74,7 @@ export const hpclAPI = {
   register: (formData) => api.post('/hpcl/register', formData),
   getAdminRegistrations: () => api.get('/hpcl/admin/registrations'),
   updateRegistration: (phone, data) => api.patch(`/hpcl/admin/registrations/${phone}`, data),
+  deleteRegistration: (phone) => api.delete(`/hpcl/admin/registrations/${phone}`),
 };
 
 // ─── Users ───────────────────────────────────────────────────

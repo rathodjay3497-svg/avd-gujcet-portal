@@ -192,3 +192,16 @@ def update_hpcl_registration(
         raise HTTPException(status_code=404, detail="Registration not found")
 
     return _flatten_hpcl_reg(updated)
+
+
+@router.delete(
+    "/admin/registrations/{phone}",
+    status_code=200,
+    summary="Delete HPCL registration (admin only)",
+)
+def delete_hpcl_registration(phone: str, _admin=Depends(require_admin)):
+    email_key = f"{phone}@hpcl.local"
+    deleted = dynamo.delete_registration(EVENT_ID, email_key)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Registration not found")
+    return {"message": f"Registration for {phone} deleted successfully"}

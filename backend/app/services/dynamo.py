@@ -330,6 +330,27 @@ def update_registration_fields(event_id: str, email: str, updates: Dict) -> Opti
         raise
 
 
+def delete_registration(event_id: str, email: str) -> bool:
+    """Delete a registration record. Returns True if deleted, False if not found."""
+    request_id = get_request_id()
+    dynamo_logger.info(f"Deleting registration: {event_id}/{email}", request_id=request_id)
+    try:
+        table = _get_table()
+        resp = table.delete_item(
+            Key={"PK": f"EVENT#{event_id}", "SK": f"REG#{email}"},
+            ReturnValues="ALL_OLD",
+        )
+        deleted = bool(resp.get("Attributes"))
+        if deleted:
+            dynamo_logger.info(f"Registration deleted successfully: {event_id}/{email}", request_id=request_id)
+        else:
+            dynamo_logger.warning(f"Registration not found for deletion: {event_id}/{email}", request_id=request_id)
+        return deleted
+    except Exception as e:
+        dynamo_logger.error(f"Error deleting registration {event_id}/{email}: {str(e)}", request_id=request_id, exc_info=True)
+        raise
+
+
 def get_registration_by_phone(event_id: str, phone: str) -> Optional[Dict]:
 
     """Check if a phone number is already registered for an event."""

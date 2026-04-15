@@ -165,6 +165,8 @@ def logout(response: Response):
 def admin_login(body: AdminLogin, response: Response):
     # Hardcoded check for testing:
     import os
+    import dotenv
+    dotenv.load_dotenv()
     ADMIN_USERNAME = os.environ.get("ADMIN_USERNAME")
     ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD")
     if ADMIN_USERNAME == body.username and ADMIN_PASSWORD == body.password:

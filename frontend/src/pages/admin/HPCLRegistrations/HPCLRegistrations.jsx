@@ -88,6 +88,42 @@ function FilterDropdown({ label, options, value, onChange }) {
   );
 }
 
+// ─── Delete Confirmation Modal ────────────────────────────────────
+function DeleteConfirmModal({ reg, onConfirm, onCancel, isPending }) {
+  if (!reg) return null;
+  return (
+    <div className={hpclStyles.modalOverlay} onClick={onCancel}>
+      <div className={hpclStyles.modalBox} onClick={(e) => e.stopPropagation()}>
+        <div className={hpclStyles.modalIcon}>🗑️</div>
+        <h3 className={hpclStyles.modalTitle}>Delete Registration?</h3>
+        <p className={hpclStyles.modalMessage}>
+          Do you want to delete <strong>{reg.name}</strong>,{' '}
+          <strong>{reg.phone}</strong>?
+        </p>
+        <p className={hpclStyles.modalWarning}>This action cannot be undone.</p>
+        <div className={hpclStyles.modalActions}>
+          <button
+            className={hpclStyles.modalCancelBtn}
+            onClick={onCancel}
+            disabled={isPending}
+            type="button"
+          >
+            Cancel
+          </button>
+          <button
+            className={hpclStyles.modalDeleteBtn}
+            onClick={onConfirm}
+            disabled={isPending}
+            type="button"
+          >
+            {isPending ? 'Deleting…' : 'Yes, Delete'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Main component ───────────────────────────────────────────────
 export default function HPCLRegistrations() {
   const [search, setSearch] = useState('');
@@ -104,6 +140,9 @@ export default function HPCLRegistrations() {
   const [editingId, setEditingId] = useState(null); // phone
   const [editForm, setEditForm] = useState({ fees_paid: false, paid_to: '' });
 
+  // Delete modal state
+  const [deleteReg, setDeleteReg] = useState(null); // registration object to delete
+
   const { data, isLoading, isFetching, dataUpdatedAt } = useHPCLRegistrations();
 
   const updateMutation = useMutation({
@@ -115,6 +154,19 @@ export default function HPCLRegistrations() {
     },
     onError: (err) => {
       toast.error(err.response?.data?.detail || 'Update failed');
+    }
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: (phone) => hpclAPI.deleteRegistration(phone),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['hpcl-registrations'] });
+      toast.success('Registration deleted successfully');
+      setDeleteReg(null);
+      setEditingId(null);
+    },
+    onError: (err) => {
+      toast.error(err.response?.data?.detail || 'Delete failed');
     }
   });
 
@@ -135,6 +187,20 @@ export default function HPCLRegistrations() {
       return toast.error('Please provide "Paid To" name');
     }
     updateMutation.mutate({ phone, updates: editForm });
+  };
+
+  const handleDeleteClick = (r) => {
+    setDeleteReg(r);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (deleteReg) {
+      deleteMutation.mutate(deleteReg.phone);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteReg(null);
   };
 
   const handleRefresh = () => {
@@ -158,7 +224,7 @@ export default function HPCLRegistrations() {
 
   const feesPaidOptions = ['Yes', 'No'];
 
-  // ── Combined filter + search ──────────────────────────────────
+  // ── Combined filter + search + SORT by registered_at desc ────
   const filtered = useMemo(() => {
     let result = allRegs;
 
@@ -188,6 +254,13 @@ export default function HPCLRegistrations() {
         r.paid_to?.toLowerCase().includes(s)
       );
     }
+
+    // Sort by registered_at descending (newest first)
+    result = [...result].sort((a, b) => {
+      const dateA = a.registered_at ? new Date(a.registered_at).getTime() : 0;
+      const dateB = b.registered_at ? new Date(b.registered_at).getTime() : 0;
+      return dateB - dateA;
+    });
 
     return result;
   }, [allRegs, search, filterGroup, filterFeesPaid, filterStandard, filterRole]);
@@ -450,41 +523,53 @@ export default function HPCLRegistrations() {
                 <thead>
                   <tr>
                     <th className={styles.thNum}>#</th>
-                    <th>Reg ID</th>
+                    {/* Desktop-only columns */}
+                    <th className={hpclStyles.hideOnMobile}>Reg ID</th>
                     <th>Name</th>
                     <th>Phone</th>
-                    <th>Age</th>
-                    <th>Address</th>
-                    <th>Standard</th>
-                    <th>Playing Role</th>
-                    <th>Batting</th>
-                    <th>Bowling</th>
+                    <th className={hpclStyles.hideOnMobile}>Age</th>
+                    <th className={hpclStyles.hideOnMobile}>Address</th>
+                    <th className={hpclStyles.hideOnMobile}>Standard</th>
+                    <th className={hpclStyles.hideOnMobile}>Playing Role</th>
+                    <th className={hpclStyles.hideOnMobile}>Batting</th>
+                    <th className={hpclStyles.hideOnMobile}>Bowling</th>
                     <th>Group</th>
                     <th>Fees Paid</th>
-                    <th>Paid To</th>
-                    <th>Reference</th>
-                    <th>Status</th>
-                    <th>Registered At</th>
+                    <th className={hpclStyles.hideOnMobile}>Paid To</th>
+                    <th className={hpclStyles.hideOnMobile}>Reference</th>
+                    <th className={hpclStyles.hideOnMobile}>Status</th>
+                    <th className={hpclStyles.hideOnMobile}>Registered At</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {paginated.map((r, idx) => {
                     const isEditing = editingId === r.phone;
+                    // Truncate address to ~30 chars for display
+                    const addressShort = r.address && r.address.length > 28
+                      ? r.address.slice(0, 28) + '…'
+                      : r.address || '—';
+
                     return (
                       <tr key={r.registration_id}>
                         <td className={styles.tdNum}>
                           {(page - 1) * PAGE_SIZE + idx + 1}
                         </td>
-                        <td><code>{r.registration_id}</code></td>
+                        {/* Desktop-only cells */}
+                        <td className={hpclStyles.hideOnMobile}><code>{r.registration_id}</code></td>
                         <td>{r.name || '—'}</td>
                         <td>{r.phone || '—'}</td>
-                        <td>{r.age || '—'}</td>
-                        <td>{r.address || '—'}</td>
-                        <td>{r.standard || '—'}</td>
-                        <td>{r.playing_role || '—'}</td>
-                        <td>{r.batting_style || '—'}</td>
-                        <td>{r.bowling_style || '—'}</td>
+                        <td className={hpclStyles.hideOnMobile}>{r.age || '—'}</td>
+                        <td
+                          className={`${hpclStyles.hideOnMobile} ${hpclStyles.addressCell}`}
+                          title={r.address || ''}
+                        >
+                          {addressShort}
+                        </td>
+                        <td className={hpclStyles.hideOnMobile}>{r.standard || '—'}</td>
+                        <td className={hpclStyles.hideOnMobile}>{r.playing_role || '—'}</td>
+                        <td className={hpclStyles.hideOnMobile}>{r.batting_style || '—'}</td>
+                        <td className={hpclStyles.hideOnMobile}>{r.bowling_style || '—'}</td>
                         <td>{r.group || '—'}</td>
                         <td>
                           {isEditing ? (
@@ -509,7 +594,7 @@ export default function HPCLRegistrations() {
                             </span>
                           )}
                         </td>
-                        <td>
+                        <td className={hpclStyles.hideOnMobile}>
                           {isEditing ? (
                             <input
                               type="text"
@@ -523,13 +608,13 @@ export default function HPCLRegistrations() {
                             r.paid_to || '—'
                           )}
                         </td>
-                        <td>{r.reference || '—'}</td>
-                        <td>
+                        <td className={hpclStyles.hideOnMobile}>{r.reference || '—'}</td>
+                        <td className={hpclStyles.hideOnMobile}>
                           <span className={`${styles.badge} ${styles[r.status]}`}>
                             {r.status}
                           </span>
                         </td>
-                        <td className={styles.dateCell}>{formatDateTime(r.registered_at)}</td>
+                        <td className={`${styles.dateCell} ${hpclStyles.hideOnMobile}`}>{formatDateTime(r.registered_at)}</td>
                         <td>
                           {isEditing ? (
                             <div className={styles.editActions}>
@@ -537,12 +622,23 @@ export default function HPCLRegistrations() {
                                 className={styles.saveBtn}
                                 onClick={() => handleSaveEdit(r.phone)}
                                 disabled={updateMutation.isPending}
+                                title="Save changes"
                               >
-                                {updateMutation.isPending ? '...' : '✓'}
+                                {updateMutation.isPending ? '…' : '✓'}
+                              </button>
+                              <button
+                                className={hpclStyles.deleteIconBtn}
+                                onClick={() => handleDeleteClick(r)}
+                                disabled={deleteMutation.isPending}
+                                title="Delete registration"
+                                type="button"
+                              >
+                                🗑
                               </button>
                               <button
                                 className={styles.cancelBtn}
                                 onClick={handleCancelEdit}
+                                title="Cancel"
                               >
                                 ✕
                               </button>
@@ -616,6 +712,14 @@ export default function HPCLRegistrations() {
           </div>
         )}
       </div>
+
+      {/* ─── Delete Confirmation Modal ─── */}
+      <DeleteConfirmModal
+        reg={deleteReg}
+        onConfirm={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
+        isPending={deleteMutation.isPending}
+      />
     </div>
   );
 }

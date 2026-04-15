@@ -29,6 +29,7 @@ class Settings(BaseSettings):
 
     # Admin
     ADMIN_USERNAME: str = "admin"
+    ADMIN_PASSWORD: str = ""
     ADMIN_PASSWORD_HASH: str = ""
 
     # Google OAuth
