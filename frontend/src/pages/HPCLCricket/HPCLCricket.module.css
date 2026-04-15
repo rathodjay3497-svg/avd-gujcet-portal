@@ -69,6 +69,9 @@
 }
 
 .typeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   background: rgba(59, 130, 246, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: #fff;
@@ -81,12 +84,52 @@
   backdrop-filter: blur(4px);
   transition: all 0.3s ease;
   cursor: default;
+  white-space: nowrap;
 }
 
 .typeBadge:hover {
   background: rgba(59, 130, 246, 0.25);
   border-color: #3b82f6;
   transform: scale(1.05);
+}
+
+/* ── Live dot ── */
+.liveDot {
+  position: relative;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ef4444;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.8);
+}
+
+.liveDot::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid rgba(239, 68, 68, 0.5);
+  animation: liveRipple 1.4s ease-out infinite;
+}
+
+@keyframes liveRipple {
+  0%   { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2);   opacity: 0; }
+}
+
+.liveText {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #f87171;
+  letter-spacing: 0.1em;
+  animation: liveBlink 1.4s ease-in-out infinite;
+}
+
+@keyframes liveBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.55; }
 }
 
 .hpclSubtitle {
@@ -342,6 +385,114 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* ── Countdown Timer ── */
+.countdownWrapper {
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  border-radius: 16px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.countdownWrapper:hover {
+  background: rgba(37, 99, 235, 0.13);
+  border-color: rgba(96, 165, 250, 0.35);
+}
+
+.countdownLabel {
+  font-size: 0.82rem;
+  color: #93c5fd;
+  margin: 0 0 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+.countdownLabel strong {
+  color: #dbeafe;
+  font-weight: 700;
+}
+
+.countdownRow {
+  display: flex;
+  justify-content: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.countdownUnit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 64px;
+  background: rgba(15, 23, 42, 0.35);
+  border: 1px solid rgba(96, 165, 250, 0.18);
+  border-radius: 12px;
+  padding: 0.65rem 0.5rem;
+  backdrop-filter: blur(6px);
+  transition: transform 0.1s ease;
+}
+
+.countdownNum {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
+  animation: tickPulse 1s ease-in-out infinite;
+}
+
+@keyframes tickPulse {
+  0%, 100% { text-shadow: 0 0 12px rgba(96, 165, 250, 0.4); }
+  50%       { text-shadow: 0 0 24px rgba(96, 165, 250, 0.8); }
+}
+
+.countdownUnitLabel {
+  font-size: 0.68rem;
+  color: #7dd3fc;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── Registration Closed Banner ── */
+.closedBanner {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  animation: fadeInDown 0.6s ease-out;
+}
+
+.closedIcon {
+  font-size: 2rem;
+  line-height: 1;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.5));
+}
+
+.closedTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #f87171;
+  margin: 0 0 0.3rem;
+}
+
+.closedDesc {
+  font-size: 0.85rem;
+  color: #fca5a5;
+  margin: 0;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
 @media (max-width: 768px) {
   .hpclContainer {
     max-width: 90%;
@@ -361,6 +512,7 @@
   }
   .hpclTitle {
     font-size: 1.8rem !important;
+    margin-top: 0.5rem !important;
   }
 }
 
@@ -370,5 +522,22 @@
   }
   .hpclCard {
     padding: 1.5rem 1.25rem !important;
+  }
+
+  .countdownNum {
+    font-size: 1.25rem;
+  }
+
+  .countdownUnit {
+    min-width: 52px;
+    padding: 0.5rem 0.35rem;
+  }
+
+  .countdownUnitLabel {
+    font-size: 0.6rem;
+  }
+
+  .countdownLabel {
+    font-size: 0.75rem;
   }
 }

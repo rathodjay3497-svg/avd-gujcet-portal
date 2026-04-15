@@ -148,7 +148,10 @@ export default function HelpDesk() {
     <div className={styles.page}>
       <div className={styles.container}>
 
-        <h1 className={styles.title}>Admission Help Desk</h1>
+        <h1 className={styles.title}>
+          <span className={styles.freeBadge}>FREE</span>
+          Admission Help Desk
+        </h1>
 
         <p className={styles.subtitle}>
           Your complete admission guide in one place.

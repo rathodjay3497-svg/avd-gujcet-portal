@@ -21,6 +21,58 @@
   color: #0f172a;
   margin-bottom: 0.75rem;
   letter-spacing: -0.01em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ── FREE badge ── */
+@keyframes freeShimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+@keyframes freePop {
+  0%, 100% { transform: scale(1) rotate(-2deg); }
+  50%       { transform: scale(1.08) rotate(-2deg); }
+}
+
+.freeBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  color: #fff;
+  background: linear-gradient(
+    90deg,
+    #16a34a 0%,
+    #22c55e 30%,
+    #4ade80 50%,
+    #22c55e 70%,
+    #16a34a 100%
+  );
+  background-size: 200% auto;
+  box-shadow:
+    0 2px 8px rgba(22, 163, 74, 0.45),
+    0 0 0 1.5px rgba(74, 222, 128, 0.4);
+  animation: freeShimmer 2s linear infinite, freePop 1.8s ease-in-out infinite;
+  transform: rotate(-2deg);
+  vertical-align: middle;
+  cursor: default;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.freeBadge:hover {
+  transform: rotate(-2deg) scale(1.1);
+  box-shadow:
+    0 4px 16px rgba(22, 163, 74, 0.6),
+    0 0 0 2px rgba(74, 222, 128, 0.5);
 }
 
 .subtitle {

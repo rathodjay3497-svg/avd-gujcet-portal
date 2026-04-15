@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { hpclAPI } from '@/services/api';
 import toast from 'react-hot-toast';
@@ -32,9 +32,34 @@ const GROUPS = [
 const HPCL_WHATSAPP_LINK = 'https://chat.whatsapp.com/DYAFkq1upt51xXS2J4evg1';
 const REGISTRATION_FEE = 350;
 
+const TARGET_DATE = new Date('2026-04-20T00:00:00+05:30');
+
+function getTimeLeft() {
+  const diff = TARGET_DATE - Date.now();
+  if (diff <= 0) return null;
+  const totalSeconds = Math.floor(diff / 1000);
+  return {
+    days: Math.floor(totalSeconds / 86400),
+    hours: Math.floor((totalSeconds % 86400) / 3600),
+    minutes: Math.floor((totalSeconds % 3600) / 60),
+    seconds: totalSeconds % 60,
+  };
+}
+
 export default function HPCLCricket() {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(getTimeLeft);
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    timerRef.current = setInterval(() => {
+      const t = getTimeLeft();
+      setTimeLeft(t);
+      if (!t) clearInterval(timerRef.current);
+    }, 1000);
+    return () => clearInterval(timerRef.current);
+  }, []);
 
   const [form, setForm] = useState({
     name: '',
@@ -146,9 +171,38 @@ export default function HPCLCricket() {
         <div className={`${styles.card} ${localStyles.hpclCard}`}>
           <div className={localStyles.headerRow}>
             <h2 className={`${styles.title} ${localStyles.hpclTitle}`}>Register for HPCL 2026</h2>
-            <span className={localStyles.typeBadge}>Box Cricket</span>
+            <span className={localStyles.typeBadge}>
+              <span className={localStyles.liveDot} />
+              <span className={localStyles.liveText}>LIVE</span>
+              Box Cricket
+            </span>
           </div>
           <p className={`${styles.subtitle} ${localStyles.hpclSubtitle}`}>HPCL - Hari Prabodham Cricket League 2026 - Fill in your details to register</p>
+
+          {/* ── Countdown Timer ── */}
+          {timeLeft ? (
+            <div className={localStyles.countdownWrapper}>
+              <p className={localStyles.countdownLabel}>⏳ Registration closes on <strong>20 April 2026</strong></p>
+              <div className={localStyles.countdownRow}>
+                {[['Days', timeLeft.days], ['Hours', timeLeft.hours], ['Minutes', timeLeft.minutes], ['Seconds', timeLeft.seconds]].map(
+                  ([unit, val]) => (
+                    <div key={unit} className={localStyles.countdownUnit}>
+                      <span className={localStyles.countdownNum}>{String(val).padStart(2, '0')}</span>
+                      <span className={localStyles.countdownUnitLabel}>{unit}</span>
+                    </div>
+                  )
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className={localStyles.closedBanner}>
+              <span className={localStyles.closedIcon}>🏏</span>
+              <div>
+                <p className={localStyles.closedTitle}>Registration Closed</p>
+                <p className={localStyles.closedDesc}>The registration window for HPCL 2026 has ended on 20 April 2026. Thank you for your interest!</p>
+              </div>
+            </div>
+          )}
 
           {/* ── Fee Notice ── */}
           <div className={localStyles.feeNotice}>

@@ -25,15 +25,25 @@ export default function Navbar() {
           <span className={styles.logoText}>Suhrad Youths</span>
         </Link>
 
-        <button
-          className={`${styles.hamburger} ${menuOpen ? styles.active : ''}`}
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-        >
-          <span />
-          <span />
-          <span />
-        </button>
+        <div className={styles.mobileHeaderActions}>
+          <Link
+            to="/help-desk"
+            className={`${styles.liveLink} ${styles.liveLinkDesk} ${styles.mobileHelpLink} ${location.pathname === '/help-desk' ? styles.active : ''}`}
+          >
+            <span className={`${styles.liveDot} ${styles.liveDotGoogleAi}`} />
+            Admission Help Desk
+          </Link>
+
+          <button
+            className={`${styles.hamburger} ${menuOpen ? styles.active : ''}`}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
 
         <div className={`${styles.navLinks} ${menuOpen ? styles.open : ''}`}>
           <Link
@@ -55,15 +65,17 @@ export default function Navbar() {
           </Link>
           <Link
             to="/help-desk"
-            className={location.pathname === '/help-desk' ? styles.active : ''}
+            className={`${styles.liveLink} ${styles.liveLinkDesk} ${location.pathname === '/help-desk' ? styles.active : ''}`}
           >
+            <span className={`${styles.liveDot} ${styles.liveDotGoogleAi}`} />
             Admission Help Desk
           </Link>
 
           <Link
             to="/hpcl-2026"
-            className={location.pathname === '/hpcl-2026' ? styles.active : ''}
+            className={`${styles.liveLink} ${styles.liveLinkHpcl} ${location.pathname === '/hpcl-2026' ? styles.active : ''}`}
           >
+            <span className={`${styles.liveDot} ${styles.liveDotGreen}`} />
             HPCL Cricket
           </Link>
 

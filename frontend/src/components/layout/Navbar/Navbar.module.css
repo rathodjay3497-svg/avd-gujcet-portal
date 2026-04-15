@@ -141,6 +141,18 @@
   font-size: 0.875rem;
 }
 
+/* Hidden on desktop — only shown on mobile */
+.mobileHeaderActions {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mobileHelpLink {
+  font-size: 0.7rem !important;
+  padding: 3px 6px !important;
+}
+
 .hamburger {
   display: none;
   flex-direction: column;
@@ -176,6 +188,11 @@
     display: flex;
   }
 
+  /* Show the mobile header actions wrapper */
+  .mobileHeaderActions {
+    display: flex;
+  }
+
   .navLinks {
     position: fixed;
     top: 64px;
@@ -198,5 +215,134 @@
     pointer-events: all;
   }
 }
+
+/* ── Live event link animations ── */
+
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.55); opacity: 0.55; }
+}
+
+/* Google AI (Gemini) flowing gradient */
+@keyframes googleAiFlow {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes googleAiDot {
+  0%   { background: #4285F4; box-shadow: 0 0 6px rgba(66,133,244,0.85); }
+  25%  { background: #8B5CF6; box-shadow: 0 0 6px rgba(139,92,246,0.85); }
+  50%  { background: #EC4899; box-shadow: 0 0 6px rgba(236,72,153,0.85); }
+  75%  { background: #06B6D4; box-shadow: 0 0 6px rgba(6,182,212,0.85); }
+  100% { background: #4285F4; box-shadow: 0 0 6px rgba(66,133,244,0.85); }
+}
+
+@keyframes googleAiBorder {
+  0%   { box-shadow: 0 0 0 1.5px rgba(66,133,244,0.5),  0 3px 14px rgba(66,133,244,0.12); }
+  25%  { box-shadow: 0 0 0 1.5px rgba(139,92,246,0.5),  0 3px 14px rgba(139,92,246,0.12); }
+  50%  { box-shadow: 0 0 0 1.5px rgba(236,72,153,0.5),  0 3px 14px rgba(236,72,153,0.12); }
+  75%  { box-shadow: 0 0 0 1.5px rgba(6,182,212,0.5),   0 3px 14px rgba(6,182,212,0.12); }
+  100% { box-shadow: 0 0 0 1.5px rgba(66,133,244,0.5),  0 3px 14px rgba(66,133,244,0.12); }
+}
+
+@keyframes shimmerGreen {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+.liveDot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: pulseDot 1.4s ease-in-out infinite;
+}
+
+.liveDotGoogleAi {
+  animation: pulseDot 1.4s ease-in-out infinite, googleAiDot 3s linear infinite;
+}
+.liveDotGreen { background: #22C55E; box-shadow: 0 0 0 2px rgba(34,197,94,0.25); }
+
+.liveLink {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  font-weight: 600 !important;
+  border-radius: 5px;
+  padding: 3px 8px;
+  transition: all 0.2s ease !important;
+}
+
+/* Admission Help Desk – Google AI (Gemini) style */
+.liveLinkDesk {
+  /* Flowing multicolor gradient clipped to text */
+  background: linear-gradient(270deg, #4285F4, #8B5CF6, #EC4899, #06B6D4, #4285F4);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: googleAiFlow 5s ease infinite, googleAiBorder 5s ease infinite;
+  border: none;
+  font-weight: 700 !important;
+}
+
+/* Pill background via ::before so it doesn't clash with background-clip: text */
+.liveLinkDesk::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 5px;
+  background: linear-gradient(270deg,
+    rgba(66,133,244,0.07),
+    rgba(139,92,246,0.07),
+    rgba(236,72,153,0.07),
+    rgba(6,182,212,0.07),
+    rgba(66,133,244,0.07)
+  );
+  background-size: 300% 300%;
+  animation: googleAiFlow 5s ease infinite;
+  z-index: -1;
+}
+
+.liveLinkDesk:hover::before {
+  background: linear-gradient(270deg,
+    rgba(66,133,244,0.15),
+    rgba(139,92,246,0.15),
+    rgba(236,72,153,0.15),
+    rgba(6,182,212,0.15),
+    rgba(66,133,244,0.15)
+  );
+  background-size: 300% 300%;
+  animation: googleAiFlow 5s ease infinite;
+}
+
+/* HPCL Cricket – green shimmer */
+.liveLinkHpcl {
+  background: linear-gradient(
+    90deg,
+    rgba(34,197,94,0.08) 0%,
+    rgba(34,197,94,0.22) 30%,
+    rgba(34,197,94,0.08) 60%
+  );
+  background-size: 200% auto;
+  animation: shimmerGreen 3s linear infinite;
+  color: #15803D !important;
+  border: 1px solid rgba(34,197,94,0.3);
+}
+
+.liveLinkHpcl:hover {
+  background-color: rgba(34,197,94,0.15) !important;
+  color: #166534 !important;
+  box-shadow: 0 0 10px rgba(34,197,94,0.3);
+}
+
+/* Active state: keep gradient visible */
+.liveLinkDesk.active {
+  -webkit-text-fill-color: transparent;
+}
+.liveLinkHpcl.active { color: #166534 !important; }
 
 /*# sourceMappingURL=Navbar.module.css.map */
