@@ -533,7 +533,7 @@ export default function HPCLRegistrations() {
                     <th className={hpclStyles.hideOnMobile}>Playing Role</th>
                     <th className={hpclStyles.hideOnMobile}>Batting</th>
                     <th className={hpclStyles.hideOnMobile}>Bowling</th>
-                    <th>Group</th>
+                    <th className={hpclStyles.hideOnMobile}>Group</th>
                     <th>Fees Paid</th>
                     <th className={hpclStyles.hideOnMobile}>Paid To</th>
                     <th className={hpclStyles.hideOnMobile}>Reference</th>
@@ -570,7 +570,7 @@ export default function HPCLRegistrations() {
                         <td className={hpclStyles.hideOnMobile}>{r.playing_role || '—'}</td>
                         <td className={hpclStyles.hideOnMobile}>{r.batting_style || '—'}</td>
                         <td className={hpclStyles.hideOnMobile}>{r.bowling_style || '—'}</td>
-                        <td>{r.group || '—'}</td>
+                        <td className={hpclStyles.hideOnMobile}>{r.group || '—'}</td>
                         <td>
                           {isEditing ? (
                             <select

@@ -8,14 +8,49 @@
   display: flex;
   flex-direction: column;
   padding: 1.5rem;
-  z-index: 50;
+  z-index: 100;
+  transition: width 0.25s ease;
 }
-@media (max-width: 768px) {
-  .sidebar {
-    width: 64px;
-    padding: 1rem;
-  }
+
+.collapsed {
+  width: 64px;
+  padding: 1rem;
 }
+
+.hamburger {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 200;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1.5px solid #E2E8F0;
+  background: #FFFFFF;
+  color: #1A3C6E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.hamburger:hover {
+  background: #F1F5F9;
+  border-color: #1A3C6E;
+}
+
+/* Position hamburger correctly when sidebar is open */
+.sidebar:not(.collapsed) ~ .hamburger {
+  /* No change needed if we want it top left */
+}
+
+/* If sidebar is open, maybe move hamburger? 
+   Actually, let's put it INSIDE the sidebar or top left of main content.
+   User said "top left to hide sidebar". 
+   If we put it in the sidebar, it stays with the sidebar.
+*/
 
 .logo {
   display: flex;
@@ -23,6 +58,7 @@
   gap: 0.75rem;
   margin-bottom: 2rem;
   padding: 0.5rem;
+  margin-top: 3.5rem; /* Make room for hamburger above or it can be inside logo */
 }
 
 .logoIcon {
@@ -44,11 +80,6 @@
   color: #fff;
   font-size: 1.125rem;
 }
-@media (max-width: 768px) {
-  .logoText {
-    display: none;
-  }
-}
 
 .nav {
   flex: 1;
@@ -68,23 +99,22 @@
   font-size: 0.875rem;
   font-weight: 500;
   transition: all 0.15s ease;
+  white-space: nowrap;
 }
+
+.collapsed .link {
+  padding: 0.75rem;
+  justify-content: center;
+}
+
 .link:hover {
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
 }
+
 .link.active {
   background: rgba(255, 255, 255, 0.15);
   color: #fff;
-}
-@media (max-width: 768px) {
-  .link {
-    padding: 0.75rem;
-    justify-content: center;
-  }
-  .link span {
-    display: none;
-  }
 }
 
 .logoutBtn {
@@ -101,17 +131,19 @@
   transition: all 0.15s ease;
   margin-top: auto;
   padding-top: 1rem;
+  white-space: nowrap;
 }
+
+.collapsed .logoutBtn {
+  justify-content: center;
+  padding: 1rem 0.75rem;
+}
+
 .logoutBtn:hover {
   color: #fff;
 }
-@media (max-width: 768px) {
-  .logoutBtn {
-    justify-content: center;
-  }
-  .logoutBtn span {
-    display: none;
-  }
-}
 
-/*# sourceMappingURL=AdminSidebar.module.css.map */
+@media (max-width: 768px) {
+  /* On mobile, we might want it to hide completely or just stay collapsed */
+  /* For now, let's keep the manual toggle as primary control */
+}
