@@ -155,10 +155,13 @@
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   color: #ffffff !important;
   border-radius: 10px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
   padding: 0.65rem 0.85rem !important;
   font-size: 0.92rem !important;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   backdrop-filter: blur(4px);
+  min-width: 0; /* Prevent flex items from overflowing */
 }
 
 .hpclInput:hover, .hpclSelect:hover, .hpclTextarea:hover {
@@ -194,6 +197,15 @@
   display: flex;
   align-items: center;
   transition: all 0.3s ease;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.hpclPhoneWrapper .hpclInput {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  transform: none !important;
 }
 
 .hpclPhoneWrapper:hover {
@@ -508,36 +520,51 @@
     border-radius: 20px !important;
   }
   .hpclContainer {
-    width: 85%; /* User request: less form width so bg image can be seen */
+    width: 92%; /* Increased from 85% to provide more room for fields on small screens */
   }
   .hpclTitle {
-    font-size: 1.8rem !important;
+    font-size: 1.7rem !important;
     margin-top: 0.5rem !important;
   }
 }
 
 @media (max-width: 480px) {
   .hpclContainer {
-    width: 90%;
+    width: 95%;
   }
   .hpclCard {
-    padding: 1.5rem 1.25rem !important;
+    padding: 1.25rem 1rem !important;
   }
-
+  .hpclTitle {
+    font-size: 1.5rem !important;
+  }
+  .hpclSubtitle {
+    font-size: 0.82rem !important;
+    margin-bottom: 1.25rem !important;
+  }
+  .countdownWrapper {
+    padding: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .countdownRow {
+    gap: 0.35rem;
+  }
   .countdownNum {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
+    text-shadow: 0 0 12px rgba(96, 165, 250, 0.4);
   }
-
   .countdownUnit {
-    min-width: 52px;
-    padding: 0.5rem 0.35rem;
+    min-width: 46px;
+    padding: 0.4rem 0.25rem;
+    border-radius: 10px;
+    gap: 0.15rem;
   }
-
   .countdownUnitLabel {
-    font-size: 0.6rem;
+    font-size: 0.55rem;
+    letter-spacing: 0.05em;
   }
-
   .countdownLabel {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
+    margin-bottom: 0.6rem;
   }
 }
