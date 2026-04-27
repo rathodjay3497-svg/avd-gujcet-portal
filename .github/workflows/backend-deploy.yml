@@ -1,0 +1,15 @@
+name: Backend Deploy Test
+
+on:
+  push:
+    branches: [ master, release2.2/hpcl ]
+    paths:
+      - 'backend/**'
+  workflow_dispatch:
+
+jobs:
+  test-message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Test Message
+        run: echo "Testing Backend Deployment Workflow"
