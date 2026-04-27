@@ -254,9 +254,7 @@ def setup_logging():
 # Pre-configured loggers for common services
 auth_logger = get_logger('auth')
 dynamo_logger = get_logger('dynamo')
-s3_logger = get_logger('s3')
 email_logger = get_logger('email')
-sms_logger = get_logger('sms')
 pdf_logger = get_logger('pdf')
 jwt_logger = get_logger('jwt')
 otp_logger = get_logger('otp')
