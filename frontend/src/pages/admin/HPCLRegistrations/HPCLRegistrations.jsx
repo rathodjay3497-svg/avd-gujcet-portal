@@ -138,7 +138,13 @@ export default function HPCLRegistrations() {
 
   // Edit states
   const [editingId, setEditingId] = useState(null); // phone
-  const [editForm, setEditForm] = useState({ fees_paid: false, paid_to: '' });
+  const [editForm, setEditForm] = useState({ 
+    name: '',
+    address: '',
+    reference: '',
+    fees_paid: false, 
+    paid_to: '' 
+  });
 
   // Delete modal state
   const [deleteReg, setDeleteReg] = useState(null); // registration object to delete
@@ -173,6 +179,9 @@ export default function HPCLRegistrations() {
   const handleStartEdit = (r) => {
     setEditingId(r.phone);
     setEditForm({
+      name: r.name || '',
+      address: r.address || '',
+      reference: r.reference || '',
       fees_paid: !!r.fees_paid,
       paid_to: r.paid_to || ''
     });
@@ -557,14 +566,35 @@ export default function HPCLRegistrations() {
                         </td>
                         {/* Desktop-only cells */}
                         <td className={hpclStyles.hideOnMobile}><code>{r.registration_id}</code></td>
-                        <td>{r.name || '—'}</td>
+                        <td>
+                          {isEditing ? (
+                            <input
+                              type="text"
+                              value={editForm.name}
+                              onChange={(e) => setEditForm(prev => ({ ...prev, name: e.target.value }))}
+                              className={styles.editInput}
+                              style={{ width: '120px' }}
+                            />
+                          ) : (
+                            r.name || '—'
+                          )}
+                        </td>
                         <td>{r.phone || '—'}</td>
                         <td className={hpclStyles.hideOnMobile}>{r.age || '—'}</td>
                         <td
                           className={`${hpclStyles.hideOnMobile} ${hpclStyles.addressCell}`}
                           title={r.address || ''}
                         >
-                          {addressShort}
+                          {isEditing ? (
+                            <textarea
+                              value={editForm.address}
+                              onChange={(e) => setEditForm(prev => ({ ...prev, address: e.target.value }))}
+                              className={styles.editInput}
+                              style={{ width: '150px', height: '40px', fontSize: '12px' }}
+                            />
+                          ) : (
+                            addressShort
+                          )}
                         </td>
                         <td className={hpclStyles.hideOnMobile}>{r.standard || '—'}</td>
                         <td className={hpclStyles.hideOnMobile}>{r.playing_role || '—'}</td>
@@ -608,7 +638,19 @@ export default function HPCLRegistrations() {
                             r.paid_to || '—'
                           )}
                         </td>
-                        <td className={hpclStyles.hideOnMobile}>{r.reference || '—'}</td>
+                        <td className={hpclStyles.hideOnMobile}>
+                          {isEditing ? (
+                            <input
+                              type="text"
+                              value={editForm.reference}
+                              onChange={(e) => setEditForm(prev => ({ ...prev, reference: e.target.value }))}
+                              className={styles.editInput}
+                              style={{ width: '100px' }}
+                            />
+                          ) : (
+                            r.reference || '—'
+                          )}
+                        </td>
                         <td className={hpclStyles.hideOnMobile}>
                           <span className={`${styles.badge} ${styles[r.status]}`}>
                             {r.status}

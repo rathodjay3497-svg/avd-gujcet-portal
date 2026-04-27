@@ -35,13 +35,12 @@ export default function ProfileForm({ onCancel }) {
         <form className={styles.formContainer} onSubmit={handleSubmit}>
             <h3 className={styles.title}>Update Profile</h3>
 
-            {/* ─── Google Account (read-only) ─── */}
+            {/* ─── Email (read-only) ─── */}
             <div className={styles.formGroup} style={{ marginBottom: '2rem' }}>
                 <label>Email Address</label>
                 <div className={styles.readonlyField}>
                     <span className={styles.readonlyIcon}>✉</span>
                     <span className={styles.readonlyValue}>{user?.email}</span>
-                    <span className={styles.readonlyBadge}>Google</span>
                 </div>
             </div>
 

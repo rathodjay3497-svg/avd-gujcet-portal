@@ -3,7 +3,6 @@ import uuid
 
 from app.models.hpcl import HPCLRegistrationRequest, HPCLRegistrationResponse, HPCLUpdateRequest
 from app.services import dynamo
-from app.services.twilio_service import send_registration_sms
 from app.dependencies import require_admin
 from app.config import get_settings
 
@@ -108,17 +107,6 @@ def register_hpcl(body: HPCLRegistrationRequest, background_tasks: BackgroundTas
     }
     registration = dynamo.create_registration(EVENT_ID, email_key, reg_data)
 
-    # 7. Optional SMS notification
-    if settings.TWILIO_ACCOUNT_SID:
-        background_tasks.add_task(
-            send_registration_sms,
-            body.phone,
-            body.name,
-            "HPCL - Hari Prabodham Cricket League 2026",
-            reg_id,
-            "",
-            "",
-        )
 
     return {
         "registration_id": registration.get("registration_id", reg_id),
@@ -176,21 +164,30 @@ def update_hpcl_registration(
     body: HPCLUpdateRequest,
     _admin=Depends(require_admin)
 ):
-    email_key = f"{phone}@hpcl.local"
-    
+    old_email_key = f"{phone}@hpcl.local"
+    registration = dynamo.get_registration(EVENT_ID, old_email_key)
+    if not registration:
+        raise HTTPException(status_code=404, detail="Registration not found")
+
     updates = {}
+    if body.name is not None:
+        updates["form_data.name"] = body.name
+    if body.address is not None:
+        updates["form_data.address"] = body.address
+    if body.reference is not None:
+        updates["form_data.reference"] = body.reference
     if body.fees_paid is not None:
         updates["form_data.fees_paid"] = body.fees_paid
     if body.paid_to is not None:
         updates["form_data.paid_to"] = body.paid_to
 
+    # Remove phone from updates since it's now immutable in update endpoint
+    # (Migration logic removed as per user request)
+
     if not updates:
-        return {"message": "No changes provided"}
+        return _flatten_hpcl_reg(registration)
 
-    updated = dynamo.update_registration_fields(EVENT_ID, email_key, updates)
-    if not updated:
-        raise HTTPException(status_code=404, detail="Registration not found")
-
+    updated = dynamo.update_registration_fields(EVENT_ID, old_email_key, updates)
     return _flatten_hpcl_reg(updated)
 
 

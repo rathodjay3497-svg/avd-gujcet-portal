@@ -1,11 +1,8 @@
 import { useLocation, Navigate, Link } from 'react-router-dom';
-import { GoogleLogin } from '@react-oauth/google';
-import { useAuth } from '@/hooks/useAuth';
-import useAuthStore from '@/store/authStore';
 import styles from './Login.module.css';
+import useAuthStore from '@/store/authStore';
 
 export default function Login() {
-  const { googleLogin, loading } = useAuth();
   const { isAuthenticated } = useAuthStore();
   const location = useLocation();
 
@@ -14,14 +11,6 @@ export default function Login() {
   if (isAuthenticated) {
     return <Navigate to={redirectTo || '/'} replace />;
   }
-
-  const handleGoogleSuccess = async (credentialResponse) => {
-    await googleLogin(credentialResponse.credential, redirectTo);
-  };
-
-  const handleGoogleError = () => {
-    // GoogleLogin component shows its own error UI; nothing extra needed here
-  };
 
   return (
     <div className={styles.page}>
@@ -32,25 +21,8 @@ export default function Login() {
 
         <h2 className={styles.title}>Student Login</h2>
         <p className={styles.subtitle}>
-          Sign in with your Google account to register for counseling events
+          Student login is currently unavailable. Please contact admin for access.
         </p>
-
-        <div className={styles.googleWrapper}>
-          {loading ? (
-            <div className={styles.loadingText}>Signing in…</div>
-          ) : (
-            <GoogleLogin
-              onSuccess={handleGoogleSuccess}
-              onError={handleGoogleError}
-              useOneTap
-              theme="outline"
-              size="large"
-              text="continue_with"
-              shape="rectangular"
-              width="340"
-            />
-          )}
-        </div>
 
         <div className={styles.divider}>
           <span>or</span>
@@ -61,11 +33,6 @@ export default function Login() {
             Admin login
           </Link>
         </div>
-
-        <p className={styles.disclaimer}>
-          Your Google account email will be used as your login identifier.
-          You can add your mobile number in your profile after signing in.
-        </p>
       </div>
     </div>
   );

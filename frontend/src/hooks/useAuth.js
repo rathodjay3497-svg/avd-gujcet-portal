@@ -23,40 +23,6 @@ export function useAuth() {
   const queryClient = useQueryClient();
   const { setAuth, logout: storeLogout } = useAuthStore();
 
-  const googleLogin = async (credential, redirectTo) => {
-    setLoading(true);
-    try {
-      // Clear any stale cache from a previous user's session before logging in
-      queryClient.clear();
-
-      const { data: authData } = await authAPI.googleLogin(credential);
-      const token = authData.access_token;
-      const user = authData.user || {};
-
-      setAuth(token, user, false);
-      toast.success('Login successful!');
-
-      if (authData.is_new_user || !isProfileComplete(user)) {
-        navigate('/profile', { 
-          state: { 
-            message: 'Please complete your profile details before registering for an event.',
-            returnTo: redirectTo 
-          } 
-        });
-      } else if (redirectTo) {
-        navigate(redirectTo);
-      } else {
-        navigate('/');
-      }
-
-      return true;
-    } catch (err) {
-      toast.error(err.response?.data?.detail || err.message || 'Google login failed');
-      return false;
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const adminLogin = async (username, password) => {
     setLoading(true);
@@ -82,5 +48,5 @@ export function useAuth() {
     navigate('/');
   };
 
-  return { googleLogin, adminLogin, logout, loading };
+  return { adminLogin, logout, loading };
 }

@@ -42,8 +42,12 @@ class HPCLRegistrationResponse(BaseModel):
 
 
 class HPCLUpdateRequest(BaseModel):
+    name: Optional[str] = None
+    address: Optional[str] = None
+    reference: Optional[str] = None
     fees_paid: Optional[bool] = None
     paid_to: Optional[str] = None
+
 
     @model_validator(mode="after")
     def validate_paid_to(self) -> "HPCLUpdateRequest":

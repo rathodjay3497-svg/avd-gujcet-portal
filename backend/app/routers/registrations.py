@@ -6,7 +6,6 @@ from app.dependencies import get_current_user
 from app.models.registration import RegistrationCreate, RegistrationResponse, RegistrationCheckResponse, PublicRegistrationRequest
 from app.services import dynamo
 from app.services.id_generator import generate_registration_id
-from app.services.twilio_service import send_registration_sms
 from app.services.email_service import send_registration_email
 from app.config import get_settings
 
@@ -53,16 +52,6 @@ def register_form(event_id: str, body: RegistrationCreate, background_tasks: Bac
 
     # 6. Send notifications asynchronously
     phone = profile.get("phone", "")
-    if phone and settings.TWILIO_ACCOUNT_SID:
-        background_tasks.add_task(
-            send_registration_sms,
-            phone,
-            profile.get("name", "Student"),
-            event.get("title", ""),
-            reg_id,
-            event.get("event_date", ""),
-            event.get("venue", ""),
-        )
 
     background_tasks.add_task(
         send_registration_email,
@@ -126,11 +115,6 @@ def register_click(event_id: str, background_tasks: BackgroundTasks, user=Depend
 
     # 7. Send notifications
     phone = profile.get("phone", "")
-    if phone and settings.TWILIO_ACCOUNT_SID:
-        background_tasks.add_task(
-            send_registration_sms, phone, form_data["name"],
-            event.get("title", ""), reg_id, event.get("event_date", ""), event.get("venue", ""),
-        )
     background_tasks.add_task(
         send_registration_email, email, form_data["name"],
         event.get("title", ""), reg_id, event.get("event_date", ""), event.get("venue", ""),
@@ -255,16 +239,6 @@ def register_public(
     registration = dynamo.create_registration(event_id, email_key, reg_data)
 
     # 9. Send SMS notification (best-effort)
-    if body.phone and settings.TWILIO_ACCOUNT_SID:
-        background_tasks.add_task(
-            send_registration_sms,
-            body.phone,
-            body.name,
-            event.get("title", ""),
-            reg_id,
-            event.get("event_date", ""),
-            event.get("venue", ""),
-        )
 
     # 10. Send email notification (best-effort, only if real email supplied)
     if body.email:

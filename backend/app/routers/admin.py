@@ -7,7 +7,6 @@ from typing import Optional
 from app.dependencies import require_admin
 from app.models.registration import BulkNotifyRequest
 from app.services import dynamo
-from app.services.twilio_service import send_bulk_sms
 from app.services.email_service import send_bulk_email
 from app.config import get_settings
 
@@ -153,9 +152,6 @@ def send_notifications(event_id: str, body: BulkNotifyRequest, _admin=Depends(re
     sent_sms = 0
     sent_email = 0
 
-    if body.channel in ("sms", "both") and settings.TWILIO_ACCOUNT_SID:
-        send_bulk_sms(phones, body.message)
-        sent_sms = len(phones)
 
     if body.channel in ("email", "both"):
         recipients = [{"email": e} for e in emails]

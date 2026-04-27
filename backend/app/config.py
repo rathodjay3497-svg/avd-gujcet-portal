@@ -10,10 +10,6 @@ class Settings(BaseSettings):
     DYNAMODB_TABLE_NAME: str = "gujcet-platform"
     DYNAMODB_ENDPOINT_URL: str = "" 
 
-    # Twilio
-    TWILIO_ACCOUNT_SID: str = ""
-    TWILIO_AUTH_TOKEN: str = ""
-    TWILIO_PHONE_NUMBER: str = ""
 
     # Email
     SES_SENDER_EMAIL: str = "noreply@yourdomain.com"
@@ -33,8 +29,7 @@ class Settings(BaseSettings):
     ADMIN_PASSWORD: str = ""
     ADMIN_PASSWORD_HASH: str = ""
 
-    # Google OAuth
-    GOOGLE_CLIENT_ID: str = ""
+
 
     # Frontend
     FRONTEND_URL: str = "http://localhost:5173"
