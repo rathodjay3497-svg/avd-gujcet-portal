@@ -1,14 +1,15 @@
 import axios from 'axios';
 import useAuthStore from '@/store/authStore';
 
+// baseURL: 'https://hadtg6sq6whqva6aajw3o4a7qu0rxdpj.lambda-url.ap-south-1.on.aws'
 const api = axios.create({
-  baseURL: 'https://hadtg6sq6whqva6aajw3o4a7qu0rxdpj.lambda-url.ap-south-1.on.aws',
-  // baseURL: 'http://localhost:8000',
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000',
   headers: {
     'Content-Type': 'application/json',
   },
   withCredentials: true,
 });
+
 
 // Attach JWT from Zustand as Authorization header on every request
 api.interceptors.request.use((config) => {

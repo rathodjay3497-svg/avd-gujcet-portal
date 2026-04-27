@@ -11,8 +11,17 @@ settings = get_settings()
 
 
 def _get_table():
-    # No credentials passed — boto3 automatically uses the Lambda IAM execution role.
-    dynamodb = boto3.resource("dynamodb", region_name=settings.AWS_REGION)
+    if settings.DYNAMODB_ENDPOINT_URL:
+        dynamodb = boto3.resource(
+            "dynamodb",
+            region_name=settings.AWS_REGION,
+            endpoint_url=settings.DYNAMODB_ENDPOINT_URL,
+            aws_access_key_id="dummy",  # Required for local but ignored
+            aws_secret_access_key="dummy"  # Required for local but ignored
+        )
+    else:
+        # No credentials passed — boto3 automatically uses the Lambda IAM execution role.
+        dynamodb = boto3.resource("dynamodb", region_name=settings.AWS_REGION)
     return dynamodb.Table(settings.DYNAMODB_TABLE_NAME)
 
 
