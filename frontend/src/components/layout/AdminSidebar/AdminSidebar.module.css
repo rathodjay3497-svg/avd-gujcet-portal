@@ -41,10 +41,7 @@
   border-color: #1A3C6E;
 }
 
-/* Position hamburger correctly when sidebar is open */
-.sidebar:not(.collapsed) ~ .hamburger {
-  /* No change needed if we want it top left */
-}
+
 
 /* If sidebar is open, maybe move hamburger? 
    Actually, let's put it INSIDE the sidebar or top left of main content.
