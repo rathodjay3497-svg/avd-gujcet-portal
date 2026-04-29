@@ -8,7 +8,8 @@ class Settings(BaseSettings):
     # boto3 picks them up from the environment — never set them explicitly.
     AWS_REGION: str = "ap-south-1"
     DYNAMODB_TABLE_NAME: str = "gujcet-platform"
-    DYNAMODB_ENDPOINT_URL: str = "" 
+    DYNAMODB_ENDPOINT_URL: str = ""
+    HELPDESK_TABLE_NAME: str = "help-desk-entries"
 
 
     # Email

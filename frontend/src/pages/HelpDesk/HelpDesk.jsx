@@ -1,148 +1,98 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Phone, Mail, Instagram } from "lucide-react";
+import { Phone, ChevronDown } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { useState, useMemo, useEffect } from "react";
+import { helpDeskAPI } from "@/services/api";
 import styles from "./HelpDesk.module.css";
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function isUrl(s) {
   if (!s || typeof s !== "string") return false;
   return s.startsWith("http://") || s.startsWith("https://");
 }
 
+/** Display logic: empty or missing date → "Announce Soon" */
+function displayDate(date) {
+  if (!date || date.trim() === "") {
+    return <span className={styles.comingSoon}>Announce Soon</span>;
+  }
+  return date;
+}
+
+const SORT_OPTIONS = [
+  { value: 'custom', label: 'Custom Order' },
+  { value: 'alpha', label: 'Alphabetical (A-Z)' },
+  { value: 'date', label: 'Start Date (earliest first)' },
+  { value: 'recent', label: 'Recently Added' },
+];
+
+// ─── Skeleton rows ────────────────────────────────────────────────────────────
+
+function SkeletonRow() {
+  return (
+    <tr className={styles.skeletonRow}>
+      <td><div className={styles.skeletonCell} style={{ width: "80%" }} /></td>
+      <td><div className={styles.skeletonCell} style={{ width: "70%" }} /></td>
+      <td><div className={styles.skeletonCell} style={{ width: "90%" }} /></td>
+      <td><div className={styles.skeletonCell} style={{ width: "60%" }} /></td>
+      <td><div className={styles.skeletonCell} style={{ width: "60%" }} /></td>
+      <td><div className={styles.skeletonCell} style={{ width: "50%", margin: "0 auto" }} /></td>
+    </tr>
+  );
+}
+
+// ─── Main Component ───────────────────────────────────────────────────────────
+
 export default function HelpDesk() {
 
-  const tableData = [
-    {
-      body: "ACPC",
-      course: "Degree Engineering",
-      eligibility: "12th Pass (PCM)",
-      start: "Announce Soon",
-      end: "Announce Soon",
-      link: "https://admissions.nic.in/guj/applicant/root/Home.aspx?enc=Whdrh1xpp+TaLXcctX7fe8QUh58zhuE9OgK39v/MczqTJPsmhkIe7N1+S0BDwMeTJWxwaLJ/8nscAtbGqcVQpw=="
+  const { data: tableData = [], isLoading } = useQuery({
+    queryKey: ["helpdesk-entries"],
+    queryFn: async () => {
+      const { data } = await helpDeskAPI.list();
+      return data;
     },
-    {
-      body: "ACPC",
-      course: "Degree Pharmacy",
-      eligibility: "12th Pass (PCM) / 12th Pass (PCB)",
-      start: "Announce Soon",
-      end: "Announce Soon",
-      link: "https://admissions.nic.in/guj/applicant/root/Home.aspx?enc=Whdrh1xpp+TaLXcctX7fe8QUh58zhuE9OgK39v/MczqTJPsmhkIe7N1+S0BDwMeTJWxwaLJ/8nscAtbGqcVQpw=="
+    // staleTime: 0 (default) — refetches fresh data on every page mount/refresh
+  });
+
+  const { data: settingsData } = useQuery({
+    queryKey: ["helpdesk-settings"],
+    queryFn: async () => {
+      const { data } = await helpDeskAPI.getSettings();
+      return data;
     },
-    {
-      body: "ACPC",
-      course: "D2D Admission (Diploma to Degree)",
-      eligibility: "Diploma Last Year",
-      start: "Announce Soon",
-      end: "Announce Soon",
-      link: "https://admissions.nic.in/guj/applicant/root/Home.aspx?enc=Whdrh1xpp+TaLXcctX7fe8QUh58zhuE9OgK39v/MczqTJPsmhkIe7N1+S0BDwMeTJWxwaLJ/8nscAtbGqcVQpw==",
-      link2: "https://cdnbbsr.s3waas.gov.in/s35938b4d054136e5d59ada6ec9c295d7a/uploads/2025/05/2025051993.pdf"
-    },
-    {
-      body: "CVM, V.V.Nagar",
-      course: "Degree Engineering & All Other Courses",
-      eligibility: "12th Pass (PCM)",
-      start: "2-Apr-2025",
-      end: "Announce Soon",
-      link: "https://admissions.cvmu.edu.in/"
-    },
-    {
-      body: "CHARUSAT, Changa",
-      course: "All Courses",
-      eligibility: "12th Pass (PCM) / 12th Pass (PCB)",
-      start: "2-Apr-2025",
-      end: "Not Declared",
-      link: "https://admission.charusat.ac.in/Registration.aspx"
-    },
-    {
-      body: "DDU, Nadiad",
-      course: "Degree Engineering",
-      eligibility: "12th Pass (PCM)",
-      start: "2-Apr-2025",
-      end: "Not Declared",
-      link: "https://ddu.ac.in/"
-    },
-    {
-      body: "DAIICT, Gandhinagar",
-      course: "Degree Engineering",
-      eligibility: "12th Pass (PCM)",
-      start: "3-Apr-2025",
-      end: "9-Jun-2025",
-      link: "https://applyadmission.net/DA-IICT2025/"
-    },
-    {
-      body: "PDPU, Gandhinagar",
-      course: "Degree Engineering",
-      eligibility: "12th Pass (PCM)",
-      start: "1-Jan-2025",
-      end: "Announce Soon",
-      link: "https://pdpu.nopaperforms.com/b-tech-application-form"
-    },
-    {
-      body: "Nirma University, Ahmedabad",
-      course: "Degree Engineering",
-      eligibility: "12th Pass (PCM)",
-      start: "Announce Soon",
-      end: "Announce Soon",
-      link: "https://pdpu.nopaperforms.com/b-tech-application-form"
-    },
-    {
-      body: "SVNIT, Surat",
-      course: "Degree Engineering",
-      eligibility: "12th Pass (PCM)",
-      start: "Announce Soon",
-      end: "Announce Soon",
-      link: "https://josaa.nic.in/"
-    },
-    {
-      body: "GCAS",
-      course: "All other courses \n (B.Com, BCA, BBA, \n B.Sc, BA, B.Ed, B.Sw)",
-      eligibility: "12th Pass",
-      start: "29-May-2025",
-      end: "Announce Soon",
-      link: "https://gcas.gujgov.edu.in/index.aspx"
-    },
-    {
-      body: "Agricultural University",
-      course: "All Undergraduate Courses",
-      eligibility: "12th Pass (PCM) / 12th Pass (PCB)",
-      start: "22-May-2025",
-      end: "Announce Soon",
-      link: "https://ug.gsauca.in/",
-      link2: "https://ug.gsauca.in/Images/News_File/3318/3318.pdf"
-    },
-    {
-      body: "Agricultural University",
-      course: "All Polytechnic Courses",
-      eligibility: "10th Pass",
-      start: "20-May-2025",
-      end: "Announce Soon",
-      link: "https://poly.gsauca.in/",
-      link2: "https://poly.gsauca.in/Images/News/149/149.pdf"
-    },
-    {
-      body: "ACPUGMEC",
-      course: "Medical & Dental",
-      eligibility: "12th Pass (PCB)",
-      start: "Announce Soon",
-      end: "Announce Soon",
-      // link:"http://medadmgujarat.ncode.in/UG/Index.aspx"
-    },
-    {
-      body: "ACPUGMEC",
-      course: "Ayurvedic & Homeopathy",
-      eligibility: "12th Pass (PCB)",
-      start: "Announce Soon",
-      end: "Announce Soon",
-      // link:"http://medadmgujarat.ncode.in/UG/Index.aspx"
-    },
-    {
-      body: "ACPUGMEC",
-      course: "BPT, BSc Nursing \n GNM, ANM, B.Ortho. \n B.Optometry, B.Nat., BOT, BASLP",
-      eligibility: "12th Pass (PCB)",
-      start: "29-May-2025",
-      end: "Announce Soon",
-      link: "http://medadmgujarat.ncode.in/NUR/Index.aspx"
+  });
+
+  const [sortBy, setSortBy] = useState("custom");
+
+  useEffect(() => {
+    if (settingsData?.default_sort) {
+      setSortBy(settingsData.default_sort);
     }
-  ];
+  }, [settingsData]);
+
+  const sortedData = useMemo(() => {
+    const list = [...tableData];
+    switch (sortBy) {
+      case 'alpha':
+        return list.sort((a, b) => a.body.localeCompare(b.body));
+      case 'date':
+        return list.sort((a, b) => {
+          const hasA = a.start_date && a.start_date.trim() !== '';
+          const hasB = b.start_date && b.start_date.trim() !== '';
+          if (hasA && !hasB) return -1;
+          if (!hasA && hasB) return 1;
+          if (!hasA && !hasB) return 0;
+          return a.start_date.localeCompare(b.start_date);
+        });
+      case 'recent':
+        return list.sort((a, b) => (b.created_at || "").localeCompare(a.created_at || ""));
+      case 'custom':
+      default:
+        return list.sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
+    }
+  }, [tableData, sortBy]);
 
   return (
     <div className={styles.page}>
@@ -221,14 +171,27 @@ export default function HelpDesk() {
           </div>
         </div>
 
-        {/* ── Second Banner Image ── */}
-        {/* <div className={styles.heroBanner}>
-          <img
-            src="/assets/admission/admission-desk-1.jpg"
-            alt="Career streams after 10th and 12th"
-            className={styles.heroBannerImage}
-          />
-        </div> */}
+        <div className={styles.tableToolbar}>
+          <div className={styles.sortContainer}>
+            <label htmlFor="public-sort" className={styles.sortLabel}>Sort By:</label>
+            <div className={styles.selectWrapper}>
+              <select
+                id="public-sort"
+                className={styles.sortSelect}
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+              >
+                {SORT_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+              </select>
+              <ChevronDown className={styles.selectIcon} size={16} />
+            </div>
+          </div>
+          <div className={styles.entryCount}>
+            Showing <strong>{sortedData.length}</strong> entries
+          </div>
+        </div>
 
         <div className={styles.tableWrapper}>
           <table className={styles.table}>
@@ -246,56 +209,66 @@ export default function HelpDesk() {
 
             <tbody>
 
-              {tableData.map((row, index) => {
-                const url1 = isUrl(row.link) ? row.link : null;
-                const url2 = isUrl(row.link2) ? row.link2 : isUrl(row["link 2"]) ? row["link 2"] : null;
-                const linkAsText = row.link && !url1 ? row.link : null;
+              {isLoading ? (
+                // Show 6 skeleton rows while fetching
+                Array.from({ length: 6 }).map((_, i) => <SkeletonRow key={i} />)
+              ) : tableData.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className={styles.comingSoon} style={{ padding: "2rem", textAlign: "center" }}>
+                    Admission data will be updated soon. Check back shortly!
+                  </td>
+                </tr>
+              ) : (
+                sortedData.map((row, index) => {
+                  const url1 = isUrl(row.link) ? row.link : null;
+                  const url2 = isUrl(row.link2) ? row.link2 : isUrl(row["link 2"]) ? row["link 2"] : null;
+                  const linkAsText = row.link && !url1 ? row.link : null;
 
-                return (
-                  <tr key={index}>
-                    {/* All cells now inherit centering from the CSS */}
-                    <td>{row.body}</td>
+                  return (
+                    <tr key={row.entry_id || index}>
+                      <td>{row.body}</td>
 
-                    <td>
-                      <span className={styles.courseBadge}>
-                        {row.course.split('\n').map((line, i, arr) => (
-                          <React.Fragment key={i}>
-                            {line}
-                            {i < arr.length - 1 && <br />}
-                          </React.Fragment>
-                        ))}
-                      </span>
-                    </td>
+                      <td>
+                        <span className={styles.courseBadge}>
+                          {row.course.split('\n').map((line, i, arr) => (
+                            <React.Fragment key={i}>
+                              {line}
+                              {i < arr.length - 1 && <br />}
+                            </React.Fragment>
+                          ))}
+                        </span>
+                      </td>
 
-                    <td>{row.eligibility}</td>
+                      <td>{row.eligibility}</td>
 
-                    <td className={styles.comingSoon}>Coming soon</td>
+                      <td>{displayDate(row.start_date)}</td>
 
-                    <td className={styles.comingSoon}>Coming soon</td>
+                      <td>{displayDate(row.end_date)}</td>
 
-                    <td>
-                      <div className={styles.linkContent}>
-                        {linkAsText && <span className={styles.linkText}>{linkAsText}</span>}
+                      <td>
+                        <div className={styles.linkContent}>
+                          {linkAsText && <span className={styles.linkText}>{linkAsText}</span>}
 
-                        <div className={styles.buttonGroup}>
-                          {url1 && (
-                            <a href={url1} target="_blank" rel="noopener noreferrer" className={styles.actionButton}>
-                              Apply Now
-                            </a>
-                          )}
-                          {url2 && (
-                            <a href={url2} target="_blank" rel="noopener noreferrer" className={styles.actionButtonOutline}>
-                              Details
-                            </a>
-                          )}
+                          <div className={styles.buttonGroup}>
+                            {url1 && (
+                              <a href={url1} target="_blank" rel="noopener noreferrer" className={styles.actionButton}>
+                                Apply Now
+                              </a>
+                            )}
+                            {url2 && (
+                              <a href={url2} target="_blank" rel="noopener noreferrer" className={styles.actionButtonOutline}>
+                                Details
+                              </a>
+                            )}
+                          </div>
+
+                          {!url1 && !url2 && !linkAsText && <span className={styles.comingSoon}>—</span>}
                         </div>
-
-                        {!url1 && !url2 && !linkAsText && <span className={styles.comingSoon}>—</span>}
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
 
             </tbody>
           </table>

@@ -77,6 +77,16 @@ export const hpclAPI = {
   deleteRegistration: (phone) => api.delete(`/hpcl/admin/registrations/${phone}`),
 };
 
+// ─── Help Desk ───────────────────────────────────────────────
+export const helpDeskAPI = {
+  list: () => api.get('/helpdesk/entries'),
+  create: (data) => api.post('/helpdesk/entries', data),
+  update: (id, data) => api.put(`/helpdesk/entries/${id}`, data),
+  delete: (id) => api.delete(`/helpdesk/entries/${id}`),
+  getSettings: () => api.get('/helpdesk/settings'),
+  updateSettings: (data) => api.put('/helpdesk/settings', data),
+};
+
 // ─── Users ───────────────────────────────────────────────────
 export const usersAPI = {
   getProfile: () => api.get('/users/me'),

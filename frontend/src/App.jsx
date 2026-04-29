@@ -18,6 +18,7 @@ import HelpDesk from '@/pages/HelpDesk/HelpDesk';
 import HPCLCricket from '@/pages/HPCLCricket/HPCLCricket';
 import HPCLSuccess from '@/pages/HPCLSuccess/HPCLSuccess';
 import HPCLRegistrations from '@/pages/admin/HPCLRegistrations/HPCLRegistrations';
+import HelpDeskAdmin from '@/pages/admin/HelpDeskAdmin/HelpDeskAdmin';
 
 // Admin Pages
 import AdminLogin from '@/pages/admin/AdminLogin/AdminLogin';
@@ -35,6 +36,7 @@ function AdminRoute({ children }) {
 
 export default function App() {
   const { isAdmin, checkAuth, isLoading } = useAuthStore();
+  const location = useLocation();
 
   useEffect(() => {
     checkAuth();
@@ -44,7 +46,6 @@ export default function App() {
     return <Loader text="Loading..." fullPage />;
   }
 
-  const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
@@ -110,6 +111,14 @@ export default function App() {
             element={
               <AdminRoute>
                 <HPCLRegistrations />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/help-desk"
+            element={
+              <AdminRoute>
+                <HelpDeskAdmin />
               </AdminRoute>
             }
           />
