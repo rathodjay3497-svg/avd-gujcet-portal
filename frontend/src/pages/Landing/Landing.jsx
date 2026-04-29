@@ -29,14 +29,16 @@ export default function Landing() {
       <section className={styles.hero}>
         <div className={styles.heroContent}>
           <h1 className={styles.heroTitle}>
-            <span>GUJCET</span><br /> Crash Course 2026
+            <span>Admission</span><br /> Help Desk 2026
           </h1>
           <p className={styles.heroSubtitle}>
-            Prepare Smart, Not Just Hard - Turn Your Preparation into Selection
+            From Doubts to Clarity.
+            <br />
+            Your Trusted Help Desk for Every Step.
           </p>
           <div className={styles.heroCtas}>
             <a href="#events" className={styles.ctaPrimary}>Register Now</a>
-            <Link to="/events/gujcet-2026" className={styles.ctaSecondary}>Learn More</Link>
+            <Link to="/help-desk" className={styles.ctaSecondary}>Learn More</Link>
           </div>
         </div>
       </section>
@@ -50,26 +52,42 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Active Events */}
+      {/* Events Section */}
       <section className={styles.events} id="events">
         <div className={styles.container}>
           <h2 className={styles.sectionTitle}>Upcoming Events</h2>
           {isLoading ? (
             <Loader text="Loading events..." />
-          ) : events?.length > 0 ? (
+          ) : events?.filter(e => e.status !== 'closed').length > 0 ? (
             <div className={styles.eventGrid}>
-              {events.map((event) => (
-                <EventCard key={event.event_id} event={event} />
-              ))}
+              {events
+                .filter(e => e.status !== 'closed')
+                .map((event) => (
+                  <EventCard key={event.event_id} event={event} />
+                ))}
             </div>
           ) : (
-            <p className={styles.noEvents}>No active events right now. Check back soon!</p>
+            <p className={styles.noEvents}>No upcoming events right now. Check back soon!</p>
+          )}
+
+          {/* Closed Events Section */}
+          {!isLoading && events?.filter(e => e.status === 'closed').length > 0 && (
+            <div className={styles.closedEventsSection}>
+              <h2 className={styles.sectionTitle}>Closed Events</h2>
+              <div className={styles.eventGrid}>
+                {events
+                  .filter(e => e.status === 'closed')
+                  .map((event) => (
+                    <EventCard key={event.event_id} event={event} />
+                  ))}
+              </div>
+            </div>
           )}
         </div>
       </section>
 
       {/* How It Works */}
-      <section className={styles.howItWorks} id="how-it-works">
+      {/* <section className={styles.howItWorks} id="how-it-works">
         <div className={styles.container}>
           <h2 className={styles.sectionTitle}>How It Works</h2>
           <div className={styles.steps}>
@@ -78,7 +96,53 @@ export default function Landing() {
             <Step number="3" title="Register Instantly" desc="Browse events and register in just one click to secure your spot." />
           </div>
         </div>
+      </section> */}
+
+      {/* HPCL Invitation Section */}
+      <section className={styles.invitationSection}>
+        <div className={styles.container}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>Exclusive Invitation</h2>
+            <p className={styles.sectionSubtitleText}>Join us for the Hari Prabodham Cricket League 2026</p>
+          </div>
+          <div className={styles.invitationWrapper}>
+            <div className={styles.imageGlow}></div>
+            <img
+              src="/assets/hpcl/hpcl-Invitation.jpeg"
+              alt="HPCL 2026 Official Invitation"
+              className={styles.invitationImage}
+            />
+            <div className={styles.imageOverlay}>
+              <Link to="/hpcl-2026" className={styles.overlayBtn}>Register Now</Link>
+            </div>
+          </div>
+        </div>
       </section>
+
+      {/* About Us
+      <section className={styles.aboutUs} id="about-us">
+        <div className={styles.container}>
+          <h2 className={styles.sectionTitle}>About Us</h2>
+          <div className={styles.aboutGrid}>
+            <div className={styles.aboutContent}>
+              <div className={styles.aboutText}>
+                <p><strong>Core Focus:</strong> Quality education for Standards 7–12, prioritizing concept-based learning and academic foundations.</p>
+                <p><strong>Academic Programs:</strong></p>
+                <ul>
+                  <li><strong>Std 7-10:</strong> Science, Math, Social Science, and English.</li>
+                  <li><strong>Std 11-12:</strong> Dedicated Science and Commerce streams.</li>
+                </ul>
+                <p><strong>Future-Ready Skills:</strong> Free courses in Python Programming and Robotics to build modern technical literacy.</p>
+                <p><strong>Exam Excellence:</strong> Specialized Admission Help Desk led by subject experts for competitive success.</p>
+                <p><strong>Why ACC?</strong> Experienced faculty, simplified learning, and a supportive environment designed for confidence.</p>
+              </div>
+            </div>
+            <div className={styles.aboutImageContainer}>
+              <img src="/assets/gujcet/369.jpg.jpeg" alt="About Anand Coaching Centre" className={styles.aboutImage} />
+            </div>
+          </div>
+        </div>
+      </section> */}
 
       {/* FAQ */}
       {/* <section className={styles.faqSection} id="faq">

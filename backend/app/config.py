@@ -8,11 +8,9 @@ class Settings(BaseSettings):
     # boto3 picks them up from the environment — never set them explicitly.
     AWS_REGION: str = "ap-south-1"
     DYNAMODB_TABLE_NAME: str = "gujcet-platform"
+    DYNAMODB_ENDPOINT_URL: str = ""
+    HELPDESK_TABLE_NAME: str = "help-desk-entries"
 
-    # Twilio
-    TWILIO_ACCOUNT_SID: str = ""
-    TWILIO_AUTH_TOKEN: str = ""
-    TWILIO_PHONE_NUMBER: str = ""
 
     # Email
     SES_SENDER_EMAIL: str = "noreply@yourdomain.com"
@@ -29,10 +27,10 @@ class Settings(BaseSettings):
 
     # Admin
     ADMIN_USERNAME: str = "admin"
+    ADMIN_PASSWORD: str = ""
     ADMIN_PASSWORD_HASH: str = ""
 
-    # Google OAuth
-    GOOGLE_CLIENT_ID: str = ""
+
 
     # Frontend
     FRONTEND_URL: str = "http://localhost:5173"
@@ -55,4 +53,7 @@ def get_settings() -> Settings:
     # Override log level from environment if set
     if os.getenv("LOG_LEVEL"):
         settings.LOG_LEVEL = os.getenv("LOG_LEVEL")
+    # Override dynamodb endpoint url from environment if set
+    if os.getenv("DYNAMODB_ENDPOINT_URL"):
+        settings.DYNAMODB_ENDPOINT_URL = os.getenv("DYNAMODB_ENDPOINT_URL")
     return settings

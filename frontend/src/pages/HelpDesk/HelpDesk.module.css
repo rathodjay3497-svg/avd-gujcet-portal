@@ -16,25 +16,429 @@
 
 /* Titles */
 .title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #1e293b;
-  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.01em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ── FREE badge ── */
+@keyframes freeShimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+@keyframes freePop {
+  0%, 100% { transform: scale(1) rotate(-2deg); }
+  50%       { transform: scale(1.08) rotate(-2deg); }
+}
+
+.freeBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  color: #fff;
+  background: linear-gradient(
+    90deg,
+    #16a34a 0%,
+    #22c55e 30%,
+    #4ade80 50%,
+    #22c55e 70%,
+    #16a34a 100%
+  );
+  background-size: 200% auto;
+  box-shadow:
+    0 2px 8px rgba(22, 163, 74, 0.45),
+    0 0 0 1.5px rgba(74, 222, 128, 0.4);
+  animation: freeShimmer 2s linear infinite, freePop 1.8s ease-in-out infinite;
+  transform: rotate(-2deg);
+  vertical-align: middle;
+  cursor: default;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.freeBadge:hover {
+  transform: rotate(-2deg) scale(1.1);
+  box-shadow:
+    0 4px 16px rgba(22, 163, 74, 0.6),
+    0 0 0 2px rgba(74, 222, 128, 0.5);
 }
 
 .subtitle {
-  font-size: 1.125rem;
-  color: #4b5563;
+  font-size: 1.25rem;
+  color: #475569;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .description {
-  color: #6b7280;
-  max-width: 750px;
+  color: #64748b;
+  max-width: 800px;
+  line-height: 1.7;
+  margin-bottom: 3rem;
+  font-size: 1rem;
+}
+
+/* ── Hero Section ────────────────────────────────────── */
+.heroSection {
+  width: 100%;
+  max-width: 1100px;
+  display: grid;
+  grid-template-columns: minmax(350px, 460px) 1fr;
+  gap: 3.5rem;
+  margin: 3rem auto;
+  background: #ffffff;
+  border-radius: 28px;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.06);
+  padding: 3rem;
+  border: 1px solid #f1f5f9;
+  text-align: left;
+  align-items: center;
+}
+
+.heroLeft {
+  display: flex;
+  align-items: center;
+}
+
+.heroMainImage {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: transform 0.4s ease;
+}
+
+.heroMainImage:hover {
+  transform: translateY(-8px);
+}
+
+.heroRight {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  justify-content: center;
+}
+
+.heroHeadline {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.25;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.heroTagline {
+  font-size: 1.125rem;
+  color: #475569;
   line-height: 1.6;
-  margin-bottom: 2rem;
+  margin: 0;
+}
+
+.heroTagline strong {
+  color: #2563eb;
+  font-weight: 700;
+}
+
+.helpList {
+  background: #f8fafc;
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid #e2e8f0;
+  position: relative;
+  overflow: hidden;
+}
+
+.helpListTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.helpList ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.helpList li {
+  font-size: 1rem;
+  color: #334155;
+  line-height: 1.5;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.helpList li strong {
+  color: #0f172a;
+}
+
+.heroContactRow {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.heroContactCard {
+  flex: 1;
+  min-width: 220px;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.75rem 1.1rem;
+  transition: all 0.2s ease;
+  color: #1a3c6e;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+}
+
+.heroContactCard:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+.heroContactCard svg {
+  color: #2563eb;
+  flex-shrink: 0;
+}
+
+.heroContactCard div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.heroContactCard a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 600;
   font-size: 0.9375rem;
+  transition: color 0.15s;
+}
+
+.heroContactCard a:hover {
+  color: #1d4ed8;
+  text-decoration: underline;
+}
+
+.globeIcon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+
+/* Button row */
+.heroBtnRow {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.registerBtn {
+  flex: 1;
+  min-width: 200px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: #2563eb;
+  color: #fff;
+  padding: 0.875rem 1.5rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.registerBtn:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+}
+
+.whatsappBtn {
+  flex: 1;
+  min-width: 200px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: #25D366;
+  color: #fff;
+  padding: 0.875rem 1.5rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.whatsappBtn:hover {
+  background: #1fb855;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+}
+
+/* Banner image full width below */
+.heroBanner {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto 4rem;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.07);
+  border: 1px solid #f1f5f9;
+}
+
+.heroBannerImage {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .heroSection {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding: 2.5rem;
+    max-width: 700px;
+  }
+
+  .heroHeadline {
+    font-size: 1.75rem;
+    text-align: center;
+  }
+
+  .heroTagline {
+    text-align: center;
+    font-size: 1.1rem;
+  }
+
+  .heroContactRow, .heroBtnRow {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .heroSection {
+    padding: 1.75rem;
+    margin: 2rem auto;
+    border-radius: 20px;
+  }
+
+  .heroHeadline {
+    font-size: 1.5rem;
+  }
+
+  .helpList {
+    padding: 1rem;
+  }
+
+  .heroContactCard, .registerBtn, .whatsappBtn {
+    min-width: 100%;
+  }
+}
+
+/* ─── Table Toolbar ─── */
+.tableToolbar {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.sortContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sortLabel {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #334155;
+  white-space: nowrap;
+}
+
+.selectWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.sortSelect {
+  appearance: none;
+  background: white;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 0.5rem 2.25rem 0.5rem 0.875rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1e293b;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  min-width: 160px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.sortSelect:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+
+.sortSelect:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.selectIcon {
+  position: absolute;
+  right: 0.75rem;
+  color: #64748b;
+  pointer-events: none;
+}
+
+.entryCount {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.entryCount strong {
+  color: #0f172a;
 }
 
 /* Table wrapper: scroll container so sticky header works */
@@ -76,10 +480,14 @@
 }
 
 .table td {
-  padding: 12px 14px;
+  padding: 16px 14px;
+  /* Increased padding for better breathing room */
   border-bottom: 1px solid #eee;
-  vertical-align: top;
   font-size: 0.875rem;
+
+  /* The Magic Sauce for Centering */
+  vertical-align: middle !important;
+  text-align: center;
 }
 
 .table tbody tr:nth-child(even) {
@@ -95,15 +503,22 @@
   color: #6b7280;
 }
 
+.comingSoon {
+  color: #94a3b8;
+  font-style: italic;
+  font-weight: 400;
+}
+
 .courseBadge {
   background: #bfe7d0;
   color: #065f46;
   padding: 6px 12px;
-  border-radius: 20px;
+  border-radius: 8px;
+  /* Slightly more modern than 20px */
   font-weight: 600;
   font-size: 0.8125rem;
   display: inline-block;
-  white-space: normal;
+  line-height: 1.4;
 }
 
 .link {
@@ -124,12 +539,16 @@
 
 .linkContent {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: baseline;
-  gap: 0.25rem 0.5rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
   width: 100%;
-  min-width: 0;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
 }
 
 .linkText {
@@ -145,6 +564,49 @@
 .linkSeparator {
   color: #64748b;
   white-space: nowrap;
+}
+
+
+/* Primary Action Button (Link 1) */
+.actionButton {
+  background: #3d71e0;
+  /* Matches your header color */
+  color: white !important;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  /* transition: transform 0.1s, background 0.2s; */
+  border: 1px solid #1a3c6e;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+  transition: all 0.2s ease;
+}
+
+.actionButton:hover {
+  background: #1d4ed8;
+  box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Secondary Action Button (Link 2) */
+.actionButtonOutline {
+  background: transparent;
+  color: #1a3c6e !important;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid #1a3c6e;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.actionButtonOutline:hover {
+  background: #f1f5f9;
+  text-decoration: none !important;
 }
 
 /* Tablet */
@@ -406,34 +868,58 @@
   }
 }
 
-.careerSection{
-  margin-top:60px;
-  text-align:center;
-  }
-  
-  .careerTitle{
-  font-size:26px;
-  font-weight:700;
-  margin-bottom:10px;
-  }
-  
-  .careerText{
-  max-width:750px;
-  margin:auto;
-  color:#666;
-  line-height:1.6;
-  margin-bottom:25px;
-  }
-  
-  .imageContainer{
-  display:flex;
-  justify-content:center;
-  overflow-x:auto;
-  }
-  
-  .careerImage{
-  max-width:100%;
-  height:auto;
-  border-radius:10px;
-  box-shadow:0 6px 20px rgba(0,0,0,0.08);
-  }
+.careerSection {
+  margin-top: 60px;
+  text-align: center;
+}
+
+.careerTitle {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.careerText {
+  max-width: 750px;
+  margin: auto;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.imageContainer {
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+}
+
+.careerImage {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Skeleton Loader ── */
+@keyframes shimmer {
+  0%   { background-position: -600px 0; }
+  100% { background-position:  600px 0; }
+}
+
+.skeletonRow td {
+  padding: 18px 14px;
+  border-bottom: 1px solid #eee;
+}
+
+.skeletonCell {
+  height: 14px;
+  border-radius: 6px;
+  background: linear-gradient(
+    90deg,
+    #e8ecf0 25%,
+    #f3f5f7 50%,
+    #e8ecf0 75%
+  );
+  background-size: 600px 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}

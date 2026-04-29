@@ -11,3 +11,9 @@ vendor
 tests
 package
 deployment_package.zip
+*.zip
+tmp_linux_wheels
+build
+
+# One-time seed scripts — not for version control
+scripts/seed_helpdesk.py

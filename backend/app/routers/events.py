@@ -85,6 +85,7 @@ def _format_event(event: dict) -> dict:
         "organized_by": event.get("organized_by"),
         "future_scope": event.get("future_scope", False),
         "registration_deadline": event.get("registration_deadline"),
+        "contact_details": event.get("contact_details"),
         "status": event.get("status", "draft"),
         "created_at": event.get("created_at", ""),
     }

@@ -19,7 +19,8 @@ PACKAGE_DIR = BASE_DIR / "package"
 DOWNLOAD_DIR = BASE_DIR / "tmp_linux_wheels"
 REQUIREMENTS = BASE_DIR / "requirements.txt"
 APP_DIR = BASE_DIR / "app"
-OUTPUT_ZIP = BASE_DIR / "deployment_package.zip"
+BUILD_DIR = BASE_DIR / "build"
+OUTPUT_ZIP = BUILD_DIR / "deployment_package.zip"
 
 PYTHON_VERSION = "3.12"
 PLATFORM = "manylinux2014_x86_64"
@@ -39,6 +40,10 @@ def main():
         shutil.rmtree(DOWNLOAD_DIR)
     PACKAGE_DIR.mkdir()
     DOWNLOAD_DIR.mkdir()
+    
+    # Ensure build dir exists
+    if not BUILD_DIR.exists():
+        BUILD_DIR.mkdir()
 
     # 2. Download Linux-compatible wheels
     print("\n=== Step 2: Downloading Linux wheels ===")
@@ -108,8 +113,14 @@ def main():
 
     # 8. Build the deployment zip: package/ contents + app/ code
     print(f"\n=== Step 6: Building {OUTPUT_ZIP.name} ===")
+    
+    # Rename existing to backup if exists
     if OUTPUT_ZIP.exists():
-        OUTPUT_ZIP.unlink()
+        BACKUP_ZIP = BUILD_DIR / "deployment_package_backup.zip"
+        if BACKUP_ZIP.exists():
+            BACKUP_ZIP.unlink()
+        OUTPUT_ZIP.rename(BACKUP_ZIP)
+        print(f"  📦 Existing package backed up to {BACKUP_ZIP.name}")
 
     with zipfile.ZipFile(OUTPUT_ZIP, "w", zipfile.ZIP_DEFLATED) as zf:
         # Add package/ contents (dependencies) at the root of the zip
@@ -128,7 +139,7 @@ def main():
     # 9. Cleanup temp download dir
     shutil.rmtree(DOWNLOAD_DIR)
     print("✅ Cleaned up temp download dir.")
-    print("\n🎉 Done! Upload deployment_package.zip to Lambda.")
+    print(f"\n🎉 Done! Deployment package is at: {OUTPUT_ZIP}")
 
 
 if __name__ == "__main__":

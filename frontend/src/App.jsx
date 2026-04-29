@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import { GoogleOAuthProvider } from '@react-oauth/google';
 import useAuthStore from '@/store/authStore';
 
 // Layout
@@ -13,10 +12,13 @@ import Landing from '@/pages/Landing/Landing';
 import Gujcet2026 from '@/pages/Gujcet2026/Gujcet2026';
 import EventDetail from '@/pages/EventDetail/EventDetail';
 import RegisterForm from '@/pages/RegisterForm/RegisterForm';
+import AdmissionRegister from '@/pages/AdmissionRegister/AdmissionRegister';
 import RegisterSuccess from '@/pages/RegisterSuccess/RegisterSuccess';
-import Login from '@/pages/Login/Login';
-import Profile from '@/pages/Profile/Profile';
 import HelpDesk from '@/pages/HelpDesk/HelpDesk';
+import HPCLCricket from '@/pages/HPCLCricket/HPCLCricket';
+import HPCLSuccess from '@/pages/HPCLSuccess/HPCLSuccess';
+import HPCLRegistrations from '@/pages/admin/HPCLRegistrations/HPCLRegistrations';
+import HelpDeskAdmin from '@/pages/admin/HelpDeskAdmin/HelpDeskAdmin';
 
 // Admin Pages
 import AdminLogin from '@/pages/admin/AdminLogin/AdminLogin';
@@ -25,37 +27,29 @@ import ManageEvents from '@/pages/admin/ManageEvents/ManageEvents';
 import EventForm from '@/pages/admin/EventForm/EventForm';
 import AdminRegistrations from '@/pages/admin/Registrations/Registrations';
 
-function ProtectedRoute({ children }) {
-  const { isAuthenticated, isLoading } = useAuthStore();
-  if (isLoading) return <Loader text="Checking authentication..." />;
-  if (!isAuthenticated) return <Navigate to="/login" state={{ from: window.location.pathname }} replace />;
-  return children;
-}
-
 function AdminRoute({ children }) {
   const { isAuthenticated, isAdmin, isLoading } = useAuthStore();
-  if (isLoading) return <Loader text="Checking authentication..." />;
+  if (isLoading) return <Loader text="Checking authentication..." fullPage />;
   if (!isAuthenticated || !isAdmin) return <Navigate to="/admin/login" replace />;
   return children;
 }
 
 export default function App() {
   const { isAdmin, checkAuth, isLoading } = useAuthStore();
+  const location = useLocation();
 
   useEffect(() => {
     checkAuth();
   }, []);
 
   if (isLoading) {
-    return <Loader text="Loading..." />;
+    return <Loader text="Loading..." fullPage />;
   }
 
-
-  const location = useLocation();
   const isAdminRoute = location.pathname.startsWith('/admin');
 
   return (
-    <GoogleOAuthProvider clientId='864847094209-u3t36jucer522tvpb4mq8qpqv33l76i9.apps.googleusercontent.com'>
+    <>
       {!isAdminRoute && <Navbar />}
       <main className="page-animate">
         <Routes>
@@ -63,34 +57,12 @@ export default function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/events/gujcet-2026" element={<Gujcet2026 />} />
           <Route path="/events/:eventId" element={<EventDetail />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/events/:eventId/register" element={<RegisterForm />} />
+          <Route path="/admission-2026/register" element={<AdmissionRegister />} />
+          <Route path="/register/success" element={<RegisterSuccess />} />
           <Route path="/help-desk" element={<HelpDesk />} />
-
-          {/* Student Protected */}
-          <Route
-            path="/events/:eventId/register"
-            element={
-              <ProtectedRoute>
-                <RegisterForm />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/register/success"
-            element={
-              <ProtectedRoute>
-                <RegisterSuccess />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <Profile />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/hpcl-2026" element={<HPCLCricket />} />
+          <Route path="/hpcl-2026/success" element={<HPCLSuccess />} />
 
           {/* Admin */}
           <Route path="/admin/login" element={<AdminLogin />} />
@@ -134,9 +106,28 @@ export default function App() {
               </AdminRoute>
             }
           />
+          <Route
+            path="/admin/hpcl-registrations"
+            element={
+              <AdminRoute>
+                <HPCLRegistrations />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/help-desk"
+            element={
+              <AdminRoute>
+                <HelpDeskAdmin />
+              </AdminRoute>
+            }
+          />
+
+          {/* Catch-all redirect */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
       {!isAdminRoute && <Footer />}
-    </GoogleOAuthProvider>
+    </>
   );
 }

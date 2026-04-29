@@ -8,7 +8,7 @@ class UserProfile(BaseModel):
     name: str
     phone: Optional[str] = None
     picture: Optional[str] = None
-    google_sub: Optional[str] = None
+
     gender: Optional[str] = None
     guardian_name: Optional[str] = None
     guardian_phone: Optional[str] = None
@@ -18,9 +18,6 @@ class UserProfile(BaseModel):
     address: Optional[str] = None
     created_at: Optional[str] = None
 
-
-class GoogleAuthRequest(BaseModel):
-    id_token: str
 
 
 class AdminLogin(BaseModel):

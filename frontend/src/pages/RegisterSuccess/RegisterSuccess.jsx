@@ -1,54 +1,39 @@
 import { useLocation, Link } from 'react-router-dom';
-import { formatDate } from '@/utils/formatters';
-import { generateAdmitCardPdf } from '@/utils/generateAdmitCardPdf';
-import Button from '@/components/ui/Button/Button';
 import styles from './RegisterSuccess.module.css';
+
+const DEFAULT_WHATSAPP_LINK = 'https://chat.whatsapp.com/GdodTpblcTz54g3X8XWBGJ?mode=gi_t';
+
+function WhatsAppIcon() {
+  return (
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="16" cy="16" r="16" fill="#25D366" />
+      <path
+        d="M23.4 8.6A10.2 10.2 0 0 0 16 5.8C10.4 5.8 5.8 10.4 5.8 16c0 1.8.5 3.6 1.4 5.2L5.6 26.8l5.8-1.5A10.2 10.2 0 0 0 16 26.2c5.6 0 10.2-4.6 10.2-10.2 0-2.7-1.1-5.3-2.8-7.4zM16 24.4a8.4 8.4 0 0 1-4.3-1.2l-.3-.2-3.4.9.9-3.3-.2-.3A8.5 8.5 0 0 1 7.6 16c0-4.6 3.8-8.4 8.4-8.4 2.3 0 4.4.9 6 2.4a8.3 8.3 0 0 1 2.4 6c0 4.7-3.8 8.4-8.4 8.4zm4.6-6.3c-.3-.1-1.6-.8-1.8-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1-.2.1-.4.2-.7 0-.3-.1-1.2-.4-2.3-1.4a8.5 8.5 0 0 1-1.6-2c-.2-.3 0-.5.1-.6l.5-.6.2-.4v-.4l-.9-2.1c-.2-.5-.5-.4-.7-.4h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.2.2 2 3 4.8 4.2.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.6-.6 1.8-1.3.2-.6.2-1.1.2-1.2 0-.1-.3-.2-.6-.3z"
+        fill="#fff"
+      />
+    </svg>
+  );
+}
 
 export default function RegisterSuccess() {
   const { state } = useLocation();
   const regId = state?.registrationId || 'N/A';
   const eventTitle = state?.eventTitle;
-  const eventVenue = state?.eventVenue;
-  const eventDate = state?.eventDate;
-  const eventEndDate = state?.eventEndDate;
-  const eventFee = state?.eventFee;
-  const organizedBy = state?.organizedBy;
   const userName = state?.userName;
   const userPhone = state?.userPhone;
-  const userEmail = state?.userEmail;
   const userStream = state?.userStream;
   const userSchool = state?.userSchool;
-  const userAddress = state?.userAddress;
-  const userMedium = state?.userMedium;
+  const WHATSAPP_LINK = state?.whatsappLink || DEFAULT_WHATSAPP_LINK;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(regId);
   };
 
-  const handleDownloadPdf = () => {
-    const doc = generateAdmitCardPdf({
-      regId,
-      eventTitle,
-      eventVenue,
-      eventDate,
-      eventEndDate,
-      eventFee,
-      organizedBy,
-      userName,
-      userPhone,
-      userEmail,
-      userStream,
-      userSchool,
-      userAddress,
-      userMedium,
-    });
-    doc.save(`Admit-Card-${regId}.pdf`);
-  };
-
   return (
     <div className={styles.page}>
       <div className={styles.card}>
-        {/* Animated Checkmark */}
+
+        {/* ── Animated Checkmark ── */}
         <div className={styles.checkmark}>
           <svg width="80" height="80" viewBox="0 0 80 80">
             <circle cx="40" cy="40" r="36" fill="none" stroke="#10B981" strokeWidth="3" className={styles.circle} />
@@ -56,14 +41,17 @@ export default function RegisterSuccess() {
           </svg>
         </div>
 
-        <h1 className={styles.title}>Registration Successful!</h1>
+        <h1 className={styles.title}>🎉 You are Registered!</h1>
+        <p className={styles.subtitle}>
+          {userName ? `Congratulations ${userName}! ` : ''}Your registration has been confirmed.
+        </p>
 
-        {/* Registration ID */}
+        {/* ── Registration ID ── */}
         <div className={styles.regIdBox}>
           <span className={styles.regIdLabel}>Your Registration ID</span>
           <div className={styles.regIdRow}>
             <span className={styles.regId}>{regId}</span>
-            <button onClick={copyToClipboard} className={styles.copyBtn} title="Copy">
+            <button onClick={copyToClipboard} className={styles.copyBtn} title="Copy ID">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <rect x="9" y="9" width="13" height="13" rx="2" />
                 <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
@@ -72,116 +60,43 @@ export default function RegisterSuccess() {
           </div>
         </div>
 
-        {/* Admit Card Preview */}
-        <div className={styles.admitCard}>
-          <div className={styles.admitHeader}>
-            <h3>Admit Card</h3>
+        {/* ── Student Summary ── */}
+        {(userPhone || userStream || userSchool || eventTitle) && (
+          <div className={styles.summary}>
+            {eventTitle && <div className={styles.summaryRow}><span className={styles.summaryKey}>Event</span><span className={styles.summaryVal}>{eventTitle}</span></div>}
+            {userPhone && <div className={styles.summaryRow}><span className={styles.summaryKey}>Phone</span><span className={styles.summaryVal}>+91 {userPhone}</span></div>}
+            {userStream && <div className={styles.summaryRow}><span className={styles.summaryKey}>Stream</span><span className={styles.summaryVal}>{userStream}</span></div>}
+            {userSchool && <div className={styles.summaryRow}><span className={styles.summaryKey}>School / College</span><span className={styles.summaryVal}>{userSchool}</span></div>}
           </div>
+        )}
 
-          <div className={styles.admitBody}>
-            {/* Event Details */}
-            <div className={styles.admitSection}>
-              <h4 className={styles.admitSectionTitle}>Event Details</h4>
-              <div className={styles.admitGrid}>
-                {eventTitle && (
-                  <div className={styles.admitField}>
-                    <span className={styles.admitLabel}>Event</span>
-                    <span className={styles.admitValue}>{eventTitle}</span>
-                  </div>
-                )}
-                {organizedBy && (
-                  <div className={styles.admitField}>
-                    <span className={styles.admitLabel}>Organized By</span>
-                    <span className={styles.admitValue}>{organizedBy}</span>
-                  </div>
-                )}
-                {eventDate && (
-                  <div className={styles.admitField}>
-                    <span className={styles.admitLabel}>Date</span>
-                    <span className={styles.admitValue}>
-                      {formatDate(eventDate)}{eventEndDate ? ` - ${formatDate(eventEndDate)}` : ''}
-                    </span>
-                  </div>
-                )}
-                {eventVenue && (
-                  <div className={styles.admitField}>
-                    <span className={styles.admitLabel}>Venue</span>
-                    <span className={styles.admitValue}>{eventVenue}</span>
-                  </div>
-                )}
-                <div className={styles.admitField}>
-                  <span className={styles.admitLabel}>Fee</span>
-                  <span className={styles.admitValue}>{eventFee === 0 || !eventFee ? 'Free' : `Rs. ${eventFee}`}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Student Details */}
-            <div className={styles.admitSection}>
-              <h4 className={styles.admitSectionTitle}>Student Details</h4>
-              <div className={styles.admitGrid}>
-                {userName && (
-                  <div className={styles.admitField}>
-                    <span className={styles.admitLabel}>Name</span>
-                    <span className={styles.admitValue}>{userName}</span>
-                  </div>
-                )}
-                {userPhone && (
-                  <div className={styles.admitField}>
-                    <span className={styles.admitLabel}>Phone</span>
-                    <span className={styles.admitValue}>+91 {userPhone}</span>
-                  </div>
-                )}
-                {userEmail && (
-                  <div className={styles.admitField}>
-                    <span className={styles.admitLabel}>Email</span>
-                    <span className={styles.admitValue}>{userEmail}</span>
-                  </div>
-                )}
-                {userStream && (
-                  <div className={styles.admitField}>
-                    <span className={styles.admitLabel}>Stream</span>
-                    <span className={styles.admitValue}>{userStream}</span>
-                  </div>
-                )}
-                {userSchool && (
-                  <div className={styles.admitField}>
-                    <span className={styles.admitLabel}>School / College</span>
-                    <span className={styles.admitValue}>{userSchool}</span>
-                  </div>
-                )}
-              </div>
+        {/* ── WhatsApp CTA ── */}
+        <div className={styles.waCard}>
+          <div className={styles.waCardHeader}>
+            <WhatsAppIcon />
+            <div>
+              <p className={styles.waTitle}>Join Our WhatsApp Group</p>
+              <p className={styles.waDesc}>Get updates, schedules &amp; important announcements directly on WhatsApp.</p>
             </div>
           </div>
+          <a
+            href={WHATSAPP_LINK}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.waBtn}
+          >
+            <WhatsAppIcon />
+            Join WhatsApp Group Now
+          </a>
         </div>
 
-        {/* PDF Download */}
-        <div className={styles.pdfCard}>
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2">
-            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-            <polyline points="14 2 14 8 20 8" />
-          </svg>
-          <div>
-            <p className={styles.pdfTitle}>Admit Card PDF</p>
-            <p className={styles.pdfDesc}>Download your admit card for entry</p>
-          </div>
-          <button onClick={handleDownloadPdf} className={styles.downloadBtn}>
-            Download
-          </button>
-        </div>
-
-        <p className={styles.smsNote}>
-          A confirmation SMS and email have been sent to your registered phone and email.
-        </p>
-
+        {/* ── Register Another ── */}
         <div className={styles.actions}>
-          <Link to="/profile">
-            <Button>My Registrations</Button>
-          </Link>
-          <Link to="/">
-            <Button variant="secondary">Back to Events</Button>
+          <Link to="/" className={styles.backBtn}>
+            ← Register Another Student / Back to Events
           </Link>
         </div>
+
       </div>
     </div>
   );

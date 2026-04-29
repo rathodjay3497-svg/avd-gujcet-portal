@@ -1,0 +1,570 @@
+/* Page background — overrides RegisterForm gradient */
+.page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 15% 15%, rgba(37, 99, 235, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.15) 0%, transparent 40%),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.82) 0%, rgba(2, 6, 23, 0.70) 100%),
+    url('/assets/hpcl/box-cricket.png') center center / cover no-repeat fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.25rem;
+  overflow-x: hidden;
+}
+
+.hpclContainer {
+  width: 100%;
+  max-width: 680px; /* Reduced from 780px for better BG visibility */
+  animation: fadeInDown 0.8s ease-out;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hpclCard {
+  background: rgba(15, 23, 42, 0.2) !important;
+  backdrop-filter: blur(12px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.05) !important;
+  padding: 2rem 2.5rem !important;
+  border-radius: 24px !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.hpclCard:hover {
+  background: rgba(15, 23, 42, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 
+    0 30px 60px -12px rgba(0, 0, 0, 0.6),
+    inset 0 1px 1px rgba(255, 255, 255, 0.1) !important;
+  transform: translateY(-2px);
+}
+
+.hpclTitle {
+  background: linear-gradient(to right, #ffffff, #cbd5e1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 1.8rem !important;
+  font-weight: 800 !important;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  letter-spacing: -0.02em !important;
+  margin: 0 !important;
+  text-align: left;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.typeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  padding: 0.3rem 0.7rem;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+  cursor: default;
+  white-space: nowrap;
+}
+
+.typeBadge:hover {
+  background: rgba(59, 130, 246, 0.25);
+  border-color: #3b82f6;
+  transform: scale(1.05);
+}
+
+/* ── Live dot ── */
+.liveDot {
+  position: relative;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ef4444;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.8);
+}
+
+.liveDot::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid rgba(239, 68, 68, 0.5);
+  animation: liveRipple 1.4s ease-out infinite;
+}
+
+@keyframes liveRipple {
+  0%   { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2);   opacity: 0; }
+}
+
+.liveText {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #f87171;
+  letter-spacing: 0.1em;
+  animation: liveBlink 1.4s ease-in-out infinite;
+}
+
+@keyframes liveBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.55; }
+}
+
+.hpclSubtitle {
+  color: #e2e8f0 !important;
+  text-align: left;
+  font-size: 0.9rem !important;
+  margin-bottom: 1.75rem !important;
+  line-height: 1.4 !important;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Form Overrides ── */
+.hpclLabel {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  font-size: 0.82rem !important;
+  margin-bottom: 0.4rem !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.hpclInput, .hpclSelect, .hpclTextarea {
+  background: rgba(15, 23, 42, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  border-radius: 10px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 0.65rem 0.85rem !important;
+  font-size: 0.92rem !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  backdrop-filter: blur(4px);
+  min-width: 0; /* Prevent flex items from overflowing */
+}
+
+.hpclInput:hover, .hpclSelect:hover, .hpclTextarea:hover {
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  background: rgba(15, 23, 42, 0.22) !important;
+}
+
+.hpclInput:focus, .hpclSelect:focus, .hpclTextarea:focus {
+  background: rgba(15, 23, 42, 0.45) !important; /* Brighter background */
+  border-color: #60a5fa !important; /* Brighter blue border */
+  box-shadow: 
+    0 0 0 4px rgba(59, 130, 246, 0.25),
+    0 4px 12px rgba(59, 130, 246, 0.3) !important; /* Enhanced double glow */
+  transform: translateY(-2px); /* Slightly more lift */
+  color: #ffffff !important;
+}
+
+.hpclPhoneWrapper:focus-within {
+  background: rgba(15, 23, 42, 0.45) !important;
+  border-color: #60a5fa !important;
+  box-shadow: 
+    0 0 0 4px rgba(59, 130, 246, 0.25),
+    0 4px 12px rgba(59, 130, 246, 0.3) !important;
+  transform: translateY(-2px);
+}
+
+.hpclPhoneWrapper {
+  background: rgba(15, 23, 42, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 10px !important;
+  overflow: hidden;
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.hpclPhoneWrapper .hpclInput {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.hpclPhoneWrapper:hover {
+  border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.hpclPhonePrefix {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.15) !important;
+  font-weight: 700 !important;
+  padding: 0.65rem 0.85rem !important;
+}
+
+.hpclSubmitBtn {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+  box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.3) !important;
+  border-radius: 12px !important;
+  height: 48px !important;
+  font-size: 1.05rem !important;
+  font-weight: 600 !important;
+  margin-top: 1rem !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border: none !important;
+  color: white !important;
+  cursor: pointer !important;
+  width: 100% !important;
+}
+
+.hpclSubmitBtn:hover:not(:disabled) {
+  transform: translateY(-3px) !important;
+  filter: brightness(1.1);
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.5) !important;
+}
+
+.hpclSubmitBtn:active:not(:disabled) {
+  transform: translateY(-1px) !important;
+}
+
+.feeNotice {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 16px;
+  padding: 1rem; /* Reduced */
+  margin-bottom: 1.5rem; /* Reduced */
+  transition: all 0.3s ease;
+}
+
+.feeNotice:hover {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.3);
+  transform: scale(1.01);
+}
+
+.hpclSubmitBtn:hover:not(:disabled) {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5) !important;
+  filter: brightness(1.1);
+}
+
+/* Submitting GIF overlay */
+.gifOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(2, 6, 23, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  backdrop-filter: blur(8px);
+}
+
+.gifBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.catchGif {
+  width: min(320px, 80vw);
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+.gifLabel {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.5px;
+  animation: blink 1.2s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.45; }
+}
+
+/* Fee notice banner */
+.feeNotice {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.feeIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #f59e0b;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.feeTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fbbf24;
+  margin: 0 0 0.25rem;
+}
+
+.feeDesc {
+  font-size: 0.85rem;
+  color: #d97706;
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* Optional label */
+.optional {
+  font-size: 0.78rem;
+  color: #64748b;
+  font-weight: 400;
+  margin-left: 0.25rem;
+}
+
+/* Fees paid section */
+.feesPaidSection {
+  margin: 1.5rem 0 2rem;
+  padding: 1.25rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #f1f5f9;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  accent-color: #3b82f6;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.paidToField {
+  margin-top: 1.25rem;
+  margin-bottom: 0 !important;
+  animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Countdown Timer ── */
+.countdownWrapper {
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  border-radius: 16px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.countdownWrapper:hover {
+  background: rgba(37, 99, 235, 0.13);
+  border-color: rgba(96, 165, 250, 0.35);
+}
+
+.countdownLabel {
+  font-size: 0.82rem;
+  color: #93c5fd;
+  margin: 0 0 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+.countdownLabel strong {
+  color: #dbeafe;
+  font-weight: 700;
+}
+
+.countdownRow {
+  display: flex;
+  justify-content: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.countdownUnit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 64px;
+  background: rgba(15, 23, 42, 0.35);
+  border: 1px solid rgba(96, 165, 250, 0.18);
+  border-radius: 12px;
+  padding: 0.65rem 0.5rem;
+  backdrop-filter: blur(6px);
+  transition: transform 0.1s ease;
+}
+
+.countdownNum {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  text-shadow: 0 0 20px rgba(96, 165, 250, 0.5);
+  animation: tickPulse 1s ease-in-out infinite;
+}
+
+@keyframes tickPulse {
+  0%, 100% { text-shadow: 0 0 12px rgba(96, 165, 250, 0.4); }
+  50%       { text-shadow: 0 0 24px rgba(96, 165, 250, 0.8); }
+}
+
+.countdownUnitLabel {
+  font-size: 0.68rem;
+  color: #7dd3fc;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ── Registration Closed Banner ── */
+.closedBanner {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 16px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  animation: fadeInDown 0.6s ease-out;
+}
+
+.closedIcon {
+  font-size: 2rem;
+  line-height: 1;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.5));
+}
+
+.closedTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #f87171;
+  margin: 0 0 0.3rem;
+}
+
+.closedDesc {
+  font-size: 0.85rem;
+  color: #fca5a5;
+  margin: 0;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .hpclContainer {
+    max-width: 90%;
+  }
+}
+
+@media (max-width: 680px) {
+  .page {
+    padding: 2rem 1rem;
+  }
+  .hpclCard {
+    padding: 2rem 1.5rem !important;
+    border-radius: 20px !important;
+  }
+  .hpclContainer {
+    width: 92%; /* Increased from 85% to provide more room for fields on small screens */
+  }
+  .hpclTitle {
+    font-size: 1.7rem !important;
+    margin-top: 0.5rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hpclContainer {
+    width: 95%;
+  }
+  .hpclCard {
+    padding: 1.25rem 1rem !important;
+  }
+  .hpclTitle {
+    font-size: 1.5rem !important;
+  }
+  .hpclSubtitle {
+    font-size: 0.82rem !important;
+    margin-bottom: 1.25rem !important;
+  }
+  .countdownWrapper {
+    padding: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .countdownRow {
+    gap: 0.35rem;
+  }
+  .countdownNum {
+    font-size: 1.1rem;
+    text-shadow: 0 0 12px rgba(96, 165, 250, 0.4);
+  }
+  .countdownUnit {
+    min-width: 46px;
+    padding: 0.4rem 0.25rem;
+    border-radius: 10px;
+    gap: 0.15rem;
+  }
+  .countdownUnitLabel {
+    font-size: 0.55rem;
+    letter-spacing: 0.05em;
+  }
+  .countdownLabel {
+    font-size: 0.72rem;
+    margin-bottom: 0.6rem;
+  }
+}

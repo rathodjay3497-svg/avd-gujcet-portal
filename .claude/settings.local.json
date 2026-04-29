@@ -6,7 +6,8 @@
       "Bash(npm install:*)",
       "Bash(npm ls:*)",
       "Bash(uv add :*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(node -e \"const {jsPDF} = require\\('f:/Practice/avd-gujcet-portal/frontend/node_modules/jspdf'\\); const doc = new jsPDF\\(\\); console.log\\(Object.keys\\(doc\\).filter\\(k => k.includes\\('table'\\) || k.includes\\('Table'\\)\\)\\)\")"
     ]
   }
 }

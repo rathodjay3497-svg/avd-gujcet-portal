@@ -1,6 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import * as XLSX from 'xlsx';
+import { useQueryClient } from '@tanstack/react-query';
 import AdminSidebar from '@/components/layout/AdminSidebar/AdminSidebar';
 import Loader from '@/components/ui/Loader/Loader';
 import Button from '@/components/ui/Button/Button';
@@ -15,16 +16,13 @@ export default function Registrations() {
   const { id: eventId } = useParams();
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
-  const [elapsed, setElapsed] = useState(0);
+  const queryClient = useQueryClient();
 
-  const { data, isLoading, isFetching, dataUpdatedAt } = useAdminRegistrations(eventId);
+  const { data, isLoading, isFetching } = useAdminRegistrations(eventId);
 
-  // Tick "updated X seconds ago" counter, reset on every successful fetch
-  useEffect(() => {
-    setElapsed(0);
-    const interval = setInterval(() => setElapsed(s => s + 1), 1000);
-    return () => clearInterval(interval);
-  }, [dataUpdatedAt]);
+  const handleRefresh = () => {
+    queryClient.invalidateQueries({ queryKey: ['admin-registrations', eventId] });
+  };
 
   // Reset to page 1 whenever search changes
   useEffect(() => { setPage(1); }, [search]);
@@ -40,7 +38,10 @@ export default function Registrations() {
       r.email?.toLowerCase().includes(s) ||
       r.phone?.includes(s) ||
       r.stream?.toLowerCase().includes(s) ||
-      r.school_college?.toLowerCase().includes(s)
+      r.school_college?.toLowerCase().includes(s) ||
+      r.standard?.toLowerCase().includes(s) ||
+      r.education_board?.toLowerCase().includes(s) ||
+      r.interested_field?.toLowerCase().includes(s)
     );
   }, [allRegs, search]);
 
@@ -56,6 +57,9 @@ export default function Registrations() {
       'Email': r.email || '—',
       'Phone': r.phone || '—',
       'Stream': r.stream || '—',
+      'Standard': r.standard || '—',
+      'Education Board': r.education_board || '—',
+      'Interested Field': r.interested_field || '—',
       'School / College': r.school_college || '—',
       'Status': r.status,
       'Registered At': formatDateTime(r.registered_at),
@@ -108,10 +112,13 @@ export default function Registrations() {
           </div>
 
           <div className={styles.headerActions}>
-            <div className={`${styles.liveChip} ${isFetching ? styles.fetching : ''}`}>
-              <span className={styles.dot} />
-              {isFetching ? 'Refreshing…' : `Updated ${elapsed}s ago`}
-            </div>
+            <Button
+              onClick={handleRefresh}
+              variant="secondary"
+              disabled={isFetching}
+            >
+              {isFetching ? 'Refreshing…' : '↺ Refresh'}
+            </Button>
             <Button
               onClick={handleExportExcel}
               variant="secondary"
@@ -158,6 +165,9 @@ export default function Registrations() {
                     <th>Email</th>
                     <th>Phone</th>
                     <th>Stream</th>
+                    <th>Standard</th>
+                    <th>Board</th>
+                    <th>Interested Field</th>
                     <th>School / College</th>
                     <th>Status</th>
                     <th>Registered At</th>
@@ -174,6 +184,9 @@ export default function Registrations() {
                       <td className={styles.emailCell} title={r.email}>{r.email || '—'}</td>
                       <td>{r.phone || '—'}</td>
                       <td>{r.stream || '—'}</td>
+                      <td>{r.standard || '—'}</td>
+                      <td>{r.education_board || '—'}</td>
+                      <td>{r.interested_field || '—'}</td>
                       <td className={styles.schoolCell} title={r.school_college}>
                         {r.school_college || '—'}
                       </td>
@@ -187,7 +200,7 @@ export default function Registrations() {
                   ))}
                   {paginated.length === 0 && (
                     <tr>
-                      <td colSpan={9} className={styles.emptyRow}>
+                      <td colSpan={13} className={styles.emptyRow}>
                         {search
                           ? `No registrations match "${search}".`
                           : 'No registrations yet.'}

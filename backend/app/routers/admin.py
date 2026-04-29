@@ -7,7 +7,6 @@ from typing import Optional
 from app.dependencies import require_admin
 from app.models.registration import BulkNotifyRequest
 from app.services import dynamo
-from app.services.twilio_service import send_bulk_sms
 from app.services.email_service import send_bulk_email
 from app.config import get_settings
 
@@ -26,6 +25,9 @@ def _flatten_reg(r: dict) -> dict:
         "stream": fd.get("stream", ""),
         "school_college": fd.get("school_college") or fd.get("school", ""),
         "district": fd.get("district", ""),
+        "standard": fd.get("standard", ""),
+        "education_board": fd.get("education_board", ""),
+        "interested_field": fd.get("interested_field", ""),
         "form_data": fd,
         "status": r.get("status", "confirmed"),
         "registered_at": r.get("registered_at", ""),
@@ -59,13 +61,15 @@ def export_registrations(event_id: str, _admin=Depends(require_admin)):
     writer = csv.writer(output)
 
     # Fixed core columns + dynamic form_data extras
-    core_keys = ["name", "email", "phone", "stream", "school_college", "district"]
+    core_keys = ["name", "email", "phone", "stream", "school_college", "district",
+                 "standard", "education_board", "interested_field"]
     extra_keys = sorted(
         {k for r in regs for k in r.get("form_data", {}).keys() if k not in core_keys}
     )
 
     headers = ["Registration ID", "Name", "Email", "Phone", "Stream", "School/College",
-               "District", "Status", "Registered At"] + extra_keys
+               "District", "Standard", "Education Board", "Interested Field",
+               "Status", "Registered At"] + extra_keys
     writer.writerow(headers)
 
     for r in regs:
@@ -79,6 +83,9 @@ def export_registrations(event_id: str, _admin=Depends(require_admin)):
             flat["stream"],
             flat["school_college"],
             flat["district"],
+            flat["standard"],
+            flat["education_board"],
+            flat["interested_field"],
             flat["status"],
             flat["registered_at"],
         ] + [fd.get(k, "") for k in extra_keys]
@@ -145,9 +152,6 @@ def send_notifications(event_id: str, body: BulkNotifyRequest, _admin=Depends(re
     sent_sms = 0
     sent_email = 0
 
-    if body.channel in ("sms", "both") and settings.TWILIO_ACCOUNT_SID:
-        send_bulk_sms(phones, body.message)
-        sent_sms = len(phones)
 
     if body.channel in ("email", "both"):
         recipients = [{"email": e} for e in emails]

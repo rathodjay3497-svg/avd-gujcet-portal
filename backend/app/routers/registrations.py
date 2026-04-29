@@ -1,11 +1,11 @@
 from fastapi import APIRouter, HTTPException, status, Depends, BackgroundTasks
 from typing import List
+import uuid
 
 from app.dependencies import get_current_user
-from app.models.registration import RegistrationCreate, RegistrationResponse, RegistrationCheckResponse
+from app.models.registration import RegistrationCreate, RegistrationResponse, RegistrationCheckResponse, PublicRegistrationRequest
 from app.services import dynamo
 from app.services.id_generator import generate_registration_id
-from app.services.twilio_service import send_registration_sms
 from app.services.email_service import send_registration_email
 from app.config import get_settings
 
@@ -52,16 +52,6 @@ def register_form(event_id: str, body: RegistrationCreate, background_tasks: Bac
 
     # 6. Send notifications asynchronously
     phone = profile.get("phone", "")
-    if phone and settings.TWILIO_ACCOUNT_SID:
-        background_tasks.add_task(
-            send_registration_sms,
-            phone,
-            profile.get("name", "Student"),
-            event.get("title", ""),
-            reg_id,
-            event.get("event_date", ""),
-            event.get("venue", ""),
-        )
 
     background_tasks.add_task(
         send_registration_email,
@@ -125,11 +115,6 @@ def register_click(event_id: str, background_tasks: BackgroundTasks, user=Depend
 
     # 7. Send notifications
     phone = profile.get("phone", "")
-    if phone and settings.TWILIO_ACCOUNT_SID:
-        background_tasks.add_task(
-            send_registration_sms, phone, form_data["name"],
-            event.get("title", ""), reg_id, event.get("event_date", ""), event.get("venue", ""),
-        )
     background_tasks.add_task(
         send_registration_email, email, form_data["name"],
         event.get("title", ""), reg_id, event.get("event_date", ""), event.get("venue", ""),
@@ -163,3 +148,108 @@ def _format_registration(reg: dict) -> dict:
         "status": reg.get("status", "confirmed"),
         "registered_at": reg.get("registered_at", ""),
     }
+
+
+# ─── Public (no-auth) Registration ──────────────────────────────────────────
+
+@router.post(
+    "/{event_id}/public",
+    response_model=RegistrationResponse,
+    status_code=201,
+    summary="Public registration — no login required",
+)
+def register_public(
+    event_id: str,
+    body: PublicRegistrationRequest,
+    background_tasks: BackgroundTasks,
+):
+    # 1. Fetch event
+    event = dynamo.get_event(event_id)
+    if not event:
+        raise HTTPException(status_code=404, detail="Event not found")
+    if event.get("status") != "active":
+        raise HTTPException(status_code=400, detail="Event is not currently active")
+
+    # 2. Duplicate phone check
+    existing_phone = dynamo.get_registration_by_phone(event_id, body.phone)
+    if existing_phone:
+        raise HTTPException(
+            status_code=409,
+            detail="Phone number is already registered for this event",
+        )
+
+    # 3. Synthetic email key (phone@noemail.local) used as DynamoDB SK
+    email_key = body.email if body.email else f"{body.phone}@noemail.local"
+
+    # 4. Duplicate email check (if real email provided)
+    if body.email:
+        existing_email = dynamo.get_registration(event_id, body.email)
+        if existing_email:
+            raise HTTPException(
+                status_code=409,
+                detail="This email is already registered for this event",
+            )
+
+    # 5. Ensure a lightweight user record exists (keyed by email_key)
+    profile = dynamo.get_user(email_key)
+    if not profile:
+        profile = dynamo.upsert_user(
+            email_key,
+            {
+                "user_id": f"usr_{uuid.uuid4().hex[:12]}",
+                "name": body.name,
+                "email": email_key,
+                "phone": body.phone,
+                "gender": body.gender,
+                "school_college": body.school_college,
+                "stream": body.stream,
+                "medium": body.medium,
+                "address": body.address,
+                "standard": body.standard or "",
+                "education_board": body.education_board or "",
+                "interested_field": body.interested_field or "",
+            },
+        )
+
+    # 6. Generate registration ID
+    reg_id = generate_registration_id(event_id)
+
+    # 7. Build form_data
+    form_data = {
+        "name": body.name,
+        "phone": body.phone,
+        "email": body.email or "",
+        "gender": body.gender,
+        "school_college": body.school_college,
+        "stream": body.stream,
+        "medium": body.medium,
+        "address": body.address,
+        "standard": body.standard or "",
+        "education_board": body.education_board or "",
+        "interested_field": body.interested_field or "",
+    }
+
+    # 8. Save registration
+    reg_data = {
+        "registration_id": reg_id,
+        "user_id": profile.get("user_id", ""),
+        "phone": body.phone,
+        "form_data": form_data,
+    }
+    registration = dynamo.create_registration(event_id, email_key, reg_data)
+
+    # 9. Send SMS notification (best-effort)
+
+    # 10. Send email notification (best-effort, only if real email supplied)
+    if body.email:
+        background_tasks.add_task(
+            send_registration_email,
+            body.email,
+            body.name,
+            event.get("title", ""),
+            reg_id,
+            event.get("event_date", ""),
+            event.get("venue", ""),
+        )
+
+    return _format_registration(registration)

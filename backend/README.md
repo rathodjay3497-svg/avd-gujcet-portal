@@ -32,7 +32,7 @@ cp .env.example .env
 ### Run Locally
 
 ```bash
-uvicorn app.main:app --reload --port 8000
+uv run uvicorn app.main:app --reload --port 8000
 ```
 
 API docs available at: `http://localhost:8000/docs`

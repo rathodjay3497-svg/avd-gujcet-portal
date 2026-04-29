@@ -13,27 +13,35 @@ export function useRegister() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['my-registrations'] });
       queryClient.invalidateQueries({ queryKey: ['check-registration'] });
-      // Although full form redirects to /success, we can show a toast just in case.
       toast.success('Registered successfully! 🎉', {
         position: 'top-center',
         duration: 5000,
-        style: {
-          fontSize: '1.2rem',
-          padding: '16px 24px',
-          maxWidth: '500px',
-        },
+        style: { fontSize: '1.2rem', padding: '16px 24px', maxWidth: '500px' },
       });
     },
     onError: (err) => {
       const detail = err.response?.data?.detail;
       if (Array.isArray(detail)) {
-        const messages = detail.map(e => {
-          const field = e.loc?.[e.loc.length - 1] || 'field';
-          return `${field}: ${e.msg}`;
-        });
-        toast.error(messages.join('\n'), { duration: 5000 });
+        toast.error(detail.map(e => `${e.loc?.[e.loc.length - 1]}: ${e.msg}`).join('\n'), { duration: 5000 });
       } else {
         toast.error(detail || 'Registration failed');
+      }
+    },
+  });
+}
+
+export function usePublicRegister() {
+  return useMutation({
+    mutationFn: async ({ eventId, formData }) => {
+      const { data } = await registrationsAPI.publicRegister(eventId, formData);
+      return data;
+    },
+    onError: (err) => {
+      const detail = err.response?.data?.detail;
+      if (Array.isArray(detail)) {
+        toast.error(detail.map(e => `${e.loc?.[e.loc.length - 1]}: ${e.msg}`).join('\n'), { duration: 5000 });
+      } else {
+        toast.error(detail || 'Registration failed. Please try again.');
       }
     },
   });
@@ -138,7 +146,8 @@ export function useAdminRegistrations(eventId) {
       return data;
     },
     enabled: !!eventId,
-    refetchInterval: 30_000,   // auto-poll every 30 seconds
-    staleTime: 25_000,
+    // No refetchInterval — data is fetched once on mount.
+    // Use the manual Refresh button in the UI to re-fetch.
+    staleTime: Infinity,
   });
 }
