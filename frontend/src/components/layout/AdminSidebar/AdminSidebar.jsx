@@ -69,6 +69,14 @@ export default function AdminSidebar() {
           ))}
         </nav>
 
+        <a href="/" className={styles.link} title={isCollapsed ? 'Home / Main Site' : ''}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          {!isCollapsed && <span>Go to Home</span>}
+        </a>
+
         <button onClick={logout} className={styles.logoutBtn} title={isCollapsed ? 'Logout' : ''}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9" />

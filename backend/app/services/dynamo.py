@@ -189,6 +189,27 @@ def update_event(event_id: str, updates: Dict) -> Optional[Dict]:
         raise
 
 
+def delete_event(event_id: str) -> bool:
+    """Delete an event record permanently."""
+    request_id = get_request_id()
+    dynamo_logger.info(f"Deleting event: {event_id}", request_id=request_id)
+    try:
+        table = _get_table()
+        resp = table.delete_item(
+            Key={"PK": f"EVENT#{event_id}", "SK": "METADATA"},
+            ReturnValues="ALL_OLD",
+        )
+        deleted = bool(resp.get("Attributes"))
+        if deleted:
+            dynamo_logger.info(f"Event deleted successfully: {event_id}", request_id=request_id)
+        else:
+            dynamo_logger.warning(f"Event not found for deletion: {event_id}", request_id=request_id)
+        return deleted
+    except Exception as e:
+        dynamo_logger.error(f"Error deleting event {event_id}: {str(e)}", request_id=request_id, exc_info=True)
+        raise
+
+
 def increment_seat(event_id: str) -> int:
     """Atomically increment seat_filled. Returns the new count."""
     request_id = get_request_id()
@@ -393,8 +414,23 @@ def get_next_registration_id(event_id: str) -> str:
             ExpressionAttributeValues={":inc": 1},
             ReturnValues="UPDATED_NEW",
         )
-        count = int(resp["Attributes"]["count"]) # count fetch from backend
-        reg_id = f"AHD-{event_id}-{count:05d}"
+        count = int(resp["Attributes"]["count"])
+
+        # Extract few characters from event title or ID
+        event = get_event(event_id)
+        event_prefix = "EV"
+        if event and event.get("title"):
+            # Get first letter of each word in title, or first 3 chars if single word
+            words = event["title"].split()
+            if len(words) >= 2:
+                event_prefix = "".join([word[0].upper() for word in words if word[0].isalnum()])[:4]
+            else:
+                event_prefix = event["title"][:3].upper()
+        else:
+            # Fallback to event_id slug
+            event_prefix = event_id[:3].upper()
+
+        reg_id = f"SY-{event_prefix}-{count:03d}"
         dynamo_logger.info(f"Generated registration ID: {reg_id}", request_id=request_id)
         return reg_id
     except Exception as e:

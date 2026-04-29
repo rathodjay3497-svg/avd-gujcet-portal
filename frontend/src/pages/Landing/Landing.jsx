@@ -58,10 +58,10 @@ export default function Landing() {
           <h2 className={styles.sectionTitle}>Upcoming Events</h2>
           {isLoading ? (
             <Loader text="Loading events..." />
-          ) : events?.filter(e => e.status !== 'closed').length > 0 ? (
+          ) : events?.filter(e => e.status === 'active').length > 0 ? (
             <div className={styles.eventGrid}>
               {events
-                .filter(e => e.status !== 'closed')
+                .filter(e => e.status === 'active')
                 .map((event) => (
                   <EventCard key={event.event_id} event={event} />
                 ))}

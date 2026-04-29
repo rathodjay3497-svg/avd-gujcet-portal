@@ -5,11 +5,6 @@ import { usePublicRegister } from '@/hooks/useRegistration';
 import Loader from '@/components/ui/Loader/Loader';
 import styles from './RegisterForm.module.css';
 
-const STREAMS = [
-  'A Group (PCM)',
-  'B Group (PCB)',
-];
-
 export default function RegisterForm() {
   const { eventId } = useParams();
   const navigate = useNavigate();
@@ -20,10 +15,11 @@ export default function RegisterForm() {
     name: '',
     phone: '',
     gender: 'Male',
+    standard: '',
     school_college: '',
-    stream: '',
     medium: 'English',
     address: '',
+    reference: '',
   });
   const [errors, setErrors] = useState({});
 
@@ -38,8 +34,8 @@ export default function RegisterForm() {
     if (!form.name.trim()) e.name = 'Full name is required';
     if (!/^\d{10}$/.test(form.phone.trim())) e.phone = 'Enter a valid 10-digit mobile number';
     if (!form.gender) e.gender = 'Please select gender';
+    if (!form.standard.trim()) e.standard = 'Standard / Education is required';
     if (!form.school_college.trim()) e.school_college = 'School / College name is required';
-    if (!form.stream) e.stream = 'Please select academic stream';
     if (!form.medium) e.medium = 'Please select medium';
     if (!form.address.trim()) e.address = 'Address is required';
     return e;
@@ -74,12 +70,14 @@ export default function RegisterForm() {
           eventEndDate: event.end_date,
           eventFee: event.fee,
           organizedBy: event.organized_by,
+          whatsappLink: event.whatsapp_link,
           userName: form.name,
           userPhone: form.phone.trim(),
-          userStream: form.stream,
+          userStandard: form.standard,
           userSchool: form.school_college,
           userMedium: form.medium,
           userGender: form.gender,
+          userReference: form.reference,
         },
       });
     } catch {
@@ -91,10 +89,13 @@ export default function RegisterForm() {
     <div className={styles.page}>
       <div className={styles.container}>
         <div className={styles.card}>
-          <h2 className={styles.title}>Register for {event.title}</h2>
-          {event.venue && event.start_date && (
-            <p className={styles.subtitle}>{event.venue} &bull; {event.start_date?.slice(0, 10)}</p>
-          )}
+          <div className={styles.header}>
+            <h2 className={styles.title}>Registration Form</h2>
+            <p className={styles.eventLabel}>{event.title}</p>
+            {event.venue && event.start_date && (
+              <p className={styles.subtitle}>{event.venue} &bull; {event.start_date?.slice(0, 10)}</p>
+            )}
+          </div>
 
           <form onSubmit={handleSubmit} noValidate>
 
@@ -131,54 +132,25 @@ export default function RegisterForm() {
               </div>
             </div>
 
-            {/* ── Gender ── */}
-            <div className={styles.field}>
-              <label className={styles.label}>Gender <span className={styles.required}>*</span></label>
-              <div className={styles.radioGroup}>
-                {['Male', 'Female'].map(g => (
-                  <label key={g} className={styles.radioLabel}>
-                    <input
-                      type="radio"
-                      name="gender"
-                      value={g}
-                      checked={form.gender === g}
-                      onChange={handleChange}
-                    />
-                    {g}
-                  </label>
-                ))}
-              </div>
-              {errors.gender && <span className={styles.errorMsg}>{errors.gender}</span>}
-            </div>
-
-            {/* ── School / College ── */}
-            <div className={styles.field}>
-              <label className={styles.label}>School / College Name <span className={styles.required}>*</span></label>
-              <input
-                className={`${styles.input} ${errors.school_college ? styles.inputError : ''}`}
-                type="text"
-                name="school_college"
-                value={form.school_college}
-                onChange={handleChange}
-                placeholder="Example High School"
-              />
-              {errors.school_college && <span className={styles.errorMsg}>{errors.school_college}</span>}
-            </div>
-
-            {/* ── Row 2: Stream + Medium ── */}
+            {/* ── Row 2: Gender + Medium ── */}
             <div className={styles.row}>
               <div className={styles.field}>
-                <label className={styles.label}>Academic Stream <span className={styles.required}>*</span></label>
-                <select
-                  className={`${styles.select} ${errors.stream ? styles.inputError : ''}`}
-                  name="stream"
-                  value={form.stream}
-                  onChange={handleChange}
-                >
-                  <option value="">Select Stream</option>
-                  {STREAMS.map(s => <option key={s} value={s}>{s}</option>)}
-                </select>
-                {errors.stream && <span className={styles.errorMsg}>{errors.stream}</span>}
+                <label className={styles.label}>Gender <span className={styles.required}>*</span></label>
+                <div className={styles.radioGroup}>
+                  {['Male', 'Female'].map(g => (
+                    <label key={g} className={styles.radioLabel}>
+                      <input
+                        type="radio"
+                        name="gender"
+                        value={g}
+                        checked={form.gender === g}
+                        onChange={handleChange}
+                      />
+                      {g}
+                    </label>
+                  ))}
+                </div>
+                {errors.gender && <span className={styles.errorMsg}>{errors.gender}</span>}
               </div>
 
               <div className={styles.field}>
@@ -201,6 +173,34 @@ export default function RegisterForm() {
               </div>
             </div>
 
+            {/* ── Standard ── */}
+            <div className={styles.field}>
+              <label className={styles.label}>Standard / Education <span className={styles.required}>*</span></label>
+              <input
+                className={`${styles.input} ${errors.standard ? styles.inputError : ''}`}
+                type="text"
+                name="standard"
+                value={form.standard}
+                onChange={handleChange}
+                placeholder="e.g. 12th Science, Engineering Student, etc."
+              />
+              {errors.standard && <span className={styles.errorMsg}>{errors.standard}</span>}
+            </div>
+
+            {/* ── School / College ── */}
+            <div className={styles.field}>
+              <label className={styles.label}>School / College Name <span className={styles.required}>*</span></label>
+              <input
+                className={`${styles.input} ${errors.school_college ? styles.inputError : ''}`}
+                type="text"
+                name="school_college"
+                value={form.school_college}
+                onChange={handleChange}
+                placeholder="Enter your school or college name"
+              />
+              {errors.school_college && <span className={styles.errorMsg}>{errors.school_college}</span>}
+            </div>
+
             {/* ── Address ── */}
             <div className={styles.field}>
               <label className={styles.label}>Full Address <span className={styles.required}>*</span></label>
@@ -209,10 +209,23 @@ export default function RegisterForm() {
                 name="address"
                 value={form.address}
                 onChange={handleChange}
-                placeholder="Enter your full address"
-                rows={3}
+                placeholder="Enter your full home address"
+                rows={2}
               />
               {errors.address && <span className={styles.errorMsg}>{errors.address}</span>}
+            </div>
+
+            {/* ── Reference ── */}
+            <div className={styles.field}>
+              <label className={styles.label}>Reference (Optional)</label>
+              <input
+                className={styles.input}
+                type="text"
+                name="reference"
+                value={form.reference}
+                onChange={handleChange}
+                placeholder="How did you hear about us? (Friend, Social Media, etc.)"
+              />
             </div>
 
             <button
@@ -220,7 +233,7 @@ export default function RegisterForm() {
               className={styles.submitBtn}
               disabled={registerMutation.isPending}
             >
-              {registerMutation.isPending ? 'Submitting…' : 'Submit Registration'}
+              {registerMutation.isPending ? 'Submitting…' : 'Complete Registration'}
             </button>
           </form>
         </div>

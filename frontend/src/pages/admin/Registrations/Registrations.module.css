@@ -194,14 +194,14 @@
   font-size: 0.8rem;
 }
 
-.emailCell {
+.schoolCell {
   max-width: 200px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.schoolCell {
-  max-width: 200px;
+.longCell {
+  max-width: 240px;
   overflow: hidden;
   text-overflow: ellipsis;
 }

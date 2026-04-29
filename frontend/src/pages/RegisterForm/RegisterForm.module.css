@@ -5,11 +5,13 @@
   align-items: center;
   justify-content: center;
   padding: 2rem 1rem;
+  overflow-x: hidden;
 }
 
 .container {
   width: 100%;
   max-width: 780px;
+  min-width: 0;
 }
 
 .card {
@@ -17,13 +19,35 @@
   border-radius: 20px;
   padding: 2.5rem;
   box-shadow: 0 4px 32px rgba(14, 79, 141, 0.10);
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2.5rem;
 }
 
 .title {
-  font-size: 1.7rem;
+  font-size: 2rem;
   font-weight: 800;
   color: #0e4f8d;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.5px;
+}
+
+.eventLabel {
+  display: inline-block;
+  padding: 0.35rem 1rem;
+  background: rgba(14, 79, 141, 0.08);
+  color: #0e4f8d;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .subtitle {
@@ -35,19 +59,22 @@
 /* ── Layout ─────────────────────────────────────── */
 .row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 1.25rem;
 }
 
 @media (max-width: 600px) {
   .row { grid-template-columns: 1fr; }
-  .card { padding: 1.5rem; }
+  .page { padding: 1rem 0.75rem; }
+  .card { padding: 1.25rem; border-radius: 16px; }
+  .title { font-size: 1.85rem; }
 }
 
 .field {
   margin-bottom: 1.4rem;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 /* ── Labels + Inputs ────────────────────────────── */
@@ -82,7 +109,7 @@
 .select:focus,
 .textarea:focus {
   border-color: #0e4f8d;
-  box-shadow: 0 0 0 3px rgba(14, 79, 141, 0.12);
+  box-shadow: 0 0 0 4px rgba(14, 79, 141, 0.1);
   background: #fff;
 }
 
@@ -98,15 +125,17 @@
 /* ── Phone input ─────────────────────────────────── */
 .phoneWrapper {
   display: flex;
+  width: 100%;
   border: 1.5px solid #cbd5e1;
   border-radius: 10px;
   overflow: hidden;
   background: #f8fafc;
   transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
 }
 .phoneWrapper:focus-within {
   border-color: #0e4f8d;
-  box-shadow: 0 0 0 3px rgba(14, 79, 141, 0.12);
+  box-shadow: 0 0 0 4px rgba(14, 79, 141, 0.1);
   background: #fff;
 }
 
@@ -122,12 +151,14 @@
 
 .phoneInput {
   flex: 1;
+  min-width: 0;
   border: none;
   outline: none;
   padding: 0.7rem 0.85rem;
   font-size: 0.97rem;
   color: #1e293b;
   background: transparent;
+  box-sizing: border-box;
 }
 
 /* ── Radio ───────────────────────────────────────── */

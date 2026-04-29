@@ -18,7 +18,6 @@ export default function EventForm() {
     description: '',
     medium: 'English',
     event_type: 'counseling',
-    registration_type: 'form',
     venue: '',
     start_date: '',
     end_date: '',
@@ -28,9 +27,7 @@ export default function EventForm() {
     registration_deadline: '',
     status: 'draft',
     contact_details: '',
-    form_type: 'json_schema',
-    form_schema_text: '[\n  { "field_id": "name", "label": "Full Name", "type": "text", "required": true },\n  { "field_id": "phone", "label": "Phone Number", "type": "phone", "required": true },\n  { "field_id": "email", "label": "Email", "type": "email", "required": false },\n  { "field_id": "stream", "label": "Stream", "type": "select", "options": ["Science","Commerce","Arts"], "required": true },\n  { "field_id": "school", "label": "School / College", "type": "text", "required": true }\n]',
-    form_html: '',
+    whatsapp_link: '',
     streams: 'Science,Commerce,Arts',
   });
 
@@ -45,8 +42,7 @@ export default function EventForm() {
           end_time: data.end_time || '',
           registration_deadline: data.registration_deadline || '',
           contact_details: data.contact_details || '',
-          form_schema_text: data.form_schema ? JSON.stringify(data.form_schema, null, 2) : '',
-          form_html: data.form_html || '',
+          whatsapp_link: data.whatsapp_link || '',
           streams: data.streams?.join(',') || '',
         });
       });
@@ -59,6 +55,12 @@ export default function EventForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!form.event_id.trim() || !form.title.trim()) {
+      toast.error('Event ID and Title are required fields.');
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -66,12 +68,7 @@ export default function EventForm() {
         ...form,
         streams: form.streams.split(',').map((s) => s.trim()).filter(Boolean),
         fee: form.fee ? parseFloat(form.fee) : 0,
-        form_schema: form.form_type === 'json_schema' && form.form_schema_text
-          ? JSON.parse(form.form_schema_text)
-          : null,
-        form_html: form.form_type === 'html' ? form.form_html : null,
       };
-      delete payload.form_schema_text;
 
       if (isEdit) {
         await eventsAPI.update(id, payload);
@@ -111,15 +108,9 @@ export default function EventForm() {
 
           <Field label="Description" name="description" value={form.description} onChange={handleChange} textarea />
           <Field label="Contact Details (Optional)" name="contact_details" value={form.contact_details} onChange={handleChange} placeholder="e.g. John Doe - 9876543210" />
+          <Field label="WhatsApp Group Link (Optional)" name="whatsapp_link" value={form.whatsapp_link} onChange={handleChange} placeholder="https://chat.whatsapp.com/..." />
 
           <div className={styles.grid}>
-            <div className={styles.field}>
-              <label>Registration Type</label>
-              <select name="registration_type" value={form.registration_type} onChange={handleChange} className={styles.input}>
-                <option value="form">Full Form</option>
-                <option value="click_to_register">Click to Register (Login Required)</option>
-              </select>
-            </div>
             <div className={styles.field}>
               <label>Status</label>
               <select name="status" value={form.status} onChange={handleChange} className={styles.input}>
@@ -129,45 +120,6 @@ export default function EventForm() {
               </select>
             </div>
           </div>
-
-          {form.registration_type === 'form' && (
-            <>
-              <div className={styles.field}>
-                <label>Form Type</label>
-                <select name="form_type" value={form.form_type} onChange={handleChange} className={styles.input}>
-                  <option value="json_schema">JSON Schema (Form Builder)</option>
-                  <option value="html">Raw HTML</option>
-                </select>
-              </div>
-
-              {form.form_type === 'json_schema' ? (
-                <div className={styles.field}>
-                  <label>Form Schema (JSON)</label>
-                  <textarea
-                    name="form_schema_text"
-                    value={form.form_schema_text}
-                    onChange={handleChange}
-                    className={styles.codeInput}
-                    rows={12}
-                    spellCheck={false}
-                  />
-                </div>
-              ) : (
-                <div className={styles.field}>
-                  <label>Form HTML</label>
-                  <textarea
-                    name="form_html"
-                    value={form.form_html}
-                    onChange={handleChange}
-                    className={styles.codeInput}
-                    rows={12}
-                    placeholder="<form>...</form>"
-                    spellCheck={false}
-                  />
-                </div>
-              )}
-            </>
-          )}
 
           <div className={styles.formActions}>
             <Button type="submit" loading={loading} size="lg">
