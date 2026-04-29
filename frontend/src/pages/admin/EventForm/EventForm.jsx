@@ -27,6 +27,7 @@ export default function EventForm() {
     registration_deadline: '',
     status: 'draft',
     contact_details: '',
+    whatsapp_link: '',
     streams: 'Science,Commerce,Arts',
   });
 
@@ -41,6 +42,7 @@ export default function EventForm() {
           end_time: data.end_time || '',
           registration_deadline: data.registration_deadline || '',
           contact_details: data.contact_details || '',
+          whatsapp_link: data.whatsapp_link || '',
           streams: data.streams?.join(',') || '',
         });
       });
@@ -106,6 +108,7 @@ export default function EventForm() {
 
           <Field label="Description" name="description" value={form.description} onChange={handleChange} textarea />
           <Field label="Contact Details (Optional)" name="contact_details" value={form.contact_details} onChange={handleChange} placeholder="e.g. John Doe - 9876543210" />
+          <Field label="WhatsApp Group Link (Optional)" name="whatsapp_link" value={form.whatsapp_link} onChange={handleChange} placeholder="https://chat.whatsapp.com/..." />
 
           <div className={styles.grid}>
             <div className={styles.field}>

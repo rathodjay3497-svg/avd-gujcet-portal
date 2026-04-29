@@ -12,13 +12,11 @@ class PublicRegistrationRequest(BaseModel):
     phone: str  # 10-digit mobile number
     gender: str = "Male"
     school_college: str
-    stream: str
     medium: str = "English"
     address: str
     email: Optional[str] = None
     standard: Optional[str] = None
-    education_board: Optional[str] = None
-    interested_field: Optional[str] = None
+    reference: Optional[str] = None
 
     @field_validator("phone")
     @classmethod

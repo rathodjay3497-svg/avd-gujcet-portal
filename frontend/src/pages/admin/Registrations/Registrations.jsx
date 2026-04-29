@@ -35,13 +35,13 @@ export default function Registrations() {
     return allRegs.filter(r =>
       r.registration_id?.toLowerCase().includes(s) ||
       r.name?.toLowerCase().includes(s) ||
-      r.email?.toLowerCase().includes(s) ||
       r.phone?.includes(s) ||
-      r.stream?.toLowerCase().includes(s) ||
-      r.school_college?.toLowerCase().includes(s) ||
+      r.gender?.toLowerCase().includes(s) ||
       r.standard?.toLowerCase().includes(s) ||
-      r.education_board?.toLowerCase().includes(s) ||
-      r.interested_field?.toLowerCase().includes(s)
+      r.school_college?.toLowerCase().includes(s) ||
+      r.medium?.toLowerCase().includes(s) ||
+      r.address?.toLowerCase().includes(s) ||
+      r.reference?.toLowerCase().includes(s)
     );
   }, [allRegs, search]);
 
@@ -54,13 +54,13 @@ export default function Registrations() {
     const rows = filtered.map(r => ({
       'Registration ID': r.registration_id,
       'Name': r.name || '—',
-      'Email': r.email || '—',
       'Phone': r.phone || '—',
-      'Stream': r.stream || '—',
-      'Standard': r.standard || '—',
-      'Education Board': r.education_board || '—',
-      'Interested Field': r.interested_field || '—',
+      'Gender': r.gender || '—',
+      'Standard / Education': r.standard || '—',
       'School / College': r.school_college || '—',
+      'Medium': r.medium || '—',
+      'Address': r.address || '—',
+      'Reference': r.reference || '—',
       'Status': r.status,
       'Registered At': formatDateTime(r.registered_at),
     }));
@@ -142,7 +142,7 @@ export default function Registrations() {
                   type="text"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search by name, email, phone, stream, school…"
+                  placeholder="Search by name, phone, standard, school, reference…"
                   className={styles.searchInput}
                 />
                 {search && (
@@ -162,13 +162,13 @@ export default function Registrations() {
                     <th className={styles.thNum}>#</th>
                     <th>Reg ID</th>
                     <th>Name</th>
-                    <th>Email</th>
                     <th>Phone</th>
-                    <th>Stream</th>
-                    <th>Standard</th>
-                    <th>Board</th>
-                    <th>Interested Field</th>
+                    <th>Gender</th>
+                    <th>Standard / Education</th>
                     <th>School / College</th>
+                    <th>Medium</th>
+                    <th>Address</th>
+                    <th>Reference</th>
                     <th>Status</th>
                     <th>Registered At</th>
                   </tr>
@@ -181,15 +181,15 @@ export default function Registrations() {
                       </td>
                       <td><code>{r.registration_id}</code></td>
                       <td>{r.name || '—'}</td>
-                      <td className={styles.emailCell} title={r.email}>{r.email || '—'}</td>
                       <td>{r.phone || '—'}</td>
-                      <td>{r.stream || '—'}</td>
+                      <td>{r.gender || '—'}</td>
                       <td>{r.standard || '—'}</td>
-                      <td>{r.education_board || '—'}</td>
-                      <td>{r.interested_field || '—'}</td>
                       <td className={styles.schoolCell} title={r.school_college}>
                         {r.school_college || '—'}
                       </td>
+                      <td>{r.medium || '—'}</td>
+                      <td className={styles.longCell} title={r.address}>{r.address || '—'}</td>
+                      <td className={styles.longCell} title={r.reference}>{r.reference || '—'}</td>
                       <td>
                         <span className={`${styles.badge} ${styles[r.status]}`}>
                           {r.status}
@@ -200,7 +200,7 @@ export default function Registrations() {
                   ))}
                   {paginated.length === 0 && (
                     <tr>
-                      <td colSpan={13} className={styles.emptyRow}>
+                      <td colSpan={12} className={styles.emptyRow}>
                         {search
                           ? `No registrations match "${search}".`
                           : 'No registrations yet.'}

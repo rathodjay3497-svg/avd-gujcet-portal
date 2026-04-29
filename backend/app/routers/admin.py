@@ -19,15 +19,14 @@ def _flatten_reg(r: dict) -> dict:
     fd = r.get("form_data", {})
     return {
         "registration_id": r.get("registration_id", ""),
-        "email": r.get("email", ""),
         "phone": r.get("phone") or fd.get("phone", ""),
         "name": fd.get("name", ""),
-        "stream": fd.get("stream", ""),
-        "school_college": fd.get("school_college") or fd.get("school", ""),
-        "district": fd.get("district", ""),
+        "gender": fd.get("gender", ""),
         "standard": fd.get("standard", ""),
-        "education_board": fd.get("education_board", ""),
-        "interested_field": fd.get("interested_field", ""),
+        "school_college": fd.get("school_college") or fd.get("school", ""),
+        "medium": fd.get("medium", ""),
+        "address": fd.get("address", ""),
+        "reference": fd.get("reference", ""),
         "form_data": fd,
         "status": r.get("status", "confirmed"),
         "registered_at": r.get("registered_at", ""),
@@ -60,35 +59,36 @@ def export_registrations(event_id: str, _admin=Depends(require_admin)):
     output = io.StringIO()
     writer = csv.writer(output)
 
-    # Fixed core columns + dynamic form_data extras
-    core_keys = ["name", "email", "phone", "stream", "school_college", "district",
-                 "standard", "education_board", "interested_field"]
-    extra_keys = sorted(
-        {k for r in regs for k in r.get("form_data", {}).keys() if k not in core_keys}
-    )
-
-    headers = ["Registration ID", "Name", "Email", "Phone", "Stream", "School/College",
-               "District", "Standard", "Education Board", "Interested Field",
-               "Status", "Registered At"] + extra_keys
+    headers = [
+        "Registration ID",
+        "Name",
+        "Phone",
+        "Gender",
+        "Standard / Education",
+        "School / College",
+        "Medium",
+        "Address",
+        "Reference",
+        "Status",
+        "Registered At",
+    ]
     writer.writerow(headers)
 
     for r in regs:
         flat = _flatten_reg(r)
-        fd = flat["form_data"]
         row = [
             flat["registration_id"],
             flat["name"],
-            flat["email"],
             flat["phone"],
-            flat["stream"],
-            flat["school_college"],
-            flat["district"],
+            flat["gender"],
             flat["standard"],
-            flat["education_board"],
-            flat["interested_field"],
+            flat["school_college"],
+            flat["medium"],
+            flat["address"],
+            flat["reference"],
             flat["status"],
             flat["registered_at"],
-        ] + [fd.get(k, "") for k in extra_keys]
+        ]
         writer.writerow(row)
 
     output.seek(0)

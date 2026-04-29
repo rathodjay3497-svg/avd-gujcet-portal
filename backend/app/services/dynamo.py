@@ -414,8 +414,23 @@ def get_next_registration_id(event_id: str) -> str:
             ExpressionAttributeValues={":inc": 1},
             ReturnValues="UPDATED_NEW",
         )
-        count = int(resp["Attributes"]["count"]) # count fetch from backend
-        reg_id = f"AHD-{event_id}-{count:05d}"
+        count = int(resp["Attributes"]["count"])
+
+        # Extract few characters from event title or ID
+        event = get_event(event_id)
+        event_prefix = "EV"
+        if event and event.get("title"):
+            # Get first letter of each word in title, or first 3 chars if single word
+            words = event["title"].split()
+            if len(words) >= 2:
+                event_prefix = "".join([word[0].upper() for word in words if word[0].isalnum()])[:4]
+            else:
+                event_prefix = event["title"][:3].upper()
+        else:
+            # Fallback to event_id slug
+            event_prefix = event_id[:3].upper()
+
+        reg_id = f"SY-{event_prefix}-{count:03d}"
         dynamo_logger.info(f"Generated registration ID: {reg_id}", request_id=request_id)
         return reg_id
     except Exception as e:

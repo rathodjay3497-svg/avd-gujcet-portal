@@ -30,6 +30,7 @@ class EventCreate(BaseModel):
     future_scope: Optional[bool] = False
     registration_deadline: Optional[str] = None
     contact_details: Optional[str] = None
+    whatsapp_link: Optional[str] = None
     status: EventStatus = EventStatus.DRAFT
 
 
@@ -48,6 +49,7 @@ class EventUpdate(BaseModel):
     future_scope: Optional[bool] = None
     registration_deadline: Optional[str] = None
     contact_details: Optional[str] = None
+    whatsapp_link: Optional[str] = None
     status: Optional[EventStatus] = None
 
 
@@ -67,6 +69,7 @@ class EventResponse(BaseModel):
     future_scope: Optional[bool] = False
     registration_deadline: Optional[str]
     contact_details: Optional[str] = None
+    whatsapp_link: Optional[str] = None
     status: str
     created_at: str
 

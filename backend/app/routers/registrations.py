@@ -201,13 +201,11 @@ def register_public(
                 "email": email_key,
                 "phone": body.phone,
                 "gender": body.gender,
+                "standard": body.standard or "",
                 "school_college": body.school_college,
-                "stream": body.stream,
                 "medium": body.medium,
                 "address": body.address,
-                "standard": body.standard or "",
-                "education_board": body.education_board or "",
-                "interested_field": body.interested_field or "",
+                "reference": body.reference or "",
             },
         )
 
@@ -220,13 +218,11 @@ def register_public(
         "phone": body.phone,
         "email": body.email or "",
         "gender": body.gender,
+        "standard": body.standard or "",
         "school_college": body.school_college,
-        "stream": body.stream,
         "medium": body.medium,
         "address": body.address,
-        "standard": body.standard or "",
-        "education_board": body.education_board or "",
-        "interested_field": body.interested_field or "",
+        "reference": body.reference or "",
     }
 
     # 8. Save registration

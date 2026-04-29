@@ -1,8 +1,6 @@
 import { useLocation, Link } from 'react-router-dom';
 import styles from './RegisterSuccess.module.css';
 
-const DEFAULT_WHATSAPP_LINK = 'https://chat.whatsapp.com/GdodTpblcTz54g3X8XWBGJ?mode=gi_t';
-
 function WhatsAppIcon() {
   return (
     <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -21,9 +19,11 @@ export default function RegisterSuccess() {
   const eventTitle = state?.eventTitle;
   const userName = state?.userName;
   const userPhone = state?.userPhone;
-  const userStream = state?.userStream;
+  const userGender = state?.userGender;
+  const userStandard = state?.userStandard;
   const userSchool = state?.userSchool;
-  const WHATSAPP_LINK = state?.whatsappLink || DEFAULT_WHATSAPP_LINK;
+  const userMedium = state?.userMedium;
+  const whatsappLink = state?.whatsappLink?.trim();
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(regId);
@@ -61,39 +61,43 @@ export default function RegisterSuccess() {
         </div>
 
         {/* ── Student Summary ── */}
-        {(userPhone || userStream || userSchool || eventTitle) && (
+        {(userPhone || userGender || userStandard || userSchool || userMedium || eventTitle) && (
           <div className={styles.summary}>
             {eventTitle && <div className={styles.summaryRow}><span className={styles.summaryKey}>Event</span><span className={styles.summaryVal}>{eventTitle}</span></div>}
             {userPhone && <div className={styles.summaryRow}><span className={styles.summaryKey}>Phone</span><span className={styles.summaryVal}>+91 {userPhone}</span></div>}
-            {userStream && <div className={styles.summaryRow}><span className={styles.summaryKey}>Stream</span><span className={styles.summaryVal}>{userStream}</span></div>}
+            {userGender && <div className={styles.summaryRow}><span className={styles.summaryKey}>Gender</span><span className={styles.summaryVal}>{userGender}</span></div>}
+            {userStandard && <div className={styles.summaryRow}><span className={styles.summaryKey}>Standard / Education</span><span className={styles.summaryVal}>{userStandard}</span></div>}
             {userSchool && <div className={styles.summaryRow}><span className={styles.summaryKey}>School / College</span><span className={styles.summaryVal}>{userSchool}</span></div>}
+            {userMedium && <div className={styles.summaryRow}><span className={styles.summaryKey}>Medium</span><span className={styles.summaryVal}>{userMedium}</span></div>}
           </div>
         )}
 
         {/* ── WhatsApp CTA ── */}
-        <div className={styles.waCard}>
-          <div className={styles.waCardHeader}>
-            <WhatsAppIcon />
-            <div>
-              <p className={styles.waTitle}>Join Our WhatsApp Group</p>
-              <p className={styles.waDesc}>Get updates, schedules &amp; important announcements directly on WhatsApp.</p>
+        {whatsappLink && (
+          <div className={styles.waCard}>
+            <div className={styles.waCardHeader}>
+              <WhatsAppIcon />
+              <div>
+                <p className={styles.waTitle}>Join Our WhatsApp Group</p>
+                <p className={styles.waDesc}>Get updates, schedules &amp; important announcements directly on WhatsApp.</p>
+              </div>
             </div>
+            <a
+              href={whatsappLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.waBtn}
+            >
+              <WhatsAppIcon />
+              Join WhatsApp Group Now
+            </a>
           </div>
-          <a
-            href={WHATSAPP_LINK}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.waBtn}
-          >
-            <WhatsAppIcon />
-            Join WhatsApp Group Now
-          </a>
-        </div>
+        )}
 
         {/* ── Register Another ── */}
         <div className={styles.actions}>
           <Link to="/" className={styles.backBtn}>
-            ← Register Another Student / Back to Events
+            ← Register Another Candidate / Back to Events
           </Link>
         </div>
 
