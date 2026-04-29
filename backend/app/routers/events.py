@@ -58,14 +58,14 @@ def update_event_status(event_id: str, body: StatusUpdate, _admin=Depends(requir
     return _format_event(updated)
 
 
-@router.delete("/{event_id}", summary="Soft-delete an event")
+@router.delete("/{event_id}", summary="Delete an event")
 def delete_event(event_id: str, _admin=Depends(require_admin)):
     existing = dynamo.get_event(event_id)
     if not existing:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Event not found")
 
-    dynamo.update_event(event_id, {"status": "closed"})
-    return {"message": "Event closed successfully"}
+    dynamo.delete_event(event_id)
+    return {"message": "Event deleted successfully"}
 
 
 def _format_event(event: dict) -> dict:

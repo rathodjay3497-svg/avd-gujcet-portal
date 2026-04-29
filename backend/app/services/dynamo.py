@@ -189,6 +189,27 @@ def update_event(event_id: str, updates: Dict) -> Optional[Dict]:
         raise
 
 
+def delete_event(event_id: str) -> bool:
+    """Delete an event record permanently."""
+    request_id = get_request_id()
+    dynamo_logger.info(f"Deleting event: {event_id}", request_id=request_id)
+    try:
+        table = _get_table()
+        resp = table.delete_item(
+            Key={"PK": f"EVENT#{event_id}", "SK": "METADATA"},
+            ReturnValues="ALL_OLD",
+        )
+        deleted = bool(resp.get("Attributes"))
+        if deleted:
+            dynamo_logger.info(f"Event deleted successfully: {event_id}", request_id=request_id)
+        else:
+            dynamo_logger.warning(f"Event not found for deletion: {event_id}", request_id=request_id)
+        return deleted
+    except Exception as e:
+        dynamo_logger.error(f"Error deleting event {event_id}: {str(e)}", request_id=request_id, exc_info=True)
+        raise
+
+
 def increment_seat(event_id: str) -> int:
     """Atomically increment seat_filled. Returns the new count."""
     request_id = get_request_id()
