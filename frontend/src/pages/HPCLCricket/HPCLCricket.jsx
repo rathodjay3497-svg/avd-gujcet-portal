@@ -30,7 +30,7 @@ const GROUPS = [
 ];
 
 const HPCL_WHATSAPP_LINK = 'https://chat.whatsapp.com/DYAFkq1upt51xXS2J4evg1';
-const REGISTRATION_FEE = 350;
+const REGISTRATION_FEE = 400;
 
 const TARGET_DATE = new Date('2026-05-09T00:00:00+05:30');
 
