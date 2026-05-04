@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useEvent } from '@/hooks/useEvent';
 import { usePublicRegister } from '@/hooks/useRegistration';
 import Loader from '@/components/ui/Loader/Loader';
+import CountdownTimer from '@/components/ui/CountdownTimer/CountdownTimer';
 import styles from './RegisterForm.module.css';
 
 export default function RegisterForm() {
@@ -86,7 +87,12 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className={styles.page}>
+    <div 
+      className={styles.page}
+      style={{ 
+        '--event-bg': event.image_url ? `url(${event.image_url})` : 'none'
+      }}
+    >
       <div className={styles.container}>
         <div className={styles.card}>
           <div className={styles.header}>
@@ -96,6 +102,13 @@ export default function RegisterForm() {
               <p className={styles.subtitle}>{event.venue} &bull; {event.start_date?.slice(0, 10)}</p>
             )}
           </div>
+
+          {event.show_countdown && event.registration_deadline && (
+            <CountdownTimer 
+              targetDate={event.registration_deadline} 
+              label={`⏳ Registration for ${event.title} closes in:`}
+            />
+          )}
 
           <form onSubmit={handleSubmit} noValidate>
 
