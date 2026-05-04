@@ -151,3 +151,37 @@ export function useAdminRegistrations(eventId) {
     staleTime: Infinity,
   });
 }
+
+export function useUpdateAdminRegistration(eventId, onDone) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ email, data }) => {
+      const resp = await adminAPI.updateRegistration(eventId, email, data);
+      return resp.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-registrations', eventId] });
+      toast.success('Registration updated successfully');
+      onDone?.();
+    },
+    onError: (err) => {
+      toast.error(err.response?.data?.detail || 'Failed to update registration');
+    },
+  });
+}
+
+export function useDeleteAdminRegistration(eventId) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (email) => {
+      await adminAPI.deleteRegistration(eventId, email);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-registrations', eventId] });
+      toast.success('Registration deleted successfully');
+    },
+    onError: (err) => {
+      toast.error(err.response?.data?.detail || 'Failed to delete registration');
+    },
+  });
+}

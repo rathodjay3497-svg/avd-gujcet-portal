@@ -1,48 +1,66 @@
-from pydantic import BaseModel, field_validator
-from typing import Optional, Dict, Any
-import re
+from pydantic import BaseModel, EmailStr, Field
+from typing import Optional, Dict, Any, List
+from datetime import datetime
 
+class RegistrationBase(BaseModel):
+    event_id: str
+    email: str
+    phone: Optional[str] = None
+    status: str = "confirmed"
 
 class RegistrationCreate(BaseModel):
     form_data: Dict[str, Any]
 
-
 class PublicRegistrationRequest(BaseModel):
     name: str
-    phone: str  # 10-digit mobile number
+    phone: str
+    email: Optional[EmailStr] = None
     gender: str = "Male"
     school_college: str
-    medium: str = "English"
+    standard: str
+    stream: Optional[str] = None
+    education_board: Optional[str] = None
+    interested_field: Optional[str] = None
+    medium: str = "Gujarati"
     address: str
-    email: Optional[str] = None
-    standard: Optional[str] = None
-    reference: Optional[str] = None
+    theory_percentile: str
+    gujcet_percentile: Optional[str] = ""
+    notes: Optional[str] = ""
+    reference: Optional[str] = ""
 
-    @field_validator("phone")
-    @classmethod
-    def validate_phone(cls, v: str) -> str:
-        digits = re.sub(r"\D", "", v)
-        if len(digits) != 10:
-            raise ValueError("Phone number must be exactly 10 digits")
-        return digits
-
-
-class RegistrationResponse(BaseModel):
+class UserRegistrationResponse(RegistrationBase):
     registration_id: str
-    event_id: str
-    email: str
-    form_data: Dict[str, Any]
-    status: str = "confirmed"
     registered_at: str
+    form_data: Dict[str, Any]
 
+# Aliases for backward compatibility with routers
+RegistrationResponse = UserRegistrationResponse
 
 class RegistrationCheckResponse(BaseModel):
     registered: bool
     registration_id: Optional[str] = None
 
+class AdminRegistrationResponse(UserRegistrationResponse):
+    pass
 
 class BulkNotifyRequest(BaseModel):
     message: str
     channel: str = "sms"  # "sms", "email", or "both"
     filter_stream: Optional[str] = None
     filter_district: Optional[str] = None
+
+class RegistrationUpdateRequest(BaseModel):
+    name: Optional[str] = None
+    phone: Optional[str] = None
+    gender: Optional[str] = None
+    standard: Optional[str] = None
+    school_college: Optional[str] = None
+    medium: Optional[str] = None
+    address: Optional[str] = None
+    theory_percentile: Optional[str] = None
+    gujcet_percentile: Optional[str] = None
+    education_board: Optional[str] = None
+    interested_field: Optional[str] = None
+    notes: Optional[str] = None
+    reference: Optional[str] = None
+    status: Optional[str] = None
