@@ -5,7 +5,7 @@ from fastapi.responses import StreamingResponse
 from typing import Optional
 
 from app.dependencies import require_admin
-from app.models.registration import BulkNotifyRequest
+from app.models.registration import BulkNotifyRequest, RegistrationUpdateRequest
 from app.services import dynamo
 from app.services.email_service import send_bulk_email
 from app.config import get_settings
@@ -24,9 +24,15 @@ def _flatten_reg(r: dict) -> dict:
         "gender": fd.get("gender", ""),
         "standard": fd.get("standard", ""),
         "school_college": fd.get("school_college") or fd.get("school", ""),
+        "education_board": fd.get("education_board", ""),
+        "interested_field": fd.get("interested_field", ""),
         "medium": fd.get("medium", ""),
         "address": fd.get("address", ""),
+        "theory_percentile": fd.get("theory_percentile", ""),
+        "gujcet_percentile": fd.get("gujcet_percentile", ""),
+        "notes": fd.get("notes", ""),
         "reference": fd.get("reference", ""),
+        "email": r.get("email", ""),
         "form_data": fd,
         "status": r.get("status", "confirmed"),
         "registered_at": r.get("registered_at", ""),
@@ -65,9 +71,14 @@ def export_registrations(event_id: str, _admin=Depends(require_admin)):
         "Phone",
         "Gender",
         "Standard / Education",
+        "Education Board",
         "School / College",
         "Medium",
+        "Interested Field",
         "Address",
+        "Theory Percentile",
+        "GUJCET Percentile",
+        "Notes/Remark",
         "Reference",
         "Status",
         "Registered At",
@@ -82,9 +93,14 @@ def export_registrations(event_id: str, _admin=Depends(require_admin)):
             flat["phone"],
             flat["gender"],
             flat["standard"],
+            flat["education_board"],
             flat["school_college"],
             flat["medium"],
+            flat["interested_field"],
             flat["address"],
+            flat["theory_percentile"],
+            flat["gujcet_percentile"],
+            flat["notes"],
             flat["reference"],
             flat["status"],
             flat["registered_at"],
@@ -205,3 +221,42 @@ def list_users(_admin=Depends(require_admin)):
             for u in users
         ],
     }
+
+
+@router.patch("/registrations/{event_id}/{email}", summary="Update a registration (admin only)")
+def update_registration(
+    event_id: str,
+    email: str,
+    body: RegistrationUpdateRequest,
+    _admin=Depends(require_admin)
+):
+    existing = dynamo.get_registration(event_id, email)
+    if not existing:
+        raise HTTPException(status_code=404, detail="Registration not found")
+
+    updates = {}
+    data = body.model_dump(exclude_none=True)
+    
+    # Top-level fields
+    if "status" in data:
+        updates["status"] = data.pop("status")
+    if "phone" in data:
+        updates["phone"] = data.get("phone") # Keep in both places for safety
+
+    # Nested form_data fields
+    for key, val in data.items():
+        updates[f"form_data.{key}"] = val
+
+    if not updates:
+        return _flatten_reg(existing)
+
+    updated = dynamo.update_registration_fields(event_id, email, updates)
+    return _flatten_reg(updated)
+
+
+@router.delete("/registrations/{event_id}/{email}", summary="Delete a registration (admin only)")
+def delete_registration(event_id: str, email: str, _admin=Depends(require_admin)):
+    deleted = dynamo.delete_registration(event_id, email)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Registration not found")
+    return {"message": "Registration deleted successfully"}

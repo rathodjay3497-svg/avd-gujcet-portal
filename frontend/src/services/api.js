@@ -67,6 +67,8 @@ export const adminAPI = {
   getOverview: () => api.get('/admin/overview'),
   sendNotifications: (eventId, data) => api.post(`/admin/notify/${eventId}`, data),
   listUsers: () => api.get('/admin/users'),
+  updateRegistration: (eventId, email, data) => api.patch(`/admin/registrations/${eventId}/${email}`, data),
+  deleteRegistration: (eventId, email) => api.delete(`/admin/registrations/${eventId}/${email}`),
 };
 
 // ─── HPCL Cricket ────────────────────────────────────────────
