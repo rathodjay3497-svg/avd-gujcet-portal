@@ -4,6 +4,7 @@ import EventCard from '@/components/events/EventCard/EventCard';
 import Loader from '@/components/ui/Loader/Loader';
 import styles from './Landing.module.css';
 import { useState, useEffect } from 'react';
+import EventSpotlight from '@/components/home/EventSpotlight/EventSpotlight';
 
 export default function Landing() {
   const { data: events, isLoading } = useEvents();
@@ -85,6 +86,9 @@ export default function Landing() {
           )}
         </div>
       </section>
+
+      {/* Event Spotlight Section */}
+      <EventSpotlight events={events} />
 
       {/* How It Works */}
       {/* <section className={styles.howItWorks} id="how-it-works">

@@ -1,0 +1,184 @@
+.spotlight {
+  padding: 80px 24px;
+  background-color: #fbf8ff;
+}
+
+.container {
+  max-width: 1400px; /* Wider container for 3 items */
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 48px;
+  text-align: left;
+}
+
+.badge {
+  background-color: #ffddb8;
+  color: #653e00;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 48px;
+  font-weight: 800;
+  color: #1a1b22;
+  margin-bottom: 16px;
+  line-height: 1.1;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: #534434;
+  max-width: 700px;
+  line-height: 1.6;
+}
+
+.carousel {
+  position: relative;
+  margin-top: 40px;
+}
+
+/* Multi-item Layout */
+.trackWrapper {
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.track {
+  display: flex;
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  gap: 24px; /* Space between items */
+}
+
+.slide {
+  /* Dynamic width set via inline styles in JSX based on items shown */
+  flex-shrink: 0;
+}
+
+.card {
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid #d8c3ad;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(133, 83, 0, 0.1);
+}
+
+.imageContainer {
+  position: relative;
+  aspect-ratio: 4 / 5; /* More portrait/square for 3-item layout */
+  background: #f1f5f9;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.5s ease;
+}
+
+.footer {
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  background: white;
+  border-top: 1px solid #f1f5f9;
+}
+
+.registerBtn {
+  background-color: #855300;
+  color: white;
+  padding: 14px 40px;
+  border-radius: 12px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  text-align: center;
+  width: 100%;
+}
+
+.registerBtn:hover {
+  background-color: #653e00;
+  box-shadow: 0 8px 20px rgba(133, 83, 0, 0.3);
+}
+
+/* Nav Buttons */
+.navBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid #d8c3ad;
+  color: #855300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.navBtn:hover {
+  background-color: #ffddb8;
+  border-color: #855300;
+}
+
+.prev {
+  left: -28px;
+}
+
+.next {
+  right: -28px;
+}
+
+@media (max-width: 1100px) {
+  .navBtn {
+    display: none;
+  }
+}
+
+.indicators {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 32px;
+}
+
+.indicator {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #d8c3ad;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.indicator.active {
+  width: 36px;
+  border-radius: 5px;
+  background-color: #855300;
+}

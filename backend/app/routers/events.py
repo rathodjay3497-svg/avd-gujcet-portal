@@ -87,6 +87,8 @@ def _format_event(event: dict) -> dict:
         "registration_deadline": event.get("registration_deadline"),
         "contact_details": event.get("contact_details"),
         "whatsapp_link": event.get("whatsapp_link"),
+        "image_url": event.get("image_url"),
+        "show_countdown": event.get("show_countdown", False),
         "status": event.get("status", "draft"),
         "created_at": event.get("created_at", ""),
     }

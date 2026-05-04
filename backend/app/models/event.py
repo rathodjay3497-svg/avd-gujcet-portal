@@ -31,6 +31,8 @@ class EventCreate(BaseModel):
     registration_deadline: Optional[str] = None
     contact_details: Optional[str] = None
     whatsapp_link: Optional[str] = None
+    image_url: Optional[str] = None
+    show_countdown: bool = False
     status: EventStatus = EventStatus.DRAFT
 
 
@@ -50,6 +52,8 @@ class EventUpdate(BaseModel):
     registration_deadline: Optional[str] = None
     contact_details: Optional[str] = None
     whatsapp_link: Optional[str] = None
+    image_url: Optional[str] = None
+    show_countdown: Optional[bool] = None
     status: Optional[EventStatus] = None
 
 
@@ -70,6 +74,8 @@ class EventResponse(BaseModel):
     registration_deadline: Optional[str]
     contact_details: Optional[str] = None
     whatsapp_link: Optional[str] = None
+    image_url: Optional[str] = None
+    show_countdown: bool = False
     status: str
     created_at: str
 
