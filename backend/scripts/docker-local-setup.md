@@ -1,7 +1,8 @@
 # DynamoDB Local Setup Guide
 
 ## Task 0: Setup with Docker Compose (Recommended)
-This method ensures your data persists in the `./docker/dynamodb` folder even after stopping or removing containers.
+This method ensures your data persists in the `./docker/dynamodb` folder.
+*Make sure you are in the `backend/` directory.*
 
 Command:
 ```bash
@@ -9,14 +10,32 @@ docker-compose up -d
 ```
 
 ## Task 1: Manual Setup with Docker (Alternative)
+*Use this only if docker-compose is not working. Standardized to port 8001 to match .env.*
+
 Command:
 ```bash
 docker run -d --name dynamodb-local `
-  -p 8000:8000 `
-  -v "${PWD}\data:/home/dynamodblocal/data" `
+  -p 8001:8000 `
+  -v "${PWD}/docker/dynamodb:/home/dynamodblocal/data" `
   amazon/dynamodb-local `
   -jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data
 ```
+
+## Data Persistence & Reliability
+> [!IMPORTANT]
+> Your data is stored in the `backend/docker/dynamodb/shared-local-instance.db` file. 
+> 
+> - **DO NOT** delete the `backend/docker/dynamodb` folder if you want to keep your data.
+> - **DO NOT** use `docker-compose down -v` as it might clear configurations.
+> - **DO** use `docker-compose stop` and `docker-compose start` (or `up -d`) to maintain state.
+
+## Troubleshooting: Data "Gone" After Restart?
+If you restart and `aws dynamodb list-tables` returns an empty list:
+1. **Check the Port**: Ensure you are using port **8001** (check your `.env` file).
+2. **Check the Volume**: Ensure the folder `backend/docker/dynamodb` contains `shared-local-instance.db`.
+3. **Re-initialize**: If the table structure is missing, you MUST re-run **Task 5** to create the `gujcet-platform` table.
+
+---
 
 ## Task 2: Check running containers
 Command:
