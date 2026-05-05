@@ -10,6 +10,7 @@ class UserProfile(BaseModel):
     picture: Optional[str] = None
 
     gender: Optional[str] = None
+    caste: Optional[str] = None
     guardian_name: Optional[str] = None
     guardian_phone: Optional[str] = None
     school_college: Optional[str] = None

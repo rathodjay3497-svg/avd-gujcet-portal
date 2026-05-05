@@ -102,6 +102,7 @@ def register_click(event_id: str, background_tasks: BackgroundTasks, user=Depend
         "stream": profile.get("stream", ""),
         "district": profile.get("district", ""),
         "school": profile.get("school_college", ""),
+        "caste": profile.get("caste", ""),
     }
 
     # 6. Save registration (phone stored at top-level for admin queries)
@@ -212,6 +213,7 @@ def register_public(
                 "medium": body.medium,
                 "address": body.address,
                 "reference": body.reference or "",
+                "caste": body.caste or "General",
             },
         )
 
@@ -235,6 +237,7 @@ def register_public(
         "medium": body.medium,
         "address": body.address,
         "reference": body.reference or "",
+        "caste": body.caste or "General",
     }
 
     # 8. Save registration

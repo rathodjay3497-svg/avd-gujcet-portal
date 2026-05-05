@@ -58,7 +58,7 @@ export default function Registrations() {
       const matchesCaste = !filterCaste || r.caste === filterCaste;
       return matchesSearch && matchesStandard && matchesMedium && matchesCaste;
     });
-  }, [allRegs, search, filterStandard, filterMedium]);
+  }, [allRegs, search, filterStandard, filterMedium, filterCaste]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
