@@ -245,7 +245,7 @@ def create_registration(event_id: str, email: str, data: Dict) -> Dict:
             "event_id": event_id,
             "email": email,
             "registered_at": now,
-            "status": "confirmed",
+            "status": "registered",
             # GSI1: query registrations by user
             "GSI1PK": f"USER#{email}",
             "GSI1SK": f"REG#{event_id}",

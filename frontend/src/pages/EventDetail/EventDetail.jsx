@@ -8,6 +8,7 @@ import { STREAM_COLORS } from '@/constants/streams';
 import { formatDate } from '@/utils/formatters';
 import useAuthStore from '@/store/authStore';
 import RegisterButton from '@/components/events/RegisterButton/RegisterButton';
+import SEO from '@/components/common/SEO/SEO';
 import styles from './EventDetail.module.css';
 
 export default function EventDetail() {
@@ -25,6 +26,11 @@ export default function EventDetail() {
 
   return (
     <div className={styles.page}>
+      <SEO 
+        title={event.title} 
+        description={event.description || `Register for ${event.title} at Suhrad Youths.`}
+        image={event.image_url}
+      />
       <div className={styles.container}>
         <div className={styles.layout}>
           {/* Left — Details */}

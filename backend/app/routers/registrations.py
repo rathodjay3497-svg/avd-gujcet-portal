@@ -146,7 +146,7 @@ def _format_registration(reg: dict) -> dict:
         "event_id": reg.get("event_id", ""),
         "email": reg.get("email", ""),
         "form_data": reg.get("form_data", {}),
-        "status": reg.get("status", "confirmed"),
+        "status": reg.get("status", "registered"),
         "registered_at": reg.get("registered_at", ""),
     }
 
