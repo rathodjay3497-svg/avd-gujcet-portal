@@ -41,7 +41,7 @@ const SORT_OPTIONS = [
 
 const SORT_HELP = [
   { label: 'Custom Order', desc: 'Manual order set via the "Order" field on each row.' },
-  { label: 'Alphabetical (A–Z)', desc: 'Sorts by Governing Body name A → Z.' },
+  { label: 'Alphabetical (A-Z)', desc: 'Sorts by Governing Body name A → Z.' },
   { label: 'Start Date (earliest first)', desc: 'Rows with specific dates appear first; "Announce Soon" entries go to the bottom.' },
   { label: 'Recently Added', desc: 'Newest entries appear at the top.' },
 ];

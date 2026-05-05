@@ -12,6 +12,7 @@ const STANDARDS = [
 ];
 
 const BOARDS = ['GSHSEB', 'CBSE', 'Other'];
+const CASTES = ['General', 'EWS', 'OBC', 'SC', 'ST'];
 
 const ADMISSION_EVENT_ID = 'admission-2026';
 const WHATSAPP_LINK = 'https://chat.whatsapp.com/G7FuTO8iHn80ouTCkhkKUo?mode=hqctswa';
@@ -33,6 +34,7 @@ export default function AdmissionRegister() {
     address: '',
     theory_percentile: '',
     gujcet_percentile: '',
+    caste: 'General',
     notes: '',
     reference: '',
   });
@@ -153,6 +155,19 @@ export default function AdmissionRegister() {
                         <label key={m} className={styles.radioLabel}>
                           <input type="radio" name="medium" value={m} checked={form.medium === m} onChange={handleChange} />
                           {m}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.col6}>
+                  <div className={styles.field}>
+                    <label className={styles.label}>Caste / Category <span className={styles.required}>*</span></label>
+                    <div className={styles.radioGroup}>
+                      {CASTES.map(c => (
+                        <label key={c} className={styles.radioLabel}>
+                          <input type="radio" name="caste" value={c} checked={form.caste === c} onChange={handleChange} />
+                          {c}
                         </label>
                       ))}
                     </div>

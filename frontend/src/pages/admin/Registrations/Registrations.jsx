@@ -18,6 +18,8 @@ export default function Registrations() {
   const [search, setSearch] = useState('');
   const [filterStandard, setFilterStandard] = useState('');
   const [filterMedium, setFilterMedium] = useState('');
+  const [filterCaste, setFilterCaste] = useState('');
+  const [filterStatus, setFilterStatus] = useState('');
   const [page, setPage] = useState(1);
   const [editingReg, setEditingReg] = useState(null);
   const queryClient = useQueryClient();
@@ -30,13 +32,14 @@ export default function Registrations() {
     queryClient.invalidateQueries({ queryKey: ['admin-registrations', eventId] });
   };
 
-  useEffect(() => { setPage(1); }, [search, filterStandard, filterMedium]);
+  useEffect(() => { setPage(1); }, [search, filterStandard, filterMedium, filterCaste, filterStatus]);
 
   const allRegs = data?.registrations ?? [];
 
   // Extract unique standards and mediums for filters
   const standards = useMemo(() => [...new Set(allRegs.map(r => r.standard).filter(Boolean))].sort(), [allRegs]);
   const mediums = useMemo(() => [...new Set(allRegs.map(r => r.medium).filter(Boolean))].sort(), [allRegs]);
+  const castes = useMemo(() => [...new Set(allRegs.map(r => r.caste).filter(Boolean))].sort(), [allRegs]);
 
   const filtered = useMemo(() => {
     return allRegs.filter(r => {
@@ -49,13 +52,16 @@ export default function Registrations() {
         r.address?.toLowerCase().includes(s) ||
         r.reference?.toLowerCase().includes(s) ||
         r.education_board?.toLowerCase().includes(s) ||
-        r.interested_field?.toLowerCase().includes(s)
+        r.interested_field?.toLowerCase().includes(s) ||
+        r.notes?.toLowerCase().includes(s)
       );
       const matchesStandard = !filterStandard || r.standard === filterStandard;
       const matchesMedium = !filterMedium || r.medium === filterMedium;
-      return matchesSearch && matchesStandard && matchesMedium;
+      const matchesCaste = !filterCaste || r.caste === filterCaste;
+      const matchesStatus = !filterStatus || r.status === filterStatus;
+      return matchesSearch && matchesStandard && matchesMedium && matchesCaste && matchesStatus;
     });
-  }, [allRegs, search, filterStandard, filterMedium]);
+  }, [allRegs, search, filterStandard, filterMedium, filterCaste, filterStatus]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -72,6 +78,7 @@ export default function Registrations() {
       'Education Board': r.education_board || '—',
       'School / College': r.school_college || '—',
       'Medium': r.medium || '—',
+      'Caste': r.caste || '—',
       'Interested Field': r.interested_field || '—',
       'Address': r.address || '—',
       'Theory %': r.theory_percentile || '—',
@@ -117,6 +124,7 @@ export default function Registrations() {
         school_college: editingReg.school_college,
         education_board: editingReg.education_board,
         medium: editingReg.medium,
+        caste: editingReg.caste,
         interested_field: editingReg.interested_field,
         address: editingReg.address,
         theory_percentile: editingReg.theory_percentile,
@@ -166,7 +174,7 @@ export default function Registrations() {
                     type="text"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Search name, phone, school, board..."
+                    placeholder="Search name, phone, school, notes..."
                     className={styles.searchInput}
                   />
                 </div>
@@ -188,6 +196,26 @@ export default function Registrations() {
                   <option value="">All Mediums</option>
                   {mediums.map(m => <option key={m} value={m}>{m}</option>)}
                 </select>
+
+                <select 
+                  className={styles.selectFilter}
+                  value={filterCaste} 
+                  onChange={e => setFilterCaste(e.target.value)}
+                >
+                  <option value="">All Castes</option>
+                  {castes.map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+
+                <select 
+                  className={styles.selectFilter}
+                  value={filterStatus} 
+                  onChange={e => setFilterStatus(e.target.value)}
+                >
+                  <option value="">All Status</option>
+                  <option value="confirmed">Confirmed</option>
+                  <option value="pending">Pending</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
               </div>
 
               <span className={styles.resultCount}>
@@ -201,12 +229,13 @@ export default function Registrations() {
                   <tr>
                     <th>#</th>
                     <th>Name / Phone / Gender</th>
-                    <th>Standard / Board / Medium</th>
+                    <th>Standard / Board / Medium / Caste</th>
                     <th>School / Interest</th>
                     <th>Theory % / GUJCET %</th>
                     <th>Address</th>
                     <th>Ref</th>
                     <th>Notes</th>
+                    <th>Registered At</th>
                     <th>Status</th>
                     <th>Actions</th>
                   </tr>
@@ -226,7 +255,7 @@ export default function Registrations() {
                         <div className={styles.metaCell}>
                           <span>{r.standard}</span>
                           <strong>{r.education_board}</strong>
-                          <small>{r.medium}</small>
+                          <small>{r.medium} · {r.caste}</small>
                         </div>
                       </td>
                       <td>
@@ -244,6 +273,11 @@ export default function Registrations() {
                       <td className={styles.longCell}>{r.address}</td>
                       <td><span className={styles.refText}>{r.reference || '—'}</span></td>
                       <td className={styles.longCell}>{r.notes || '—'}</td>
+                      <td>
+                        <div className={styles.dateCell}>
+                          {formatDateTime(r.registered_at)}
+                        </div>
+                      </td>
                       <td>
                         <span className={`${styles.badge} ${styles[r.status]}`}>
                           {r.status}
@@ -301,6 +335,17 @@ export default function Registrations() {
 
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
+                <label>Registration ID</label>
+                <input type="text" value={editingReg.registration_id} readOnly className={styles.readOnlyInput} />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Registered At</label>
+                <input type="text" value={formatDateTime(editingReg.registered_at)} readOnly className={styles.readOnlyInput} />
+              </div>
+            </div>
+
+            <div className={styles.formRow}>
+              <div className={styles.formGroup}>
                 <label>Gender</label>
                 <select 
                   value={editingReg.gender} 
@@ -318,6 +363,19 @@ export default function Registrations() {
                 >
                   <option value="Gujarati">Gujarati</option>
                   <option value="English">English</option>
+                </select>
+              </div>
+              <div className={styles.formGroup}>
+                <label>Caste</label>
+                <select 
+                  value={editingReg.caste} 
+                  onChange={e => setEditingReg({...editingReg, caste: e.target.value})}
+                >
+                  <option value="General">General</option>
+                  <option value="EWS">EWS</option>
+                  <option value="OBC">OBC</option>
+                  <option value="SC">SC</option>
+                  <option value="ST">ST</option>
                 </select>
               </div>
             </div>

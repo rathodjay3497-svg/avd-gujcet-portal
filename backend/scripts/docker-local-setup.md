@@ -1,14 +1,41 @@
 # DynamoDB Local Setup Guide
 
-## Task 1: Setup with Docker
+## Task 0: Setup with Docker Compose (Recommended)
+This method ensures your data persists in the `./docker/dynamodb` folder.
+*Make sure you are in the `backend/` directory.*
+
+Command:
+```bash
+docker-compose up -d
+```
+
+## Task 1: Manual Setup with Docker (Alternative)
+*Use this only if docker-compose is not working. Standardized to port 8001 to match .env.*
+
 Command:
 ```bash
 docker run -d --name dynamodb-local `
-  -p 8000:8000 `
-  -v "${PWD}\data:/home/dynamodblocal/data" `
+  -p 8001:8000 `
+  -v "${PWD}/docker/dynamodb:/home/dynamodblocal/data" `
   amazon/dynamodb-local `
   -jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/data
 ```
+
+## Data Persistence & Reliability
+> [!IMPORTANT]
+> Your data is stored in the `backend/docker/dynamodb/shared-local-instance.db` file. 
+> 
+> - **DO NOT** delete the `backend/docker/dynamodb` folder if you want to keep your data.
+> - **DO NOT** use `docker-compose down -v` as it might clear configurations.
+> - **DO** use `docker-compose stop` and `docker-compose start` (or `up -d`) to maintain state.
+
+## Troubleshooting: Data "Gone" After Restart?
+If you restart and `aws dynamodb list-tables` returns an empty list:
+1. **Check the Port**: Ensure you are using port **8001** (check your `.env` file).
+2. **Check the Volume**: Ensure the folder `backend/docker/dynamodb` contains `shared-local-instance.db`.
+3. **Re-initialize**: If the table structure is missing, you MUST re-run **Task 5** to create the `gujcet-platform` table.
+
+---
 
 ## Task 2: Check running containers
 Command:
@@ -19,13 +46,13 @@ docker ps
 ## Task 3: Test connection (list tables)
 Command:
 ```bash
-aws dynamodb list-tables --endpoint-url http://localhost:8000
+aws dynamodb list-tables --endpoint-url http://localhost:8001
 ```
 
 ## Task 4: List tables with region
 Command:
 ```bash
-aws dynamodb list-tables --endpoint-url http://localhost:8000 --region ap-south-1
+aws dynamodb list-tables --endpoint-url http://localhost:8001 --region ap-south-1
 ```
 
 ## Task 5: Create table 'gujcet-platform' with GSI
@@ -45,7 +72,19 @@ aws dynamodb create-table `
     AttributeName=SK,KeyType=RANGE `
   --global-secondary-indexes file://scripts/gsi.json `
   --billing-mode PAY_PER_REQUEST `
-  --endpoint-url http://localhost:8000 `
+  --endpoint-url http://localhost:8001 `
+  --region ap-south-1
+```
+
+## Task 5.1: Create table 'help-desk-entries'
+Command:
+```bash
+aws dynamodb create-table `
+  --table-name help-desk-entries `
+  --attribute-definitions AttributeName=entry_id,AttributeType=S `
+  --key-schema AttributeName=entry_id,KeyType=HASH `
+  --billing-mode PAY_PER_REQUEST `
+  --endpoint-url http://localhost:8001 `
   --region ap-south-1
 ```
 
@@ -54,7 +93,7 @@ Command:
 ```bash
 aws dynamodb scan `
   --table-name gujcet-platform `
-  --endpoint-url http://localhost:8000 `
+  --endpoint-url http://localhost:8001 `
   --region ap-south-1 `
 | ConvertFrom-Json | ConvertTo-Json -Depth 10
 ```

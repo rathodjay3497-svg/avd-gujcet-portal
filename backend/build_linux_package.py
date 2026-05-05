@@ -41,11 +41,31 @@ def main():
     PACKAGE_DIR.mkdir()
     DOWNLOAD_DIR.mkdir()
     
+    # 1.1 Sync requirements.txt with uv if available
+    if shutil.which("uv"):
+        print("\n=== Step 1.1: Syncing requirements.txt with uv.lock ===")
+        try:
+            # Export production dependencies only (no dev-dependencies)
+            run("uv export --format requirements-txt --no-dev --output-file requirements.txt")
+            print("  ✅ requirements.txt updated successfully.")
+        except subprocess.CalledProcessError:
+            print("  ⚠️  Warning: Failed to sync with uv. Using existing requirements.txt.")
+    else:
+        print("\n  (uv not found, skipping requirements sync)")
     # Ensure build dir exists
     if not BUILD_DIR.exists():
         BUILD_DIR.mkdir()
 
+    if not REQUIREMENTS.exists():
+        print(f"❌ ERROR: {REQUIREMENTS.name} not found! Cannot proceed.")
+        sys.exit(1)
+        
+    print(f"  Using requirements from: {REQUIREMENTS}")
+
     # 2. Download Linux-compatible wheels
+    # Note: --only-binary=:all: ensures we only get pre-built wheels (essential for Linux compatibility).
+    # If a package fails here, it likely means it doesn't have a wheel. 
+    # For pure Python packages, ensure they have a 'none-any' wheel on PyPI.
     print("\n=== Step 2: Downloading Linux wheels ===")
     run(
         f'pip download '
@@ -103,13 +123,34 @@ def main():
     else:
         print("\n✅ No Windows .pyd files remaining.")
 
-    # 7. Check for Linux .so files from pydantic-core (key check)
+    # 7. Verification: Check for key binary files and packages
+    print("\n=== Step 5: Verifying critical components ===")
+    
+    # Check for pydantic_core binary (essential for Pydantic V2)
     so_files = list(PACKAGE_DIR.rglob("_pydantic_core*.so"))
     if so_files:
-        print(f"\n✅ pydantic_core Linux binary found: {so_files[0].name}")
+        print(f"  ✅ pydantic_core Linux binary found: {so_files[0].name}")
     else:
-        print("\n❌ ERROR: pydantic_core Linux .so not found! Build may have issues.")
+        print("  ❌ ERROR: pydantic_core Linux .so not found! Lambda will crash.")
         sys.exit(1)
+
+    # Check for other critical packages
+    critical_packages = ["fastapi", "pydantic", "mangum", "boto3"]
+    for pkg in critical_packages:
+        pkg_path = PACKAGE_DIR / pkg
+        if pkg_path.exists() and pkg_path.is_dir():
+            print(f"  ✅ {pkg} found in package directory.")
+        else:
+            # Check for hyphenated names or .py files
+            if list(PACKAGE_DIR.glob(f"{pkg}*")):
+                print(f"  ✅ {pkg} found (matched via glob).")
+            else:
+                print(f"  ⚠️  WARNING: {pkg} not found in package directory. This might cause runtime errors.")
+
+    # Explicitly check that email-validator is NOT being bundled if not in requirements
+    # (Optional: just to be safe and inform the user)
+    if (PACKAGE_DIR / "email_validator").exists():
+         print("  ℹ️  Note: email_validator is still present (likely a dependency of another package).")
 
     # 8. Build the deployment zip: package/ contents + app/ code
     print(f"\n=== Step 6: Building {OUTPUT_ZIP.name} ===")

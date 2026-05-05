@@ -22,8 +22,9 @@ class PublicRegistrationRequest(BaseModel):
     interested_field: Optional[str] = None
     medium: str = "Gujarati"
     address: str
-    theory_percentile: str
+    theory_percentile: Optional[str] = ""
     gujcet_percentile: Optional[str] = ""
+    caste: Optional[str] = "General"
     notes: Optional[str] = ""
     reference: Optional[str] = ""
 
@@ -58,6 +59,7 @@ class RegistrationUpdateRequest(BaseModel):
     address: Optional[str] = None
     theory_percentile: Optional[str] = None
     gujcet_percentile: Optional[str] = None
+    caste: Optional[str] = None
     education_board: Optional[str] = None
     interested_field: Optional[str] = None
     notes: Optional[str] = None
