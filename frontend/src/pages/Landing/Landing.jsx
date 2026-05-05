@@ -4,6 +4,7 @@ import EventCard from '@/components/events/EventCard/EventCard';
 import Loader from '@/components/ui/Loader/Loader';
 import styles from './Landing.module.css';
 import { useState, useEffect } from 'react';
+import EventSpotlight from '@/components/home/EventSpotlight/EventSpotlight';
 
 export default function Landing() {
   const { data: events, isLoading } = useEvents();
@@ -58,10 +59,10 @@ export default function Landing() {
           <h2 className={styles.sectionTitle}>Upcoming Events</h2>
           {isLoading ? (
             <Loader text="Loading events..." />
-          ) : events?.filter(e => e.status !== 'closed').length > 0 ? (
+          ) : events?.filter(e => e.status === 'active').length > 0 ? (
             <div className={styles.eventGrid}>
               {events
-                .filter(e => e.status !== 'closed')
+                .filter(e => e.status === 'active')
                 .map((event) => (
                   <EventCard key={event.event_id} event={event} />
                 ))}
@@ -85,6 +86,9 @@ export default function Landing() {
           )}
         </div>
       </section>
+
+      {/* Event Spotlight Section */}
+      <EventSpotlight events={events} />
 
       {/* How It Works */}
       {/* <section className={styles.howItWorks} id="how-it-works">

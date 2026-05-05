@@ -1,6 +1,14 @@
 # DynamoDB Local Setup Guide
 
-## Task 1: Setup with Docker
+## Task 0: Setup with Docker Compose (Recommended)
+This method ensures your data persists in the `./docker/dynamodb` folder even after stopping or removing containers.
+
+Command:
+```bash
+docker-compose up -d
+```
+
+## Task 1: Manual Setup with Docker (Alternative)
 Command:
 ```bash
 docker run -d --name dynamodb-local `
@@ -19,13 +27,13 @@ docker ps
 ## Task 3: Test connection (list tables)
 Command:
 ```bash
-aws dynamodb list-tables --endpoint-url http://localhost:8000
+aws dynamodb list-tables --endpoint-url http://localhost:8001
 ```
 
 ## Task 4: List tables with region
 Command:
 ```bash
-aws dynamodb list-tables --endpoint-url http://localhost:8000 --region ap-south-1
+aws dynamodb list-tables --endpoint-url http://localhost:8001 --region ap-south-1
 ```
 
 ## Task 5: Create table 'gujcet-platform' with GSI
@@ -45,7 +53,7 @@ aws dynamodb create-table `
     AttributeName=SK,KeyType=RANGE `
   --global-secondary-indexes file://scripts/gsi.json `
   --billing-mode PAY_PER_REQUEST `
-  --endpoint-url http://localhost:8000 `
+  --endpoint-url http://localhost:8001 `
   --region ap-south-1
 ```
 
@@ -54,7 +62,7 @@ Command:
 ```bash
 aws dynamodb scan `
   --table-name gujcet-platform `
-  --endpoint-url http://localhost:8000 `
+  --endpoint-url http://localhost:8001 `
   --region ap-south-1 `
 | ConvertFrom-Json | ConvertTo-Json -Depth 10
 ```

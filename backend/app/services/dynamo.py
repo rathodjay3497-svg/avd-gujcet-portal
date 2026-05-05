@@ -189,6 +189,27 @@ def update_event(event_id: str, updates: Dict) -> Optional[Dict]:
         raise
 
 
+def delete_event(event_id: str) -> bool:
+    """Delete an event record permanently."""
+    request_id = get_request_id()
+    dynamo_logger.info(f"Deleting event: {event_id}", request_id=request_id)
+    try:
+        table = _get_table()
+        resp = table.delete_item(
+            Key={"PK": f"EVENT#{event_id}", "SK": "METADATA"},
+            ReturnValues="ALL_OLD",
+        )
+        deleted = bool(resp.get("Attributes"))
+        if deleted:
+            dynamo_logger.info(f"Event deleted successfully: {event_id}", request_id=request_id)
+        else:
+            dynamo_logger.warning(f"Event not found for deletion: {event_id}", request_id=request_id)
+        return deleted
+    except Exception as e:
+        dynamo_logger.error(f"Error deleting event {event_id}: {str(e)}", request_id=request_id, exc_info=True)
+        raise
+
+
 def increment_seat(event_id: str) -> int:
     """Atomically increment seat_filled. Returns the new count."""
     request_id = get_request_id()
@@ -393,11 +414,195 @@ def get_next_registration_id(event_id: str) -> str:
             ExpressionAttributeValues={":inc": 1},
             ReturnValues="UPDATED_NEW",
         )
-        count = int(resp["Attributes"]["count"]) # count fetch from backend
-        reg_id = f"AHD-{event_id}-{count:05d}"
+        count = int(resp["Attributes"]["count"])
+
+        # Extract few characters from event title or ID
+        event = get_event(event_id)
+        event_prefix = "EV"
+        if event and event.get("title"):
+            # Get first letter of each word in title, or first 3 chars if single word
+            words = event["title"].split()
+            if len(words) >= 2:
+                event_prefix = "".join([word[0].upper() for word in words if word[0].isalnum()])[:4]
+            else:
+                event_prefix = event["title"][:3].upper()
+        else:
+            # Fallback to event_id slug
+            event_prefix = event_id[:3].upper()
+
+        reg_id = f"SY-{event_prefix}-{count:03d}"
         dynamo_logger.info(f"Generated registration ID: {reg_id}", request_id=request_id)
         return reg_id
     except Exception as e:
         dynamo_logger.error(f"Error generating registration ID for event {event_id}: {str(e)}", request_id=request_id, exc_info=True)
         raise
 
+
+# ─── Help Desk Operations ───────────────────────────────────────
+
+def _get_helpdesk_table():
+    """Return a boto3 Table resource for the help-desk-entries table."""
+    if settings.DYNAMODB_ENDPOINT_URL:
+        dynamodb = boto3.resource(
+            "dynamodb",
+            region_name=settings.AWS_REGION,
+            endpoint_url=settings.DYNAMODB_ENDPOINT_URL,
+            aws_access_key_id="dummy",
+            aws_secret_access_key="dummy",
+        )
+    else:
+        dynamodb = boto3.resource("dynamodb", region_name=settings.AWS_REGION)
+    return dynamodb.Table(settings.HELPDESK_TABLE_NAME)
+
+
+def list_helpdesk_entries() -> List[Dict]:
+    """Scan all help-desk entries and return them sorted by sort_order ascending."""
+    request_id = get_request_id()
+    dynamo_logger.debug("Listing help-desk entries", request_id=request_id)
+    try:
+        table = _get_helpdesk_table()
+        resp = table.scan()
+        items = [_deserialize(i) for i in resp.get("Items", [])]
+        # Continue scanning if results are paginated
+        while "LastEvaluatedKey" in resp:
+            resp = table.scan(ExclusiveStartKey=resp["LastEvaluatedKey"])
+            items.extend([_deserialize(i) for i in resp.get("Items", [])])
+        items.sort(key=lambda x: (x.get("sort_order", 0), x.get("created_at", "")))
+        dynamo_logger.info(f"Found {len(items)} help-desk entries", request_id=request_id)
+        return items
+    except Exception as e:
+        dynamo_logger.error(f"Error listing help-desk entries: {str(e)}", request_id=request_id, exc_info=True)
+        raise
+
+
+def create_helpdesk_entry(data: Dict) -> Dict:
+    """Create a new help-desk entry. Generates a UUID entry_id automatically."""
+    import uuid as _uuid
+    request_id = get_request_id()
+    entry_id = str(_uuid.uuid4())
+    dynamo_logger.info(f"Creating help-desk entry: {entry_id}", request_id=request_id)
+    try:
+        table = _get_helpdesk_table()
+        now = datetime.now(timezone.utc).isoformat()
+        item = {
+            "entry_id": entry_id,
+            "body": data.get("body", ""),
+            "course": data.get("course", ""),
+            "eligibility": data.get("eligibility", ""),
+            "start_date": data.get("start_date", ""),
+            "end_date": data.get("end_date", ""),
+            "link": data.get("link", ""),
+            "link2": data.get("link2", ""),
+            "sort_order": _serialize(data.get("sort_order", 0)),
+            "created_at": now,
+            "updated_at": now,
+        }
+        table.put_item(Item=item)
+        dynamo_logger.info(f"Help-desk entry created: {entry_id}", request_id=request_id)
+        return _deserialize(item)
+    except Exception as e:
+        dynamo_logger.error(f"Error creating help-desk entry: {str(e)}", request_id=request_id, exc_info=True)
+        raise
+
+
+def update_helpdesk_entry(entry_id: str, updates: Dict) -> Optional[Dict]:
+    """Update an existing help-desk entry by entry_id."""
+    request_id = get_request_id()
+    dynamo_logger.info(f"Updating help-desk entry: {entry_id}", request_id=request_id)
+    try:
+        table = _get_helpdesk_table()
+        now = datetime.now(timezone.utc).isoformat()
+        updates["updated_at"] = now
+        updates = _serialize(updates)
+
+        expr_parts = []
+        attr_names = {}
+        attr_values = {}
+        for idx, (key, val) in enumerate(updates.items()):
+            placeholder = f"#k{idx}"
+            value_ph = f":v{idx}"
+            expr_parts.append(f"{placeholder} = {value_ph}")
+            attr_names[placeholder] = key
+            attr_values[value_ph] = val
+
+        if not expr_parts:
+            resp = table.get_item(Key={"entry_id": entry_id})
+            item = resp.get("Item")
+            return _deserialize(item) if item else None
+
+        resp = table.update_item(
+            Key={"entry_id": entry_id},
+            UpdateExpression="SET " + ", ".join(expr_parts),
+            ExpressionAttributeNames=attr_names,
+            ExpressionAttributeValues=attr_values,
+            ReturnValues="ALL_NEW",
+        )
+        dynamo_logger.info(f"Help-desk entry updated: {entry_id}", request_id=request_id)
+        return _deserialize(resp.get("Attributes"))
+    except Exception as e:
+        dynamo_logger.error(f"Error updating help-desk entry {entry_id}: {str(e)}", request_id=request_id, exc_info=True)
+        raise
+
+
+def delete_helpdesk_entry(entry_id: str) -> bool:
+    """Delete a help-desk entry. Returns True if deleted, False if not found."""
+    request_id = get_request_id()
+    dynamo_logger.info(f"Deleting help-desk entry: {entry_id}", request_id=request_id)
+    try:
+        table = _get_helpdesk_table()
+        resp = table.delete_item(
+            Key={"entry_id": entry_id},
+            ReturnValues="ALL_OLD",
+        )
+        deleted = bool(resp.get("Attributes"))
+        if deleted:
+            dynamo_logger.info(f"Help-desk entry deleted: {entry_id}", request_id=request_id)
+        else:
+            dynamo_logger.warning(f"Help-desk entry not found for deletion: {entry_id}", request_id=request_id)
+        return deleted
+    except Exception as e:
+        dynamo_logger.error(f"Error deleting help-desk entry {entry_id}: {str(e)}", request_id=request_id, exc_info=True)
+        raise
+
+
+# ─── Help Desk Settings ─────────────────────────────────────────
+
+def get_helpdesk_settings() -> Dict[str, Any]:
+    """Fetch global settings for the help-desk."""
+    request_id = get_request_id()
+    dynamo_logger.debug("Getting help-desk settings", request_id=request_id)
+    try:
+        table = _get_table()
+        resp = table.get_item(Key={"PK": "SETTINGS", "SK": "HELPDESK"})
+        item = resp.get("Item")
+        if not item:
+            # Default settings
+            return {"default_sort": "custom"}
+        return _deserialize(item)
+    except Exception as e:
+        dynamo_logger.error(f"Error getting help-desk settings: {str(e)}", request_id=request_id)
+        return {"default_sort": "custom"}
+
+
+def update_helpdesk_settings(updates: Dict[str, Any]) -> Dict[str, Any]:
+    """Update global settings for the help-desk."""
+    request_id = get_request_id()
+    dynamo_logger.info("Updating help-desk settings", request_id=request_id)
+    try:
+        table = _get_table()
+        now = datetime.now(timezone.utc).isoformat()
+        
+        # We use a simple put_item for now since it's a single record
+        item = {
+            "PK": "SETTINGS",
+            "SK": "HELPDESK",
+            "entity_type": "SETTING",
+            "updated_at": now,
+            **_serialize(updates),
+        }
+        table.put_item(Item=item)
+        dynamo_logger.info("Help-desk settings updated successfully", request_id=request_id)
+        return _deserialize(item)
+    except Exception as e:
+        dynamo_logger.error(f"Error updating help-desk settings: {str(e)}", request_id=request_id)
+        raise

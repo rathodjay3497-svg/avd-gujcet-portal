@@ -54,6 +54,18 @@ export default function ManageEvents() {
     }
   };
 
+  const deleteEvent = async (eventId) => {
+    if (window.confirm('Are you sure you want to permanently delete this event? This action cannot be undone.')) {
+      try {
+        await eventsAPI.delete(eventId);
+        toast.success('Event deleted successfully');
+        queryClient.invalidateQueries({ queryKey: ['admin-events'] });
+      } catch (error) {
+        toast.error('Failed to delete event');
+      }
+    }
+  };
+
   return (
     <div className={styles.layout}>
       <AdminSidebar />
@@ -132,6 +144,12 @@ export default function ManageEvents() {
                   <Link to={`/admin/events/${event.event_id}/edit`}>Edit</Link>
                   <button onClick={() => toggleStatus(event.event_id, event.status)}>
                     {event.status === 'active' ? 'Close' : 'Activate'}
+                  </button>
+                  <button onClick={() => deleteEvent(event.event_id)} className={styles.deleteBtn} title="Delete Event">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{color: '#ef4444'}}>
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
                   </button>
                 </div>
               </div>

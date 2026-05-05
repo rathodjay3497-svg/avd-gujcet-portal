@@ -7,9 +7,9 @@ import styles from './EventCard.module.css';
 
 export default function EventCard({ event }) {
   const streamColor = STREAM_COLORS[event.streams?.[0]] || '#2563EB';
-  const isAdmission = event.event_id === 'admission-2026';
   const isClosed = event.status === 'closed';
-  const showLive = !isClosed && (isAdmission || !event.future_scope);
+  const isActive = event.status === 'active';
+  const showLive = isActive;
 
   return (
     <div className={styles.card} style={{ borderTopColor: streamColor }}>

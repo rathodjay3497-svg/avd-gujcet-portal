@@ -14,3 +14,11 @@ deployment_package.zip
 *.zip
 tmp_linux_wheels
 build
+
+# One-time seed scripts — not for version control
+scripts/seed_helpdesk.py
+
+# Local development data
+docker/
+data/
+tmp_test/

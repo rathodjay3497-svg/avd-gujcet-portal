@@ -67,6 +67,8 @@ export const adminAPI = {
   getOverview: () => api.get('/admin/overview'),
   sendNotifications: (eventId, data) => api.post(`/admin/notify/${eventId}`, data),
   listUsers: () => api.get('/admin/users'),
+  updateRegistration: (eventId, email, data) => api.patch(`/admin/registrations/${eventId}/${email}`, data),
+  deleteRegistration: (eventId, email) => api.delete(`/admin/registrations/${eventId}/${email}`),
 };
 
 // ─── HPCL Cricket ────────────────────────────────────────────
@@ -75,6 +77,16 @@ export const hpclAPI = {
   getAdminRegistrations: () => api.get('/hpcl/admin/registrations'),
   updateRegistration: (phone, data) => api.patch(`/hpcl/admin/registrations/${phone}`, data),
   deleteRegistration: (phone) => api.delete(`/hpcl/admin/registrations/${phone}`),
+};
+
+// ─── Help Desk ───────────────────────────────────────────────
+export const helpDeskAPI = {
+  list: () => api.get('/helpdesk/entries'),
+  create: (data) => api.post('/helpdesk/entries', data),
+  update: (id, data) => api.put(`/helpdesk/entries/${id}`, data),
+  delete: (id) => api.delete(`/helpdesk/entries/${id}`),
+  getSettings: () => api.get('/helpdesk/settings'),
+  updateSettings: (data) => api.put('/helpdesk/settings', data),
 };
 
 // ─── Users ───────────────────────────────────────────────────

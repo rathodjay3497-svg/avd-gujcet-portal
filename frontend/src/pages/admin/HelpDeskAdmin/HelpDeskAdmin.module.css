@@ -1,0 +1,537 @@
+/* ─── Toolbar ─── */
+.toolbarRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.sortRow {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+
+.sortLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #475569;
+  white-space: nowrap;
+}
+
+.sortSelect {
+  padding: 0.5rem 0.875rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-family: inherit;
+  color: #1e293b;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.sortSelect:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* ─── Sort Help Popover ─── */
+.sortHelpWrap {
+  position: relative;
+}
+
+.sortHelpBtn {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #2563eb;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  font-family: inherit;
+}
+.sortHelpBtn:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+
+.sortHelpPanel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 100;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(26, 60, 110, 0.14);
+  padding: 1rem;
+  width: 300px;
+  animation: panelIn 0.18s ease;
+}
+
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.sortHelpTitle {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.75rem;
+}
+
+.sortHelpItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+.sortHelpItem:last-of-type {
+  border-bottom: none;
+}
+
+.sortHelpLabel {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #1a3c6e;
+}
+
+.sortHelpDesc {
+  font-size: 0.775rem;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.sortHelpFooter {
+  font-size: 0.775rem;
+  color: #64748b;
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed #e2e8f0;
+  line-height: 1.4;
+}
+
+/* ─── Admin Table ─── */
+.adminTable {
+  min-width: 1000px;
+}
+
+.adminTable th {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+  padding: 0.75rem 0.875rem;
+  white-space: nowrap;
+}
+
+.adminTable td {
+  padding: 0.75rem 0.875rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.875rem;
+}
+
+.bodyCell {
+  font-weight: 600;
+  color: #1e293b;
+  white-space: nowrap;
+}
+
+/* ─── Date Cell ─── */
+.dateCell {
+  white-space: nowrap;
+}
+
+/* ─── Announce Soon ─── */
+.announceSoon {
+  color: #94a3b8;
+  font-style: italic;
+  font-size: 0.8125rem;
+}
+
+/* ─── Course Badge ─── */
+.courseBadge {
+  background: #bfe7d0;
+  color: #065f46;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  display: inline-block;
+  line-height: 1.4;
+}
+
+/* ─── Link Cells ─── */
+.linkContent {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.linkText {
+  font-size: 0.8rem;
+  color: #475569;
+}
+
+.btnGroup {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.applyBtn {
+  background: #3d71e0;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid #1a3c6e;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+.applyBtn:hover { background: #1d4ed8; }
+
+.detailsBtn {
+  background: transparent;
+  color: #1a3c6e;
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid #1a3c6e;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+.detailsBtn:hover { background: #f1f5f9; }
+
+/* ─── Delete Icon Button ─── */
+.deleteIconBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+}
+.deleteIconBtn:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
+/* ─── Form Row ─── */
+.formRow td {
+  background: #f0f9ff;
+  border-bottom: 2px solid #bae6fd;
+  padding: 0.625rem 0.75rem;
+  vertical-align: top;
+}
+
+.formInput {
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.825rem;
+  font-family: inherit;
+  color: #1e293b;
+  background: #fff;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+.formInput:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+.formTextarea {
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.825rem;
+  font-family: inherit;
+  color: #1e293b;
+  background: #fff;
+  resize: vertical;
+  min-height: 52px;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+.formTextarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+/* ─── Date Field with Clear Button ─── */
+.dateField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+}
+
+.dateClearBtn {
+  position: absolute;
+  right: 6px;
+  top: 7px;
+  background: none;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.7rem;
+  cursor: pointer;
+  padding: 2px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.dateClearBtn:hover { color: #ef4444; }
+
+.dateHint {
+  font-size: 0.7rem;
+  color: #94a3b8;
+  font-style: italic;
+  padding-left: 2px;
+}
+
+/* ─── Link field group ─── */
+.linkFieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.orderInput {
+  width: 80px;
+}
+
+/* ─── Delete Modal ─── */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 1rem;
+}
+
+.modalBox {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  max-width: 440px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: modalIn 0.2s ease;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.modalIcon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.modalTitle { font-size: 1.25rem; font-weight: 700; color: #1e293b; margin: 0 0 0.5rem; }
+.modalMessage { font-size: 0.9rem; color: #475569; margin: 0 0 0.25rem; line-height: 1.5; }
+.modalWarning { font-size: 0.8rem; color: #ef4444; font-weight: 600; margin: 0 0 1.5rem; }
+
+.modalActions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.modalCancelBtn {
+  flex: 1;
+  padding: 0.625rem 1rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #475569;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.modalCancelBtn:hover { background: #f1f5f9; }
+.modalCancelBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.modalDeleteBtn {
+  flex: 1;
+  padding: 0.625rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+.modalDeleteBtn:hover:not(:disabled) { background: #dc2626; }
+.modalDeleteBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ─── Preview Modal ─── */
+.previewModalBox {
+  background: #fff;
+  border-radius: 16px;
+  max-width: 1100px;
+  width: 100%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: modalIn 0.2s ease;
+  overflow: hidden;
+}
+
+.previewHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+.previewTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0;
+}
+
+.previewCloseBtn {
+  background: #f1f5f9;
+  border: none;
+  border-radius: 6px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: #475569;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.previewCloseBtn:hover { background: #e2e8f0; }
+
+.previewTableWrapper {
+  overflow: auto;
+  flex: 1;
+}
+
+.previewTable {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+  font-size: 0.875rem;
+}
+
+.previewTable thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.previewTable th {
+  background: #1a3c6e;
+  color: #fff;
+  padding: 10px 14px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.previewTable td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f1f5f9;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.previewTable tbody tr:nth-child(even) { background: #fafafa; }
+.previewTable tbody tr:hover { background: #f1f5f9; }
+
+.previewLinkContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.previewLinkText { font-size: 0.8rem; color: #475569; }
+
+.previewBtnGroup {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+}
+
+.previewApplyBtn {
+  background: #3d71e0;
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid #1a3c6e;
+  transition: background 0.2s;
+}
+.previewApplyBtn:hover { background: #1d4ed8; }
+
+.previewDetailsBtn {
+  background: transparent;
+  color: #1a3c6e;
+  padding: 4px 12px;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid #1a3c6e;
+  transition: background 0.2s;
+}
+.previewDetailsBtn:hover { background: #f1f5f9; }
+
+.emptyPreview {
+  text-align: center;
+  padding: 2.5rem;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .sortHelpPanel { width: 260px; }
+  .previewModalBox { max-height: 95vh; }
+}
