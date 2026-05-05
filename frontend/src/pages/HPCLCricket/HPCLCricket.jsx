@@ -155,9 +155,10 @@ export default function HPCLCricket() {
 
   return (
     <div className={localStyles.page}>
-      <SEO 
-        title="HPCL 2026 Registration" 
+      <SEO
+        title="HPCL 2026 Registration"
         description="Register for Hari Prabodham Cricket League (HPCL) 2026. Join the exciting Box Cricket tournament organized by Suhrad Youths."
+        image="/assets/hpcl/box-cricket.png"
       />
       {/* ── Submitting GIF overlay ── */}
       {isSubmitting && (
