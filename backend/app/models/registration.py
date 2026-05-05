@@ -1,6 +1,5 @@
-from pydantic import BaseModel, EmailStr, Field
-from typing import Optional, Dict, Any, List
-from datetime import datetime
+from pydantic import BaseModel
+from typing import Optional, Dict, Any
 
 class RegistrationBase(BaseModel):
     event_id: str
@@ -14,7 +13,7 @@ class RegistrationCreate(BaseModel):
 class PublicRegistrationRequest(BaseModel):
     name: str
     phone: str
-    email: Optional[EmailStr] = None
+    email: Optional[str] = None
     gender: str = "Male"
     school_college: str
     standard: str
