@@ -6,6 +6,8 @@ import styles from './Landing.module.css';
 import { useState, useEffect } from 'react';
 import EventSpotlight from '@/components/home/EventSpotlight/EventSpotlight';
 
+import SEO from '@/components/common/SEO/SEO';
+
 export default function Landing() {
   const { data: events, isLoading } = useEvents();
   const location = useLocation();
@@ -26,6 +28,7 @@ export default function Landing() {
 
   return (
     <div className={styles.page}>
+      <SEO />
       {/* Hero Section */}
       <section className={styles.hero}>
         <div className={styles.heroContent}>

@@ -178,40 +178,41 @@ export default function Registrations() {
                     className={styles.searchInput}
                   />
                 </div>
-                
-                <select 
+
+                <select
                   className={styles.selectFilter}
-                  value={filterStandard} 
+                  value={filterStandard}
                   onChange={e => setFilterStandard(e.target.value)}
                 >
                   <option value="">All Standards</option>
                   {standards.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
 
-                <select 
+                <select
                   className={styles.selectFilter}
-                  value={filterMedium} 
+                  value={filterMedium}
                   onChange={e => setFilterMedium(e.target.value)}
                 >
                   <option value="">All Mediums</option>
                   {mediums.map(m => <option key={m} value={m}>{m}</option>)}
                 </select>
 
-                <select 
+                <select
                   className={styles.selectFilter}
-                  value={filterCaste} 
+                  value={filterCaste}
                   onChange={e => setFilterCaste(e.target.value)}
                 >
                   <option value="">All Castes</option>
                   {castes.map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
 
-                <select 
+                <select
                   className={styles.selectFilter}
-                  value={filterStatus} 
+                  value={filterStatus}
                   onChange={e => setFilterStatus(e.target.value)}
                 >
                   <option value="">All Status</option>
+                  <option value="registered">Registered</option>
                   <option value="confirmed">Confirmed</option>
                   <option value="pending">Pending</option>
                   <option value="cancelled">Cancelled</option>
@@ -228,13 +229,13 @@ export default function Registrations() {
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Name / Phone / Gender</th>
-                    <th>Standard / Board / Medium / Caste</th>
-                    <th>School / Interest</th>
-                    <th>Theory % / GUJCET %</th>
-                    <th>Address</th>
+                    <th>Name | Phone | Gender</th>
+                    <th>STD | Board | <br />Medium | Caste</th>
+                    <th>School Name | <br />Interest</th>
+                    <th>Theory % | <br />GUJCET %</th>
+                    <th>Full Address</th>
                     <th>Ref</th>
-                    <th>Notes</th>
+                    <th>Notes | Remark details</th>
                     <th>Registered At</th>
                     <th>Status</th>
                     <th>Actions</th>
@@ -297,9 +298,9 @@ export default function Registrations() {
 
             {totalPages > 1 && (
               <div className={styles.pagination}>
-                 <button onClick={() => goToPage(page - 1)} disabled={page === 1}>← Prev</button>
-                 <span>Page {page} of {totalPages}</span>
-                 <button onClick={() => goToPage(page + 1)} disabled={page === totalPages}>Next →</button>
+                <button onClick={() => goToPage(page - 1)} disabled={page === 1}>← Prev</button>
+                <span>Page {page} of {totalPages}</span>
+                <button onClick={() => goToPage(page + 1)} disabled={page === totalPages}>Next →</button>
               </div>
             )}
           </div>
@@ -307,9 +308,9 @@ export default function Registrations() {
       </div>
 
       {/* Edit Modal */}
-      <Modal 
-        isOpen={!!editingReg} 
-        onClose={() => setEditingReg(null)} 
+      <Modal
+        isOpen={!!editingReg}
+        onClose={() => setEditingReg(null)}
         title="Edit Registration"
       >
         {editingReg && (
@@ -317,18 +318,18 @@ export default function Registrations() {
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
                 <label>Name</label>
-                <input 
-                  type="text" 
-                  value={editingReg.name} 
-                  onChange={e => setEditingReg({...editingReg, name: e.target.value})} 
+                <input
+                  type="text"
+                  value={editingReg.name}
+                  onChange={e => setEditingReg({ ...editingReg, name: e.target.value })}
                 />
               </div>
               <div className={styles.formGroup}>
                 <label>Phone</label>
-                <input 
-                  type="text" 
-                  value={editingReg.phone} 
-                  onChange={e => setEditingReg({...editingReg, phone: e.target.value})} 
+                <input
+                  type="text"
+                  value={editingReg.phone}
+                  onChange={e => setEditingReg({ ...editingReg, phone: e.target.value })}
                 />
               </div>
             </div>
@@ -347,9 +348,9 @@ export default function Registrations() {
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
                 <label>Gender</label>
-                <select 
-                  value={editingReg.gender} 
-                  onChange={e => setEditingReg({...editingReg, gender: e.target.value})}
+                <select
+                  value={editingReg.gender}
+                  onChange={e => setEditingReg({ ...editingReg, gender: e.target.value })}
                 >
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
@@ -357,9 +358,9 @@ export default function Registrations() {
               </div>
               <div className={styles.formGroup}>
                 <label>Medium</label>
-                <select 
-                  value={editingReg.medium} 
-                  onChange={e => setEditingReg({...editingReg, medium: e.target.value})}
+                <select
+                  value={editingReg.medium}
+                  onChange={e => setEditingReg({ ...editingReg, medium: e.target.value })}
                 >
                   <option value="Gujarati">Gujarati</option>
                   <option value="English">English</option>
@@ -367,9 +368,9 @@ export default function Registrations() {
               </div>
               <div className={styles.formGroup}>
                 <label>Caste</label>
-                <select 
-                  value={editingReg.caste} 
-                  onChange={e => setEditingReg({...editingReg, caste: e.target.value})}
+                <select
+                  value={editingReg.caste}
+                  onChange={e => setEditingReg({ ...editingReg, caste: e.target.value })}
                 >
                   <option value="General">General</option>
                   <option value="EWS">EWS</option>
@@ -383,18 +384,18 @@ export default function Registrations() {
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
                 <label>Standard</label>
-                <input 
-                  type="text" 
-                  value={editingReg.standard} 
-                  onChange={e => setEditingReg({...editingReg, standard: e.target.value})} 
+                <input
+                  type="text"
+                  value={editingReg.standard}
+                  onChange={e => setEditingReg({ ...editingReg, standard: e.target.value })}
                 />
               </div>
               <div className={styles.formGroup}>
                 <label>Education Board</label>
-                <input 
-                  type="text" 
-                  value={editingReg.education_board} 
-                  onChange={e => setEditingReg({...editingReg, education_board: e.target.value})} 
+                <input
+                  type="text"
+                  value={editingReg.education_board}
+                  onChange={e => setEditingReg({ ...editingReg, education_board: e.target.value })}
                 />
               </div>
             </div>
@@ -402,18 +403,18 @@ export default function Registrations() {
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
                 <label>School / College</label>
-                <input 
-                  type="text" 
-                  value={editingReg.school_college} 
-                  onChange={e => setEditingReg({...editingReg, school_college: e.target.value})} 
+                <input
+                  type="text"
+                  value={editingReg.school_college}
+                  onChange={e => setEditingReg({ ...editingReg, school_college: e.target.value })}
                 />
               </div>
               <div className={styles.formGroup}>
                 <label>Interested Field</label>
-                <input 
-                  type="text" 
-                  value={editingReg.interested_field} 
-                  onChange={e => setEditingReg({...editingReg, interested_field: e.target.value})} 
+                <input
+                  type="text"
+                  value={editingReg.interested_field}
+                  onChange={e => setEditingReg({ ...editingReg, interested_field: e.target.value })}
                 />
               </div>
             </div>
@@ -421,55 +422,56 @@ export default function Registrations() {
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
                 <label>Theory Percentile</label>
-                <input 
-                  type="text" 
-                  value={editingReg.theory_percentile} 
-                  onChange={e => setEditingReg({...editingReg, theory_percentile: e.target.value})} 
+                <input
+                  type="text"
+                  value={editingReg.theory_percentile}
+                  onChange={e => setEditingReg({ ...editingReg, theory_percentile: e.target.value })}
                 />
               </div>
               <div className={styles.formGroup}>
                 <label>GUJCET Percentile</label>
-                <input 
-                  type="text" 
-                  value={editingReg.gujcet_percentile} 
-                  onChange={e => setEditingReg({...editingReg, gujcet_percentile: e.target.value})} 
+                <input
+                  type="text"
+                  value={editingReg.gujcet_percentile}
+                  onChange={e => setEditingReg({ ...editingReg, gujcet_percentile: e.target.value })}
                 />
               </div>
             </div>
 
             <div className={styles.formGroup}>
               <label>Reference</label>
-              <input 
-                type="text" 
-                value={editingReg.reference} 
-                onChange={e => setEditingReg({...editingReg, reference: e.target.value})} 
+              <input
+                type="text"
+                value={editingReg.reference}
+                onChange={e => setEditingReg({ ...editingReg, reference: e.target.value })}
               />
             </div>
 
             <div className={styles.formGroup}>
               <label>Notes / Remark</label>
-              <textarea 
-                value={editingReg.notes} 
-                onChange={e => setEditingReg({...editingReg, notes: e.target.value})} 
+              <textarea
+                value={editingReg.notes}
+                onChange={e => setEditingReg({ ...editingReg, notes: e.target.value })}
                 rows={2}
               />
             </div>
 
             <div className={styles.formGroup}>
               <label>Address</label>
-              <textarea 
-                value={editingReg.address} 
-                onChange={e => setEditingReg({...editingReg, address: e.target.value})} 
+              <textarea
+                value={editingReg.address}
+                onChange={e => setEditingReg({ ...editingReg, address: e.target.value })}
                 rows={2}
               />
             </div>
 
             <div className={styles.formGroup}>
               <label>Status</label>
-              <select 
-                value={editingReg.status} 
-                onChange={e => setEditingReg({...editingReg, status: e.target.value})}
+              <select
+                value={editingReg.status}
+                onChange={e => setEditingReg({ ...editingReg, status: e.target.value })}
               >
+                <option value="registered">Registered</option>
                 <option value="confirmed">Confirmed</option>
                 <option value="pending">Pending</option>
                 <option value="cancelled">Cancelled</option>
