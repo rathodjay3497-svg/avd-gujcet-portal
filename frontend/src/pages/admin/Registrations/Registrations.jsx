@@ -19,6 +19,7 @@ export default function Registrations() {
   const [filterStandard, setFilterStandard] = useState('');
   const [filterMedium, setFilterMedium] = useState('');
   const [filterCaste, setFilterCaste] = useState('');
+  const [filterStatus, setFilterStatus] = useState('');
   const [page, setPage] = useState(1);
   const [editingReg, setEditingReg] = useState(null);
   const queryClient = useQueryClient();
@@ -31,7 +32,7 @@ export default function Registrations() {
     queryClient.invalidateQueries({ queryKey: ['admin-registrations', eventId] });
   };
 
-  useEffect(() => { setPage(1); }, [search, filterStandard, filterMedium, filterCaste]);
+  useEffect(() => { setPage(1); }, [search, filterStandard, filterMedium, filterCaste, filterStatus]);
 
   const allRegs = data?.registrations ?? [];
 
@@ -51,14 +52,16 @@ export default function Registrations() {
         r.address?.toLowerCase().includes(s) ||
         r.reference?.toLowerCase().includes(s) ||
         r.education_board?.toLowerCase().includes(s) ||
-        r.interested_field?.toLowerCase().includes(s)
+        r.interested_field?.toLowerCase().includes(s) ||
+        r.notes?.toLowerCase().includes(s)
       );
       const matchesStandard = !filterStandard || r.standard === filterStandard;
       const matchesMedium = !filterMedium || r.medium === filterMedium;
       const matchesCaste = !filterCaste || r.caste === filterCaste;
-      return matchesSearch && matchesStandard && matchesMedium && matchesCaste;
+      const matchesStatus = !filterStatus || r.status === filterStatus;
+      return matchesSearch && matchesStandard && matchesMedium && matchesCaste && matchesStatus;
     });
-  }, [allRegs, search, filterStandard, filterMedium, filterCaste]);
+  }, [allRegs, search, filterStandard, filterMedium, filterCaste, filterStatus]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -171,7 +174,7 @@ export default function Registrations() {
                     type="text"
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    placeholder="Search name, phone, school, board..."
+                    placeholder="Search name, phone, school, notes..."
                     className={styles.searchInput}
                   />
                 </div>
@@ -202,6 +205,17 @@ export default function Registrations() {
                   <option value="">All Castes</option>
                   {castes.map(c => <option key={c} value={c}>{c}</option>)}
                 </select>
+
+                <select 
+                  className={styles.selectFilter}
+                  value={filterStatus} 
+                  onChange={e => setFilterStatus(e.target.value)}
+                >
+                  <option value="">All Status</option>
+                  <option value="confirmed">Confirmed</option>
+                  <option value="pending">Pending</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
               </div>
 
               <span className={styles.resultCount}>
@@ -221,6 +235,7 @@ export default function Registrations() {
                     <th>Address</th>
                     <th>Ref</th>
                     <th>Notes</th>
+                    <th>Registered At</th>
                     <th>Status</th>
                     <th>Actions</th>
                   </tr>
@@ -258,6 +273,11 @@ export default function Registrations() {
                       <td className={styles.longCell}>{r.address}</td>
                       <td><span className={styles.refText}>{r.reference || '—'}</span></td>
                       <td className={styles.longCell}>{r.notes || '—'}</td>
+                      <td>
+                        <div className={styles.dateCell}>
+                          {formatDateTime(r.registered_at)}
+                        </div>
+                      </td>
                       <td>
                         <span className={`${styles.badge} ${styles[r.status]}`}>
                           {r.status}
@@ -310,6 +330,17 @@ export default function Registrations() {
                   value={editingReg.phone} 
                   onChange={e => setEditingReg({...editingReg, phone: e.target.value})} 
                 />
+              </div>
+            </div>
+
+            <div className={styles.formRow}>
+              <div className={styles.formGroup}>
+                <label>Registration ID</label>
+                <input type="text" value={editingReg.registration_id} readOnly className={styles.readOnlyInput} />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Registered At</label>
+                <input type="text" value={formatDateTime(editingReg.registered_at)} readOnly className={styles.readOnlyInput} />
               </div>
             </div>
 

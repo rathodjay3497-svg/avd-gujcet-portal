@@ -194,11 +194,13 @@
 /* ─── Radio Group ─── */
 .radioGroup {
   display: flex;
-  gap: 12px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .radioLabel {
-  flex: 1;
+  flex: 1 1 auto;
+  min-width: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -211,6 +213,15 @@
   font-size: 15px;
   font-weight: 600;
   color: #64748b;
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .radioLabel {
+    padding: 9px 10px;
+    font-size: 13.5px;
+    border-radius: 12px;
+  }
 }
 
 .radioLabel input {

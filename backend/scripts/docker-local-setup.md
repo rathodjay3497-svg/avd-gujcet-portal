@@ -76,6 +76,18 @@ aws dynamodb create-table `
   --region ap-south-1
 ```
 
+## Task 5.1: Create table 'help-desk-entries'
+Command:
+```bash
+aws dynamodb create-table `
+  --table-name help-desk-entries `
+  --attribute-definitions AttributeName=entry_id,AttributeType=S `
+  --key-schema AttributeName=entry_id,KeyType=HASH `
+  --billing-mode PAY_PER_REQUEST `
+  --endpoint-url http://localhost:8001 `
+  --region ap-south-1
+```
+
 ## Task 6: Scan table to view data
 Command:
 ```bash

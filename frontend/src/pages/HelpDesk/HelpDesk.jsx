@@ -22,10 +22,8 @@ function displayDate(date) {
 }
 
 const SORT_OPTIONS = [
-  { value: 'custom', label: 'Custom Order' },
-  { value: 'alpha', label: 'Alphabetical (A-Z)' },
-  { value: 'date', label: 'Start Date (earliest first)' },
-  { value: 'recent', label: 'Recently Added' },
+  { value: 'alpha', label: 'Alphabetical' },
+  { value: 'date', label: 'Start Date' },
 ];
 
 // ─── Skeleton rows ────────────────────────────────────────────────────────────
@@ -64,7 +62,7 @@ export default function HelpDesk() {
     },
   });
 
-  const [sortBy, setSortBy] = useState("custom");
+  const [sortBy, setSortBy] = useState("alpha");
 
   useEffect(() => {
     if (settingsData?.default_sort) {

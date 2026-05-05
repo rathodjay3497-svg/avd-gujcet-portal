@@ -237,6 +237,7 @@
   font-weight: 600;
   font-size: 0.9375rem;
   transition: color 0.15s;
+  overflow-wrap: anywhere;
 }
 
 .heroContactCard a:hover {
