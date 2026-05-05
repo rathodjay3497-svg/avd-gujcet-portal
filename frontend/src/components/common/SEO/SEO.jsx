@@ -9,15 +9,15 @@ import { Helmet } from 'react-helmet-async';
  * @param {string} props.url - Canonical URL
  * @param {string} props.type - OG type (website, article, etc.)
  */
-const SEO = ({ 
-  title, 
-  description, 
-  image = '/assets/suhrad-youths-logo-round.png', 
+const SEO = ({
+  title,
+  description,
+  image = '/assets/suhrad-youths-logo-round.png',
   url = window.location.href,
   type = 'website'
 }) => {
   const siteTitle = 'Suhrad Youths';
-  const fullTitle = title ? `${title} | ${siteTitle}` : `Admission Help Desk 2026 | ${siteTitle}`;
+  const fullTitle = title ? `${title} | ${siteTitle}` : `${siteTitle}`;
   const defaultDescription = 'Expert admission guidance by Suhrad Youths and Anand Coaching Centre. Register for events, HPCL, and get professional guidance for your college admissions.';
   const metaDescription = description || defaultDescription;
 

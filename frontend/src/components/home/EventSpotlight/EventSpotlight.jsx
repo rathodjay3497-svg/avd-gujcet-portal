@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import RegisterButton from '@/components/events/RegisterButton/RegisterButton';
 import styles from './EventSpotlight.module.css';
 
 export default function EventSpotlight({ events }) {
@@ -102,9 +102,7 @@ export default function EventSpotlight({ events }) {
                       <img src={event.image_url} alt={event.title} className={styles.image} />
                     </div>
                     <div className={styles.footer}>
-                      <Link to={`/events/${event.event_id}/register`} className={styles.registerBtn}>
-                        Register Now
-                      </Link>
+                      <RegisterButton event={event} className={styles.registerBtn} />
                     </div>
                   </div>
                 </div>

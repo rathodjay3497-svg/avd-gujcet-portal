@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { BookOpen, Target, Clock, AlertTriangle, Award, Zap, MessageCircle, Instagram, GraduationCap } from 'lucide-react';
+import SEO from '@/components/common/SEO/SEO';
 import styles from './Gujcet2026.module.css';
 
 const FACULTY = [
@@ -17,6 +18,7 @@ export default function Gujcet2026() {
 
   return (
     <div className={styles.pageWrapper}>
+      <SEO title="GUJCET 2026 Sprint" description="Join Gujarat's most elite 11-day GUJCET sprint. Expert faculty, high-yield topics, and proven strategies to score 110+." />
 
       {/* ===== 1. HERO ===== */}
       <section className={styles.heroSection}>

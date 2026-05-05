@@ -1,12 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './RegisterButton.module.css';
 
-export default function RegisterButton({ event }) {
+export default function RegisterButton({ event, className }) {
   const navigate = useNavigate();
 
   const isAdmission = event.event_id === 'admission-2026';
 
-  const handleRegisterClick = () => {
+  const handleRegisterClick = (e) => {
+    e.preventDefault();
     if (isAdmission) {
       navigate('/admission-2026/register');
     } else {
@@ -17,7 +18,7 @@ export default function RegisterButton({ event }) {
   return (
     <button
       onClick={handleRegisterClick}
-      className={styles.registerBtn}
+      className={className || styles.registerBtn}
     >
       Register Now
     </button>
