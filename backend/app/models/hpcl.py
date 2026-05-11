@@ -47,6 +47,8 @@ class HPCLUpdateRequest(BaseModel):
     reference: Optional[str] = None
     fees_paid: Optional[bool] = None
     paid_to: Optional[str] = None
+    status: Optional[str] = None
+    notes: Optional[str] = None
 
 
     @model_validator(mode="after")

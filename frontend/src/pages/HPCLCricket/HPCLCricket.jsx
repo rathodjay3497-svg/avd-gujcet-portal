@@ -33,7 +33,12 @@ const GROUPS = [
 const HPCL_WHATSAPP_LINK = 'https://chat.whatsapp.com/DYAFkq1upt51xXS2J4evg1';
 const REGISTRATION_FEE = 400;
 
-const TARGET_DATE = new Date('2026-05-09T00:00:00+05:30');
+const TARGET_DATE = new Date('2026-05-17T00:00:00+05:30');
+const CLOSING_DATE_TEXT = TARGET_DATE.toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
 
 function getTimeLeft() {
   const diff = TARGET_DATE - Date.now();
@@ -189,7 +194,7 @@ export default function HPCLCricket() {
           {/* ── Countdown Timer ── */}
           {timeLeft ? (
             <div className={localStyles.countdownWrapper}>
-              <p className={localStyles.countdownLabel}>⏳ Registration closes on <strong>9 May 2026</strong></p>
+              <p className={localStyles.countdownLabel}>⏳ Registration closes on <strong>{CLOSING_DATE_TEXT}</strong></p>
               <div className={localStyles.countdownRow}>
                 {[['Days', timeLeft.days], ['Hours', timeLeft.hours], ['Minutes', timeLeft.minutes], ['Seconds', timeLeft.seconds]].map(
                   ([unit, val]) => (
@@ -206,7 +211,7 @@ export default function HPCLCricket() {
               <span className={localStyles.closedIcon}>🏏</span>
               <div>
                 <p className={localStyles.closedTitle}>Registration Closed</p>
-                <p className={localStyles.closedDesc}>The registration window for HPCL 2026 has ended on 9 May 2026. Thank you for your interest!</p>
+                <p className={localStyles.closedDesc}>The registration window for HPCL 2026 has ended on {CLOSING_DATE_TEXT}. Thank you for your interest!</p>
               </div>
             </div>
           )}

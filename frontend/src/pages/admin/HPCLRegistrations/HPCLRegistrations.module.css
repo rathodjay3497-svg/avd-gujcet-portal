@@ -216,42 +216,97 @@
   color: #1A3C6E;
 }
 
-/* ─── Address cell: truncate with hover tooltip ─── */
+/* ─── Address cell: wrap text ─── */
 .addressCell {
-  max-width: 140px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  cursor: default;
+  min-width: 180px;
+  max-width: 300px;
+  white-space: normal;
+  word-break: break-word;
+  line-height: 1.4;
+  padding-top: 0.75rem !important;
+  padding-bottom: 0.75rem !important;
 }
 
-/* ─── Delete icon button (in edit mode actions) ─── */
-.deleteIconBtn {
-  width: 28px;
-  height: 28px;
-  border-radius: 4px;
-  border: 1px solid #FECACA;
-  background: #FFF5F5;
-  color: #DC2626;
+/* ─── Actions ─── */
+.actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.editBtn, .deleteBtn {
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
   cursor: pointer;
+  transition: all 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.8rem;
-  transition: all 0.2s;
-  padding: 0;
-  line-height: 1;
-}
-.deleteIconBtn:hover:not(:disabled) {
-  background: #FEE2E2;
-  border-color: #EF4444;
-}
-.deleteIconBtn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
 }
 
-/* ─── Delete Confirmation Modal ─── */
+.editBtn {
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border: 1px solid #BFDBFE;
+}
+.editBtn:hover { background: #DBEAFE; }
+
+.deleteBtn {
+  background: #FFF1F2;
+  color: #BE123C;
+  border: 1px solid #FECDD3;
+}
+.deleteBtn:hover { background: #FFE4E6; }
+
+/* ─── Edit Form ─── */
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.formGroup label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748B;
+  text-transform: uppercase;
+}
+
+.formGroup input, .formGroup textarea, .formGroup select {
+  padding: 0.6rem;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.readOnlyInput {
+  background-color: #F8FAFC !important;
+  color: #64748B !important;
+  cursor: not-allowed;
+  border-style: dashed !important;
+}
+
+/* ─── Delete Confirmation Modal (Legacy) ─── */
 .modalOverlay {
   position: fixed;
   inset: 0;
@@ -358,9 +413,54 @@
   cursor: not-allowed;
 }
 
+/* ─── Sort Control ─── */
+.sortWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.sortLabel {
+  font-size: 0.8rem;
+  color: #64748B;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.sortSelect {
+  padding: 0.45rem 0.875rem;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 8px;
+  background: #FFFFFF;
+  color: #374151;
+  font-size: 0.82rem;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  outline: none;
+}
+
+.sortSelect:hover {
+  border-color: #1A3C6E;
+}
+
+.sortSelect:focus {
+  border-color: #1A3C6E;
+  box-shadow: 0 0 0 3px rgba(26, 60, 110, 0.1);
+}
+
 /* ─── Responsive: hide columns on mobile ─── */
 @media (max-width: 768px) {
   .hideOnMobile {
     display: none;
+  }
+  .sortWrapper {
+    margin-left: 0;
+    width: 100%;
+  }
+  .sortSelect {
+    flex: 1;
   }
 }
