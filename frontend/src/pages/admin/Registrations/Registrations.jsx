@@ -15,11 +15,16 @@ const PAGE_SIZE = 10;
 
 export default function Registrations() {
   const { id: eventId } = useParams();
+
+  // Determine which view to render
+  const isAdmission = eventId === 'admission-2026';
+
   const [search, setSearch] = useState('');
   const [filterStandard, setFilterStandard] = useState('');
   const [filterMedium, setFilterMedium] = useState('');
   const [filterCaste, setFilterCaste] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
+  const [sortOrder, setSortOrder] = useState('newest');
   const [page, setPage] = useState(1);
   const [editingReg, setEditingReg] = useState(null);
   const queryClient = useQueryClient();
@@ -32,17 +37,17 @@ export default function Registrations() {
     queryClient.invalidateQueries({ queryKey: ['admin-registrations', eventId] });
   };
 
-  useEffect(() => { setPage(1); }, [search, filterStandard, filterMedium, filterCaste, filterStatus]);
+  useEffect(() => { setPage(1); }, [search, filterStandard, filterMedium, filterCaste, filterStatus, sortOrder]);
 
   const allRegs = data?.registrations ?? [];
 
-  // Extract unique standards and mediums for filters
+  // Extract unique values for filters
   const standards = useMemo(() => [...new Set(allRegs.map(r => r.standard).filter(Boolean))].sort(), [allRegs]);
-  const mediums = useMemo(() => [...new Set(allRegs.map(r => r.medium).filter(Boolean))].sort(), [allRegs]);
-  const castes = useMemo(() => [...new Set(allRegs.map(r => r.caste).filter(Boolean))].sort(), [allRegs]);
+  const mediums   = useMemo(() => [...new Set(allRegs.map(r => r.medium).filter(Boolean))].sort(), [allRegs]);
+  const castes    = useMemo(() => [...new Set(allRegs.map(r => r.caste).filter(Boolean))].sort(), [allRegs]);
 
   const filtered = useMemo(() => {
-    return allRegs.filter(r => {
+    const filteredRegs = allRegs.filter(r => {
       const s = search.toLowerCase();
       const matchesSearch = !search.trim() || (
         r.registration_id?.toLowerCase().includes(s) ||
@@ -56,38 +61,60 @@ export default function Registrations() {
         r.notes?.toLowerCase().includes(s)
       );
       const matchesStandard = !filterStandard || r.standard === filterStandard;
-      const matchesMedium = !filterMedium || r.medium === filterMedium;
-      const matchesCaste = !filterCaste || r.caste === filterCaste;
-      const matchesStatus = !filterStatus || r.status === filterStatus;
+      const matchesMedium   = !filterMedium   || r.medium === filterMedium;
+      const matchesCaste    = !filterCaste    || r.caste === filterCaste;
+      const matchesStatus   = !filterStatus   || r.status === filterStatus;
       return matchesSearch && matchesStandard && matchesMedium && matchesCaste && matchesStatus;
     });
-  }, [allRegs, search, filterStandard, filterMedium, filterCaste, filterStatus]);
+
+    return [...filteredRegs].sort((a, b) => {
+      const dateA = new Date(a.registered_at || 0);
+      const dateB = new Date(b.registered_at || 0);
+      return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+    });
+  }, [allRegs, search, filterStandard, filterMedium, filterCaste, filterStatus, sortOrder]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const paginated  = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
+  // ── Export Excel ──────────────────────────────────────────────
   const handleExportExcel = () => {
     if (!filtered.length) return toast.error('No data to export');
 
-    const rows = filtered.map(r => ({
-      'Registration ID': r.registration_id,
-      'Name': r.name || '—',
-      'Phone': r.phone || '—',
-      'Gender': r.gender || '—',
-      'Standard / Education': r.standard || '—',
-      'Education Board': r.education_board || '—',
-      'School / College': r.school_college || '—',
-      'Medium': r.medium || '—',
-      'Caste': r.caste || '—',
-      'Interested Field': r.interested_field || '—',
-      'Address': r.address || '—',
-      'Theory %': r.theory_percentile || '—',
-      'GUJCET %': r.gujcet_percentile || '—',
-      'Reference': r.reference || '—',
-      'Notes': r.notes || '—',
-      'Status': r.status,
-      'Registered At': formatDateTime(r.registered_at),
-    }));
+    const rows = isAdmission
+      ? filtered.map(r => ({
+          'Registration ID':       r.registration_id,
+          'Name':                  r.name || '—',
+          'Phone':                 r.phone || '—',
+          'Gender':                r.gender || '—',
+          'Standard / Education':  r.standard || '—',
+          'Education Board':       r.education_board || '—',
+          'School / College':      r.school_college || '—',
+          'Medium':                r.medium || '—',
+          'Caste':                 r.caste || '—',
+          'Interested Field':      r.interested_field || '—',
+          'Address':               r.address || '—',
+          'Theory %':              r.theory_percentile || '—',
+          'GUJCET %':              r.gujcet_percentile || '—',
+          'Reference':             r.reference || '—',
+          'Notes':                 r.notes || '—',
+          'Status':                r.status,
+          'Registered At':         formatDateTime(r.registered_at),
+        }))
+      : filtered.map(r => ({
+          'Registration ID':       r.registration_id,
+          'Name':                  r.name || '—',
+          'Phone':                 r.phone || '—',
+          'Gender':                r.gender || '—',
+          'Standard / Education':  r.standard || '—',
+          'School / College':      r.school_college || '—',
+          'Medium':                r.medium || '—',
+          'Full Address':          r.address || '—',
+          'Reference':             r.reference || '—',
+          'Notes':                 r.notes || '—',
+          'Status':                r.status,
+          'Registered At':         formatDateTime(r.registered_at),
+        }));
 
     const ws = XLSX.utils.json_to_sheet(rows);
     const colWidths = Object.keys(rows[0]).map(key => ({
@@ -114,25 +141,30 @@ export default function Registrations() {
 
   const handleUpdateSubmit = (e) => {
     e.preventDefault();
+    const commonFields = {
+      name:          editingReg.name,
+      phone:         editingReg.phone,
+      gender:        editingReg.gender,
+      standard:      editingReg.standard,
+      school_college: editingReg.school_college,
+      medium:        editingReg.medium,
+      address:       editingReg.address,
+      reference:     editingReg.reference,
+      notes:         editingReg.notes,
+      status:        editingReg.status,
+    };
+
+    const admissionExtra = isAdmission ? {
+      education_board:   editingReg.education_board,
+      caste:             editingReg.caste,
+      interested_field:  editingReg.interested_field,
+      theory_percentile: editingReg.theory_percentile,
+      gujcet_percentile: editingReg.gujcet_percentile,
+    } : {};
+
     updateMutation.mutate({
       email: editingReg.email,
-      data: {
-        name: editingReg.name,
-        phone: editingReg.phone,
-        gender: editingReg.gender,
-        standard: editingReg.standard,
-        school_college: editingReg.school_college,
-        education_board: editingReg.education_board,
-        medium: editingReg.medium,
-        caste: editingReg.caste,
-        interested_field: editingReg.interested_field,
-        address: editingReg.address,
-        theory_percentile: editingReg.theory_percentile,
-        gujcet_percentile: editingReg.gujcet_percentile,
-        notes: editingReg.notes,
-        reference: editingReg.reference,
-        status: editingReg.status,
-      }
+      data:  { ...commonFields, ...admissionExtra },
     });
   };
 
@@ -197,14 +229,17 @@ export default function Registrations() {
                   {mediums.map(m => <option key={m} value={m}>{m}</option>)}
                 </select>
 
-                <select
-                  className={styles.selectFilter}
-                  value={filterCaste}
-                  onChange={e => setFilterCaste(e.target.value)}
-                >
-                  <option value="">All Castes</option>
-                  {castes.map(c => <option key={c} value={c}>{c}</option>)}
-                </select>
+                {/* Caste filter only shown for admission-2026 */}
+                {isAdmission && (
+                  <select
+                    className={styles.selectFilter}
+                    value={filterCaste}
+                    onChange={e => setFilterCaste(e.target.value)}
+                  >
+                    <option value="">All Castes</option>
+                    {castes.map(c => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                )}
 
                 <select
                   className={styles.selectFilter}
@@ -216,6 +251,15 @@ export default function Registrations() {
                   <option value="confirmed">Confirmed</option>
                   <option value="pending">Pending</option>
                   <option value="cancelled">Cancelled</option>
+                </select>
+
+                <select
+                  className={styles.selectFilter}
+                  value={sortOrder}
+                  onChange={e => setSortOrder(e.target.value)}
+                >
+                  <option value="newest">Newer First</option>
+                  <option value="oldest">Older First</option>
                 </select>
               </div>
 
@@ -230,9 +274,20 @@ export default function Registrations() {
                   <tr>
                     <th>#</th>
                     <th>Name | Phone | Gender</th>
-                    <th>STD | Board | <br />Medium | Caste</th>
-                    <th>School Name | <br />Interest</th>
-                    <th>Theory % | <br />GUJCET %</th>
+
+                    {isAdmission ? (
+                      <>
+                        <th>STD | Board | <br />Medium | Caste</th>
+                        <th>School Name | <br />Interest</th>
+                        <th>Theory % | <br />GUJCET %</th>
+                      </>
+                    ) : (
+                      <>
+                        <th>Standard / Education</th>
+                        <th>School / College | Medium</th>
+                      </>
+                    )}
+
                     <th>Full Address</th>
                     <th>Ref</th>
                     <th>Notes | Remark details</th>
@@ -252,25 +307,45 @@ export default function Registrations() {
                           <small className={styles.genderTag}>{r.gender}</small>
                         </div>
                       </td>
-                      <td>
-                        <div className={styles.metaCell}>
-                          <span>{r.standard}</span>
-                          <strong>{r.education_board}</strong>
-                          <small>{r.medium} · {r.caste}</small>
-                        </div>
-                      </td>
-                      <td>
-                        <div className={styles.schoolCell}>
-                          <span>{r.school_college}</span>
-                          {r.interested_field && <em className={styles.interestTag}>Target: {r.interested_field}</em>}
-                        </div>
-                      </td>
-                      <td>
-                        <div className={styles.percentileCell}>
-                          <span>T: {r.theory_percentile || '—'}</span>
-                          <span>G: {r.gujcet_percentile || '—'}</span>
-                        </div>
-                      </td>
+
+                      {isAdmission ? (
+                        <>
+                          <td>
+                            <div className={styles.metaCell}>
+                              <span>{r.standard}</span>
+                              <strong>{r.education_board}</strong>
+                              <small>{r.medium} · {r.caste}</small>
+                            </div>
+                          </td>
+                          <td>
+                            <div className={styles.schoolCell}>
+                              <span>{r.school_college}</span>
+                              {r.interested_field && <em className={styles.interestTag}>Target: {r.interested_field}</em>}
+                            </div>
+                          </td>
+                          <td>
+                            <div className={styles.percentileCell}>
+                              <span>T: {r.theory_percentile || '—'}</span>
+                              <span>G: {r.gujcet_percentile || '—'}</span>
+                            </div>
+                          </td>
+                        </>
+                      ) : (
+                        <>
+                          <td>
+                            <div className={styles.metaCell}>
+                              <span>{r.standard || '—'}</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className={styles.schoolCell}>
+                              <span>{r.school_college || '—'}</span>
+                              {r.medium && <small className={styles.genderTag}>{r.medium}</small>}
+                            </div>
+                          </td>
+                        </>
+                      )}
+
                       <td className={styles.longCell}>{r.address}</td>
                       <td><span className={styles.refText}>{r.reference || '—'}</span></td>
                       <td className={styles.longCell}>{r.notes || '—'}</td>
@@ -366,38 +441,44 @@ export default function Registrations() {
                   <option value="English">English</option>
                 </select>
               </div>
-              <div className={styles.formGroup}>
-                <label>Caste</label>
-                <select
-                  value={editingReg.caste}
-                  onChange={e => setEditingReg({ ...editingReg, caste: e.target.value })}
-                >
-                  <option value="General">General</option>
-                  <option value="EWS">EWS</option>
-                  <option value="OBC">OBC</option>
-                  <option value="SC">SC</option>
-                  <option value="ST">ST</option>
-                </select>
-              </div>
+
+              {/* Caste only for admission-2026 */}
+              {isAdmission && (
+                <div className={styles.formGroup}>
+                  <label>Caste</label>
+                  <select
+                    value={editingReg.caste}
+                    onChange={e => setEditingReg({ ...editingReg, caste: e.target.value })}
+                  >
+                    <option value="General">General</option>
+                    <option value="EWS">EWS</option>
+                    <option value="OBC">OBC</option>
+                    <option value="SC">SC</option>
+                    <option value="ST">ST</option>
+                  </select>
+                </div>
+              )}
             </div>
 
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
-                <label>Standard</label>
+                <label>Standard / Education</label>
                 <input
                   type="text"
                   value={editingReg.standard}
                   onChange={e => setEditingReg({ ...editingReg, standard: e.target.value })}
                 />
               </div>
-              <div className={styles.formGroup}>
-                <label>Education Board</label>
-                <input
-                  type="text"
-                  value={editingReg.education_board}
-                  onChange={e => setEditingReg({ ...editingReg, education_board: e.target.value })}
-                />
-              </div>
+              {isAdmission && (
+                <div className={styles.formGroup}>
+                  <label>Education Board</label>
+                  <input
+                    type="text"
+                    value={editingReg.education_board}
+                    onChange={e => setEditingReg({ ...editingReg, education_board: e.target.value })}
+                  />
+                </div>
+              )}
             </div>
 
             <div className={styles.formRow}>
@@ -409,34 +490,39 @@ export default function Registrations() {
                   onChange={e => setEditingReg({ ...editingReg, school_college: e.target.value })}
                 />
               </div>
-              <div className={styles.formGroup}>
-                <label>Interested Field</label>
-                <input
-                  type="text"
-                  value={editingReg.interested_field}
-                  onChange={e => setEditingReg({ ...editingReg, interested_field: e.target.value })}
-                />
-              </div>
+              {isAdmission && (
+                <div className={styles.formGroup}>
+                  <label>Interested Field</label>
+                  <input
+                    type="text"
+                    value={editingReg.interested_field}
+                    onChange={e => setEditingReg({ ...editingReg, interested_field: e.target.value })}
+                  />
+                </div>
+              )}
             </div>
 
-            <div className={styles.formRow}>
-              <div className={styles.formGroup}>
-                <label>Theory Percentile</label>
-                <input
-                  type="text"
-                  value={editingReg.theory_percentile}
-                  onChange={e => setEditingReg({ ...editingReg, theory_percentile: e.target.value })}
-                />
+            {/* Theory / GUJCET only for admission-2026 */}
+            {isAdmission && (
+              <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                  <label>Theory Percentile</label>
+                  <input
+                    type="text"
+                    value={editingReg.theory_percentile}
+                    onChange={e => setEditingReg({ ...editingReg, theory_percentile: e.target.value })}
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>GUJCET Percentile</label>
+                  <input
+                    type="text"
+                    value={editingReg.gujcet_percentile}
+                    onChange={e => setEditingReg({ ...editingReg, gujcet_percentile: e.target.value })}
+                  />
+                </div>
               </div>
-              <div className={styles.formGroup}>
-                <label>GUJCET Percentile</label>
-                <input
-                  type="text"
-                  value={editingReg.gujcet_percentile}
-                  onChange={e => setEditingReg({ ...editingReg, gujcet_percentile: e.target.value })}
-                />
-              </div>
-            </div>
+            )}
 
             <div className={styles.formGroup}>
               <label>Reference</label>
