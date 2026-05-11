@@ -113,7 +113,7 @@ def register_hpcl(body: HPCLRegistrationRequest, background_tasks: BackgroundTas
         "event_id": EVENT_ID,
         "phone": body.phone,
         "form_data": registration.get("form_data", form_data),
-        "status": registration.get("status", "confirmed"),
+        "status": registration.get("status", "registered"),
         "registered_at": registration.get("registered_at", ""),
     }
 
@@ -136,7 +136,7 @@ def _flatten_hpcl_reg(r: dict) -> dict:
         "reference": fd.get("reference", ""),
         "fees_paid": fd.get("fees_paid", False),
         "paid_to": fd.get("paid_to", ""),
-        "status": r.get("status", "confirmed"),
+        "status": r.get("status", "registered"),
         "registered_at": r.get("registered_at", ""),
     }
 

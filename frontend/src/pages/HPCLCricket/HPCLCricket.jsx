@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { hpclAPI } from '@/services/api';
 import toast from 'react-hot-toast';
+import SEO from '@/components/common/SEO/SEO';
 import styles from '../RegisterForm/RegisterForm.module.css';
 import localStyles from './HPCLCricket.module.css';
 
@@ -45,6 +46,7 @@ function getTimeLeft() {
     seconds: totalSeconds % 60,
   };
 }
+
 
 export default function HPCLCricket() {
   const navigate = useNavigate();
@@ -153,6 +155,11 @@ export default function HPCLCricket() {
 
   return (
     <div className={localStyles.page}>
+      <SEO
+        title="HPCL 2026 Registration"
+        description="Register for Hari Prabodham Cricket League (HPCL) 2026. Join the exciting Box Cricket tournament organized by Suhrad Youths."
+        image="/assets/hpcl/box-cricket.png"
+      />
       {/* ── Submitting GIF overlay ── */}
       {isSubmitting && (
         <div className={localStyles.gifOverlay}>

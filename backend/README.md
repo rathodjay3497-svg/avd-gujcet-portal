@@ -30,6 +30,9 @@ cp .env.example .env
 ```
 
 ### Run Locally
+```bash
+docker-compose up -d
+```
 
 ```bash
 uv run uvicorn app.main:app --reload --port 8000

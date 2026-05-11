@@ -4,6 +4,7 @@ import { Phone, ChevronDown } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useState, useMemo, useEffect } from "react";
 import { helpDeskAPI } from "@/services/api";
+import SEO from "@/components/common/SEO/SEO";
 import styles from "./HelpDesk.module.css";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -94,6 +95,7 @@ export default function HelpDesk() {
 
   return (
     <div className={styles.page}>
+      <SEO title="Help Desk" />
       <div className={styles.container}>
 
         <h1 className={styles.title}>

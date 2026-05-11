@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePublicRegister } from '@/hooks/useRegistration';
 import styles from './AdmissionRegister.module.css';
+import SEO from '@/components/common/SEO/SEO';
 
 const STANDARDS = [
   '10th',
@@ -96,6 +97,11 @@ export default function AdmissionRegister() {
 
   return (
     <div className={styles.page}>
+      <SEO
+        title="Admission Help Desk 2026 Registration"
+        description="Register for Admission Help Desk 2026 to get expert guidance for your future academic journey by Suhrad Youths."
+        image="/assets/admission/admission-desk.jpg"
+      />
       <div className={styles.container}>
         <div className={styles.card}>
           <div className={styles.header}>
