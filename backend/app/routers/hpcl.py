@@ -136,6 +136,7 @@ def _flatten_hpcl_reg(r: dict) -> dict:
         "reference": fd.get("reference", ""),
         "fees_paid": fd.get("fees_paid", False),
         "paid_to": fd.get("paid_to", ""),
+        "notes": fd.get("notes", ""),
         "status": r.get("status", "registered"),
         "registered_at": r.get("registered_at", ""),
     }
@@ -180,6 +181,10 @@ def update_hpcl_registration(
         updates["form_data.fees_paid"] = body.fees_paid
     if body.paid_to is not None:
         updates["form_data.paid_to"] = body.paid_to
+    if body.status is not None:
+        updates["status"] = body.status
+    if body.notes is not None:
+        updates["form_data.notes"] = body.notes
 
     # Remove phone from updates since it's now immutable in update endpoint
     # (Migration logic removed as per user request)
