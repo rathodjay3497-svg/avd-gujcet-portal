@@ -46,7 +46,7 @@ def register_form(event_id: str, body: RegistrationCreate, background_tasks: Bac
         "registration_id": reg_id,
         "user_id": profile.get("user_id", ""),
         "phone": profile.get("phone", ""),
-        "form_data": body.form_data,
+        "form_data": {**body.form_data, "rank": body.form_data.get("rank", 0)},
     }
     registration = dynamo.create_registration(event_id, email, reg_data)
 
@@ -103,6 +103,7 @@ def register_click(event_id: str, background_tasks: BackgroundTasks, user=Depend
         "district": profile.get("district", ""),
         "school": profile.get("school_college", ""),
         "caste": profile.get("caste", ""),
+        "rank": 0,
     }
 
     # 6. Save registration (phone stored at top-level for admin queries)
@@ -214,6 +215,7 @@ def register_public(
                 "address": body.address,
                 "reference": body.reference or "",
                 "caste": body.caste or "General",
+                "rank": body.rank or 0,
             },
         )
 
@@ -238,6 +240,7 @@ def register_public(
         "address": body.address,
         "reference": body.reference or "",
         "caste": body.caste or "General",
+        "rank": body.rank or 0,
     }
 
     # 8. Save registration

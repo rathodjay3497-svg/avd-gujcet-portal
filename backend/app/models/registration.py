@@ -27,6 +27,7 @@ class PublicRegistrationRequest(BaseModel):
     caste: Optional[str] = "General"
     notes: Optional[str] = ""
     reference: Optional[str] = ""
+    rank: Optional[int] = 0
 
 class UserRegistrationResponse(RegistrationBase):
     registration_id: str
@@ -65,3 +66,4 @@ class RegistrationUpdateRequest(BaseModel):
     notes: Optional[str] = None
     reference: Optional[str] = None
     status: Optional[str] = None
+    rank: Optional[int] = None

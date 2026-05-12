@@ -14,6 +14,17 @@
     margin-left: var(--admin-sidebar-width, 64px);
     padding: 0.75rem;
   }
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .searchWrapper {
+    max-width: none;
+  }
+  .selectFilter {
+    flex: 1;
+    min-width: calc(50% - 0.5rem);
+  }
 }
 
 /* ─── Header ─── */
@@ -68,6 +79,7 @@
   align-items: center;
   gap: 0.75rem;
   flex: 1;
+  flex-wrap: wrap;
 }
 
 .searchWrapper {
@@ -150,6 +162,41 @@
   font-weight: 700;
   margin-top: 2px;
 }
+.phoneLink {
+  font-size: 0.85rem;
+  color: #2563EB;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.phoneLink:hover {
+  color: #1D4ED8;
+  text-decoration: underline;
+}
+
+.phoneWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.copyBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  background: none;
+  border: none;
+  color: #94A3B8;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.copyBtn:hover {
+  color: #2563EB;
+  background: #EFF6FF;
+}
 
 .metaCell {
   display: flex;
@@ -177,6 +224,18 @@
   background: #EFF6FF;
   padding: 2px 6px;
   border-radius: 4px;
+}
+.rankBadge {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #1e293b;
+  background: #f1f5f9;
+  padding: 4px 10px;
+  border-radius: 6px;
+  display: inline-block;
+  min-width: 40px;
+  text-align: center;
+  border: 1px solid #e2e8f0;
 }
 
 .schoolCell {

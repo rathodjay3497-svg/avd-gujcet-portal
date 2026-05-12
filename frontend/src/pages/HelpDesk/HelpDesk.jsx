@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useState, useMemo, useEffect } from "react";
 import { helpDeskAPI } from "@/services/api";
 import SEO from "@/components/common/SEO/SEO";
+import Scholarship from "./Scholarship";
 import styles from "./HelpDesk.module.css";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -273,6 +274,8 @@ export default function HelpDesk() {
             </tbody>
           </table>
         </div>
+
+        <Scholarship />
 
         <div className={styles.careerSection}>
 
