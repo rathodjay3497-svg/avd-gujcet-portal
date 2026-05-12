@@ -33,6 +33,7 @@ def _flatten_reg(r: dict) -> dict:
         "gujcet_percentile": fd.get("gujcet_percentile", ""),
         "notes": fd.get("notes", ""),
         "reference": fd.get("reference", ""),
+        "rank": fd.get("rank", 0),
         "email": r.get("email", ""),
         "form_data": fd,
         "status": r.get("status", "confirmed"),
@@ -80,11 +81,16 @@ def export_registrations(event_id: str, _admin=Depends(require_admin)):
         "Address",
         "Theory Percentile",
         "GUJCET Percentile",
+    ]
+    if event_id == 'admission-2026':
+        headers.append("Rank")
+    
+    headers.extend([
         "Notes/Remark",
         "Reference",
         "Status",
         "Registered At",
-    ]
+    ])
     writer.writerow(headers)
 
     for r in regs:
@@ -103,11 +109,16 @@ def export_registrations(event_id: str, _admin=Depends(require_admin)):
             flat["address"],
             flat["theory_percentile"],
             flat["gujcet_percentile"],
+        ]
+        if event_id == 'admission-2026':
+            row.append(flat.get("rank", 0))
+            
+        row.extend([
             flat["notes"],
             flat["reference"],
             flat["status"],
             flat["registered_at"],
-        ]
+        ])
         writer.writerow(row)
 
     output.seek(0)

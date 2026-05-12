@@ -232,7 +232,10 @@ export default function AdmissionRegister() {
               <div className={styles.grid}>
                 <div className={styles.col6}>
                   <div className={styles.field}>
-                    <label className={styles.label}>Theory Percentile <span className={styles.required}>*</span></label>
+                    <label className={styles.label}>
+                      {form.standard.includes('Sci') ? 'Science Theory Percentile' : 'Theory Percentile'}
+                      <span className={styles.required}>*</span>
+                    </label>
                     <input
                       className={`${styles.input} ${errors.theory_percentile ? styles.inputError : ''}`}
                       type="text" name="theory_percentile" value={form.theory_percentile} onChange={handleChange}

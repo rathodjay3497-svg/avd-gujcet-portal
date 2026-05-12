@@ -96,6 +96,7 @@ export default function Registrations() {
           'Address':               r.address || '—',
           'Theory %':              r.theory_percentile || '—',
           'GUJCET %':              r.gujcet_percentile || '—',
+          'Rank':                  r.rank || 0,
           'Reference':             r.reference || '—',
           'Notes':                 r.notes || '—',
           'Status':                r.status,
@@ -138,6 +139,11 @@ export default function Registrations() {
   const handleEdit = (reg) => {
     setEditingReg({ ...reg });
   };
+  
+  const handleCopy = (text) => {
+    navigator.clipboard.writeText(text);
+    toast.success('Copied to clipboard');
+  };
 
   const handleUpdateSubmit = (e) => {
     e.preventDefault();
@@ -160,6 +166,7 @@ export default function Registrations() {
       interested_field:  editingReg.interested_field,
       theory_percentile: editingReg.theory_percentile,
       gujcet_percentile: editingReg.gujcet_percentile,
+      rank:              parseInt(editingReg.rank || 0, 10),
     } : {};
 
     updateMutation.mutate({
@@ -280,6 +287,7 @@ export default function Registrations() {
                         <th>STD | Board | <br />Medium | Caste</th>
                         <th>School Name | <br />Interest</th>
                         <th>Theory % | <br />GUJCET %</th>
+                        <th>Rank</th>
                       </>
                     ) : (
                       <>
@@ -303,7 +311,22 @@ export default function Registrations() {
                       <td>
                         <div className={styles.nameCell}>
                           <strong>{r.name}</strong>
-                          <span>{r.phone}</span>
+                          <div className={styles.phoneWrapper}>
+                            <a 
+                              href={`tel:${r.phone}`} 
+                              className={styles.phoneLink}
+                              title="Call"
+                            >
+                              {r.phone}
+                            </a>
+                            <button 
+                              className={styles.copyBtn} 
+                              onClick={() => handleCopy(r.phone)}
+                              title="Copy Phone Number"
+                            >
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            </button>
+                          </div>
                           <small className={styles.genderTag}>{r.gender}</small>
                         </div>
                       </td>
@@ -327,6 +350,11 @@ export default function Registrations() {
                             <div className={styles.percentileCell}>
                               <span>T: {r.theory_percentile || '—'}</span>
                               <span>G: {r.gujcet_percentile || '—'}</span>
+                            </div>
+                          </td>
+                          <td>
+                            <div className={styles.rankBadge}>
+                              {r.rank || 0}
                             </div>
                           </td>
                         </>
@@ -519,6 +547,14 @@ export default function Registrations() {
                     type="text"
                     value={editingReg.gujcet_percentile}
                     onChange={e => setEditingReg({ ...editingReg, gujcet_percentile: e.target.value })}
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Rank</label>
+                  <input
+                    type="number"
+                    value={editingReg.rank || 0}
+                    onChange={e => setEditingReg({ ...editingReg, rank: e.target.value })}
                   />
                 </div>
               </div>
