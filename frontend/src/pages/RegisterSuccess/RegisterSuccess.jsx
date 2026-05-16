@@ -66,7 +66,7 @@ export default function RegisterSuccess() {
             {eventTitle && <div className={styles.summaryRow}><span className={styles.summaryKey}>Event</span><span className={styles.summaryVal}>{eventTitle}</span></div>}
             {userPhone && <div className={styles.summaryRow}><span className={styles.summaryKey}>Phone</span><span className={styles.summaryVal}>+91 {userPhone}</span></div>}
             {userGender && <div className={styles.summaryRow}><span className={styles.summaryKey}>Gender</span><span className={styles.summaryVal}>{userGender}</span></div>}
-            {userStandard && <div className={styles.summaryRow}><span className={styles.summaryKey}>Standard / Education</span><span className={styles.summaryVal}>{userStandard}</span></div>}
+            {userStandard && <div className={styles.summaryRow}><span className={styles.summaryKey}>Standard / Stream</span><span className={styles.summaryVal}>{userStandard}</span></div>}
             {userSchool && <div className={styles.summaryRow}><span className={styles.summaryKey}>School / College</span><span className={styles.summaryVal}>{userSchool}</span></div>}
             {userMedium && <div className={styles.summaryRow}><span className={styles.summaryKey}>Medium</span><span className={styles.summaryVal}>{userMedium}</span></div>}
           </div>

@@ -13,6 +13,17 @@ import styles from './Registrations.module.css';
 
 const PAGE_SIZE = 10;
 
+const STANDARDS_LIST = [
+  '10th',
+  '12th Sci - A group',
+  '12th Sci - B group',
+  '12th Commerce',
+  '12th Arts',
+  'Graduation',
+];
+
+const BOARDS_LIST = ['GSHSEB', 'CBSE', 'Other'];
+
 export default function Registrations() {
   const { id: eventId } = useParams();
 
@@ -87,14 +98,14 @@ export default function Registrations() {
           'Name':                  r.name || '—',
           'Phone':                 r.phone || '—',
           'Gender':                r.gender || '—',
-          'Standard / Education':  r.standard || '—',
+          'Standard / Stream':  r.standard === 'Graduation' ? (r.graduation_degree ? `Graduation - ${r.graduation_degree}` : 'Graduation') : (r.standard || '—'),
           'Education Board':       r.education_board || '—',
           'School / College':      r.school_college || '—',
           'Medium':                r.medium || '—',
           'Caste':                 r.caste || '—',
           'Interested Field':      r.interested_field || '—',
           'Address':               r.address || '—',
-          'Theory %':              r.theory_percentile || '—',
+          'Theory % / CGPA':       r.theory_percentile || '—',
           'GUJCET %':              r.gujcet_percentile || '—',
           'Rank':                  r.rank || 0,
           'Reference':             r.reference || '—',
@@ -107,7 +118,7 @@ export default function Registrations() {
           'Name':                  r.name || '—',
           'Phone':                 r.phone || '—',
           'Gender':                r.gender || '—',
-          'Standard / Education':  r.standard || '—',
+          'Standard / Stream':  r.standard || '—',
           'School / College':      r.school_college || '—',
           'Medium':                r.medium || '—',
           'Full Address':          r.address || '—',
@@ -161,6 +172,7 @@ export default function Registrations() {
     };
 
     const admissionExtra = isAdmission ? {
+      graduation_degree: editingReg.graduation_degree,
       education_board:   editingReg.education_board,
       caste:             editingReg.caste,
       interested_field:  editingReg.interested_field,
@@ -223,7 +235,7 @@ export default function Registrations() {
                   value={filterStandard}
                   onChange={e => setFilterStandard(e.target.value)}
                 >
-                  <option value="">All Standards</option>
+                  <option value="">All Standards / Streams</option>
                   {standards.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
 
@@ -284,14 +296,14 @@ export default function Registrations() {
 
                     {isAdmission ? (
                       <>
-                        <th>STD | Board | <br />Medium | Caste</th>
+                        <th>STD / Stream | Board | <br />Medium | Caste</th>
                         <th>School Name | <br />Interest</th>
-                        <th>Theory % | <br />GUJCET %</th>
+                        <th>Theory % / CGPA | <br />GUJCET %</th>
                         <th>Rank</th>
                       </>
                     ) : (
                       <>
-                        <th>Standard / Education</th>
+                        <th>Standard / Stream</th>
                         <th>School / College | Medium</th>
                       </>
                     )}
@@ -335,7 +347,7 @@ export default function Registrations() {
                         <>
                           <td>
                             <div className={styles.metaCell}>
-                              <span>{r.standard}</span>
+                              <span>{r.standard === 'Graduation' ? (r.graduation_degree ? `Graduation - ${r.graduation_degree}` : 'Graduation') : r.standard}</span>
                               <strong>{r.education_board}</strong>
                               <small>{r.medium} · {r.caste}</small>
                             </div>
@@ -348,7 +360,7 @@ export default function Registrations() {
                           </td>
                           <td>
                             <div className={styles.percentileCell}>
-                              <span>T: {r.theory_percentile || '—'}</span>
+                              <span>{r.standard === 'Graduation' ? 'CGPA:' : 'T:'} {r.theory_percentile || '—'}</span>
                               <span>G: {r.gujcet_percentile || '—'}</span>
                             </div>
                           </td>
@@ -490,21 +502,35 @@ export default function Registrations() {
 
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
-                <label>Standard / Education</label>
-                <input
-                  type="text"
+                <label>Standard / Stream</label>
+                <select
                   value={editingReg.standard}
                   onChange={e => setEditingReg({ ...editingReg, standard: e.target.value })}
-                />
+                >
+                  <option value="">Select Standard / Stream</option>
+                  {STANDARDS_LIST.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
               </div>
+              {isAdmission && editingReg.standard === 'Graduation' && (
+                <div className={styles.formGroup}>
+                  <label>Graduation Degree</label>
+                  <input
+                    type="text"
+                    value={editingReg.graduation_degree || ''}
+                    onChange={e => setEditingReg({ ...editingReg, graduation_degree: e.target.value })}
+                  />
+                </div>
+              )}
               {isAdmission && (
                 <div className={styles.formGroup}>
                   <label>Education Board</label>
-                  <input
-                    type="text"
+                  <select
                     value={editingReg.education_board}
                     onChange={e => setEditingReg({ ...editingReg, education_board: e.target.value })}
-                  />
+                  >
+                    <option value="">Select Board</option>
+                    {BOARDS_LIST.map(b => <option key={b} value={b}>{b}</option>)}
+                  </select>
                 </div>
               )}
             </div>
@@ -534,7 +560,7 @@ export default function Registrations() {
             {isAdmission && (
               <div className={styles.formRow}>
                 <div className={styles.formGroup}>
-                  <label>Theory Percentile</label>
+                  <label>{editingReg.standard === 'Graduation' ? 'CGPA' : 'Theory Percentile'}</label>
                   <input
                     type="text"
                     value={editingReg.theory_percentile}

@@ -10,6 +10,7 @@ const STANDARDS = [
   '12th Sci - B group',
   '12th Commerce',
   '12th Arts',
+  'Graduation',
 ];
 
 const BOARDS = ['GSHSEB', 'CBSE', 'Other'];
@@ -29,6 +30,7 @@ export default function AdmissionRegister() {
     school_college: '',
     stream: '',
     standard: '',
+    graduation_degree: '',
     education_board: '',
     interested_field: '',
     medium: 'Gujarati',
@@ -49,6 +51,9 @@ export default function AdmissionRegister() {
     if (!/^\d{10}$/.test(form.phone.trim())) e.phone = 'Enter valid 10-digit number';
     if (!form.school_college.trim()) e.school_college = 'Required';
     if (!form.standard) e.standard = 'Select standard';
+    if (form.standard === 'Graduation' && !form.graduation_degree.trim()) {
+      e.graduation_degree = 'Please specify your degree (e.g. BE, BBA)';
+    }
     if (!form.education_board) e.education_board = 'Select board';
     if (!form.theory_percentile.trim()) e.theory_percentile = 'Required';
     if (!form.address.trim()) e.address = 'Required';
@@ -199,17 +204,35 @@ export default function AdmissionRegister() {
                 </div>
                 <div className={styles.col6}>
                   <div className={styles.field}>
-                    <label className={styles.label}>Standard <span className={styles.required}>*</span></label>
+                    <label className={styles.label}>Standard / Stream <span className={styles.required}>*</span></label>
                     <select
                       className={`${styles.select} ${errors.standard ? styles.inputError : ''}`}
                       name="standard" value={form.standard} onChange={handleChange}
                     >
-                      <option value="">Select Standard</option>
+                      <option value="">Select Standard / Stream</option>
                       {STANDARDS.map(s => <option key={s} value={s}>{s}</option>)}
                     </select>
                     {errors.standard && <span className={styles.errorMsg}>{errors.standard}</span>}
                   </div>
                 </div>
+
+                {form.standard === 'Graduation' && (
+                  <div className={styles.col6}>
+                    <div className={styles.field}>
+                      <label className={styles.label}>Graduation Degree <span className={styles.required}>*</span></label>
+                      <input
+                        className={`${styles.input} ${errors.graduation_degree ? styles.inputError : ''}`}
+                        type="text"
+                        name="graduation_degree"
+                        value={form.graduation_degree}
+                        onChange={handleChange}
+                        placeholder="e.g. BE, BBA, B.Com"
+                      />
+                      {errors.graduation_degree && <span className={styles.errorMsg}>{errors.graduation_degree}</span>}
+                    </div>
+                  </div>
+                )}
+
                 <div className={styles.col6}>
                   <div className={styles.field}>
                     <label className={styles.label}>Education Board <span className={styles.required}>*</span></label>
@@ -233,13 +256,13 @@ export default function AdmissionRegister() {
                 <div className={styles.col6}>
                   <div className={styles.field}>
                     <label className={styles.label}>
-                      {form.standard.includes('Sci') ? 'Science Theory Percentile' : 'Theory Percentile'}
+                      {form.standard === 'Graduation' ? 'CGPA' : (form.standard.includes('Sci') ? 'Science Theory Percentile' : 'Theory Percentile')}
                       <span className={styles.required}>*</span>
                     </label>
                     <input
                       className={`${styles.input} ${errors.theory_percentile ? styles.inputError : ''}`}
                       type="text" name="theory_percentile" value={form.theory_percentile} onChange={handleChange}
-                      placeholder="e.g. 95.50"
+                      placeholder={form.standard === 'Graduation' ? "e.g. 8.50" : "e.g. 95.50"}
                     />
                     {errors.theory_percentile && <span className={styles.errorMsg}>{errors.theory_percentile}</span>}
                   </div>

@@ -17,6 +17,7 @@ class PublicRegistrationRequest(BaseModel):
     gender: str = "Male"
     school_college: str
     standard: str
+    graduation_degree: Optional[str] = None
     stream: Optional[str] = None
     education_board: Optional[str] = None
     interested_field: Optional[str] = None
@@ -55,6 +56,7 @@ class RegistrationUpdateRequest(BaseModel):
     phone: Optional[str] = None
     gender: Optional[str] = None
     standard: Optional[str] = None
+    graduation_degree: Optional[str] = None
     school_college: Optional[str] = None
     medium: Optional[str] = None
     address: Optional[str] = None
